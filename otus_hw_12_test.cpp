@@ -42,6 +42,7 @@ getProcessorOutput
 
   {
     AsyncCommandProcessor<2> testProcessor {
+      "test processor",
       bulkSize, openDelimiter, closeDelimiter,
       outputStream, errorStream, metricsStream
     };
@@ -86,7 +87,7 @@ mockConnect(
 )
 {
   auto newCommandProcessor {new AsyncCommandProcessor<2>(
-      bulkSize, '{', '}', outputStream, errorStream
+      "mock processor", bulkSize, '{', '}', outputStream, errorStream
     )
   };
 

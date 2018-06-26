@@ -4,6 +4,7 @@
 
 #include <string>
 #include <vector>
+#include <boost/bind.hpp>
 
 AsyncAcceptor::AsyncAcceptor(
   const asio::ip::address_v4 newAddress,
@@ -39,32 +40,64 @@ void AsyncAcceptor::start()
 {
   acceptor.listen();
   processor->connect();
-    acceptor.async_accept(socket, &AsyncAcceptor::onAcception);
+  acceptor.async_accept(socket, [this](const system::error_code& error)
+  {
+    if (error != 0)
+    {
+      std::cerr << "Acceptor stopped. Reason: "
+                << error.message()
+                << ". Error code: " << error.value();
+
+      shouldExit.store(true);
+
+      return;
     }
+
+    onAcception();
+  });
+}
 
 void AsyncAcceptor::stop()
 {
   shouldExit.store(true);
 }
 
-void AsyncAcceptor::onAcception(const system::error_code& error)
+void AsyncAcceptor::onAcception()
 {
-  if (error != 0)
+  socket.async_read_some(asio::buffer(readBuffer.get(), READ_BUFFER_SIZE),
+  [this](const system::error_code& error, std::size_t bytes_transferred)
   {
-    std::cerr << "Acceptor stopped. Reason: "
-              << error.message()
-              << ". Error code: " << error.value();
+    if (error != 0)
+    {
+      std::cerr << "Acceptor stopped. Reason: "
+                << error.message()
+                << ". Error code: " << error.value();
 
-    shouldExit.store(true);
+      shouldExit.store(true);
 
-    return;
-  }
+      return;
+    }
 
-  socket.async_read_some(asio::buffer(readBuffer.get(), READ_BUFFER_SIZE), &AsyncAcceptor::onRead);
+    onRead(bytes_transferred);
+  });
 
   if (shouldExit.load() != true)
   {
-    acceptor.async_accept(socket, &AsyncAcceptor::onAcception);
+    acceptor.async_accept(socket, [this](const system::error_code& error)
+    {
+      if (error != 0)
+      {
+        std::cerr << "Acceptor stopped. Reason: "
+                  << error.message()
+                  << ". Error code: " << error.value();
+
+        shouldExit.store(true);
+
+        return;
+      }
+
+      onAcception();
+    });
   }
   else
   {
@@ -73,19 +106,8 @@ void AsyncAcceptor::onAcception(const system::error_code& error)
   }
 }
 
-void AsyncAcceptor::onRead(const system::error_code& error, std::size_t bytes_transferred)
+void AsyncAcceptor::onRead(std::size_t bytes_transferred)
 {
-  if (error != 0)
-  {
-    std::cerr << "Acceptor stopped. Reason: "
-              << error.message()
-              << ". Error code: " << error.value();
-
-    shouldExit.store(true);
-
-    return;
-  }
-
   processor->receiveData(readBuffer.get(), bytes_transferred);
 
   std::fill_n(readBuffer.get(), READ_BUFFER_SIZE, 0);

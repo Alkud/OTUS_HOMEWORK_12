@@ -35,9 +35,9 @@ public:
 
 private:
 
-  void onAcception(const boost::system::error_code& error);
+  void onAcception();
 
-  void onRead(const boost::system::error_code& error, std::size_t bytes_transferred);
+  void onRead(std::size_t bytes_transferred);
 
   asio::ip::address_v4 address;
   uint16_t portNumber;
