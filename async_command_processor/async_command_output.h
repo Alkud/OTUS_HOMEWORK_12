@@ -17,6 +17,9 @@ class AsyncCommandOutput :  public MessageBroadcaster,
                             public MessageListener,
                             public std::enable_shared_from_this<MessageListener>
 {
+public:
+  AsyncCommandOutput();
+  ~AsyncCommandOutput();
 
 private:
   std::mutex& screenOutputLock;
