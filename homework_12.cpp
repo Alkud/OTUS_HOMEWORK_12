@@ -24,26 +24,26 @@ int homework(int argc, char* argv[], std::istream& inputStream, std::ostream& ou
     outputStream, errorStream, metricsStream
   };
 
-  decltype (auto) outputLock{server.getScreenOutputLock()};
+//  decltype (auto) outputLock{server.getScreenOutputLock()};
 
   server.start();
 
-  {
-    std::lock_guard<std::mutex> lockOutput{outputLock};
-    outputStream << "Server started. Type 'quit' to stop\n>";
-  }
+//  {
+//    std::lock_guard<std::mutex> lockOutput{outputLock};
+//    outputStream << "Server started. Type 'quit' to stop\n>";
+//  }
 
-  std::string userInput{};
-  while(true)
-  {
-    std::getline(inputStream, userInput);
-    if ("quit" == userInput)
-    {
-      break;
-    }
-  }
+//  std::string userInput{};
+//  while(true)
+//  {
+//    std::getline(inputStream, userInput);
+//    if ("quit" == userInput)
+//    {
+//      break;
+//    }
+//  }
 
-  server.stop();
+  //server.stop();
 
   return 0;
 }

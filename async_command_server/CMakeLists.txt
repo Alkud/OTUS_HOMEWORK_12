@@ -4,6 +4,7 @@
 add_library(server
   async_command_server.h async_command_server.cpp
   async_acceptor.h async_acceptor.cpp
+  async_reader.h async_reader.cpp
 )
 
 find_package(Boost COMPONENTS system REQUIRED)

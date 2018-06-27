@@ -111,7 +111,7 @@ public:
      /* Output metrics */
      std::lock_guard<std::mutex> lockOutput{screenOutputLock};
 
-     metricsStream << processorName << " metrics:\n";
+     metricsStream << '\n' << processorName << " metrics:\n";
      metricsStream << "total received - "
                    << globalMetrics["input reader"]->totalReceptionCount << " data chunk(s), "
                    << globalMetrics["input reader"]->totalCharacterCount << " character(s), "

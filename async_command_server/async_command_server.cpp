@@ -42,7 +42,8 @@ AsyncCommandServer::~AsyncCommandServer()
 
 void AsyncCommandServer::start()
 {
-  workingThread = std::thread{&AsyncCommandServer::run, this};
+  //workingThread = std::thread{&AsyncCommandServer::run, this};
+  run();
 }
 
 void AsyncCommandServer::stop()
@@ -61,10 +62,11 @@ void AsyncCommandServer::run() noexcept
   {
     asyncAcceptor->start();
     service.run();
+    asyncAcceptor->stop();
   }
   catch (const std::exception& ex)
   {
     std::lock_guard<std::mutex> lockOutput{outputLock};
-    errorStream << "Server stopped. Reason: " << ex.what();
+    errorStream << "Server stopped. Reason: " << ex.what() << '\n';
   }
 }

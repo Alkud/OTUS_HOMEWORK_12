@@ -18,8 +18,7 @@ AsyncAcceptor::AsyncAcceptor(
   std::ostream& newMetricsStream
 ):
 address{newAddress}, portNumber{newPortNumber}, service{newService},
-endpoint{address, portNumber}, socket{service}, acceptor{service, endpoint},
-readBuffer{std::make_unique<char[]>(READ_BUFFER_SIZE)},
+endpoint{address, portNumber}, acceptor{service, endpoint},
 
 processor{
   std::make_unique<AsyncCommandProcessor<2>> (
@@ -39,37 +38,33 @@ outputLock{processor->getScreenOutputLock()}
 {}
 
 void AsyncAcceptor::start()
-{
-  acceptor.listen();
+{  
   processor->connect();
-  acceptor.async_accept(socket, [this](const system::error_code& error)
-  {
-    if (error != 0)
-    {
-      std::lock_guard<std::mutex> lockOutput{outputLock};
-
-      errorStream << "Acceptor stopped. Reason: "
-                  << error.message()
-                  << ". Error code: " << error.value();
-
-      shouldExit.store(true);
-
-      return;
-    }
-
-    onAcception();
-  });
+  doAccept();
 }
 
 void AsyncAcceptor::stop()
 {
   shouldExit.store(true);
+
+  if (currentReader != nullptr)
+  {
+    currentReader->stop();
+  }
+
+  if (processor != nullptr)
+  {
+    processor->disconnect();
+  }
+
+  acceptor.cancel();
 }
 
-void AsyncAcceptor::onAcception()
+void AsyncAcceptor::doAccept()
 {
-  asio::async_read(socket, asio::buffer(readBuffer.get(), READ_BUFFER_SIZE),
-  [this](const system::error_code& error, std::size_t bytes_transferred)
+  auto socket {std::make_shared<asio::ip::tcp::socket>(service)};
+
+  acceptor.async_accept(*socket.get(), [this, socket](const system::error_code& error)
   {
     if (error != 0)
     {
@@ -77,41 +72,28 @@ void AsyncAcceptor::onAcception()
 
       errorStream << "Acceptor stopped. Reason: "
                   << error.message()
-                  << ". Error code: " << error.value();
+                  << ". Error code: " << error.value() << '\n';
 
       shouldExit.store(true);
 
       return;
     }
 
-    onRead(bytes_transferred);
-    if (bytes_transferred < READ_BUFFER_SIZE)
-    {
-      onAcception();
-    }
+    onAcception(socket);
   });
+}
 
-  socket.close();
+void AsyncAcceptor::onAcception(SharedSocket acceptedSocket)
+{
+  currentReader.reset( new AsyncReader(
+    acceptedSocket, processor, errorStream, outputLock
+  ));
 
   if (shouldExit.load() != true)
-  {
-    acceptor.async_accept(socket, [this](const system::error_code& error)
-    {
-      if (error != 0)
-      {
-        std::lock_guard<std::mutex> lockOutput{outputLock};
-
-        errorStream << "Acceptor stopped. Reason: "
-                    << error.message()
-                    << ". Error code: " << error.value() << '\n';
-
-        shouldExit.store(true);
-
-        return;
-      }
-
-      onAcception();
-    });
+  {    
+    currentReader->start();
+    //acceptor.listen();
+    doAccept();
   }
   else
   {
@@ -119,11 +101,3 @@ void AsyncAcceptor::onAcception()
     acceptor.close();
   }
 }
-
-void AsyncAcceptor::onRead(std::size_t bytes_transferred)
-{
-  processor->receiveData(readBuffer.get(), bytes_transferred);
-
-  std::fill_n(readBuffer.get(), READ_BUFFER_SIZE, 0);
-}
-

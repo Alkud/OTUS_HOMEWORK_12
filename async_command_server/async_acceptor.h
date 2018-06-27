@@ -8,15 +8,17 @@
 #include <array>
 #include <boost/asio.hpp>
 #include <boost/asio/io_service.hpp>
+#include "async_reader.h"
 #include "../async_command_processor/async_command_processor.h"
 
 using namespace boost;
 
-constexpr size_t READ_BUFFER_SIZE = 128;
-
 class AsyncAcceptor
 {
 public:
+
+  using SharedSocket = std::shared_ptr<asio::ip::tcp::socket>;
+
   AsyncAcceptor() = delete;
 
   AsyncAcceptor(const asio::ip::address_v4 newAddress,
@@ -38,20 +40,19 @@ public:
 
 private:
 
-  void onAcception();
-
-  void onRead(std::size_t bytes_transferred);
+  void doAccept();
+  void onAcception(SharedSocket acceptedSocket);
 
   asio::ip::address_v4 address;
   uint16_t portNumber;
   asio::io_service& service;
-  asio::ip::tcp::endpoint endpoint;
-  asio::ip::tcp::socket socket;
+  asio::ip::tcp::endpoint endpoint;  
   asio::ip::tcp::acceptor acceptor;
 
-  std::unique_ptr<char[]> readBuffer;
+  std::shared_ptr<AsyncCommandProcessor<2>> processor;
 
-  std::unique_ptr<AsyncCommandProcessor<2>> processor;
+  SharedAsyncReader currentReader;
+
   std::atomic_bool shouldExit;
 
   std::ostream& errorStream;
