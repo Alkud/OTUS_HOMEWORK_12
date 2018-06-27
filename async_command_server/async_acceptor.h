@@ -33,6 +33,9 @@ public:
 
   void stop();
 
+  std::mutex& getScreenOutputLock()
+  { return outputLock; }
+
 private:
 
   void onAcception();
@@ -50,4 +53,7 @@ private:
 
   std::unique_ptr<AsyncCommandProcessor<2>> processor;
   std::atomic_bool shouldExit;
+
+  std::ostream& errorStream;
+  std::mutex& outputLock;
 };

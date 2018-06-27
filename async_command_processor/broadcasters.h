@@ -1,4 +1,4 @@
-// broadcasters.h in Otus homework#10 project
+// broadcasters.h in Otus homework#12 project
 
 #pragma once
 

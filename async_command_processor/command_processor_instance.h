@@ -1,4 +1,4 @@
-// command_processor.h in Otus homework#11 project
+// command_processor.h in Otus homework#12 project
 
 #pragma once
 
@@ -23,14 +23,15 @@ public:
 
   CommandProcessorInstance
   (
-    const size_t bulkSize = 3,
-    const char bulkOpenDelimiter = '{',
-    const char bulkCloseDelimiter = '}',
-    std::ostream& outputStream = std::cout,
-    std::ostream& errorStream = std::cerr,
-    std::ostream& metricsStream = std::cout
+    const size_t bulkSize,
+    const char bulkOpenDelimiter,
+    const char bulkCloseDelimiter,
+    std::ostream& outputStream,
+    std::ostream& errorStream,
+    std::ostream& metricsStream,
+    std::mutex& newScreenOutputLock
   ) :
-    screenOutputLock{},
+    screenOutputLock{newScreenOutputLock},
     /* creating buffers */
     externalBuffer{std::make_shared<InputReader::InputBufferType>("character buffer", errorStream, screenOutputLock)},
     inputBuffer{std::make_shared<InputProcessor::InputBufferType>("command buffer", errorStream, screenOutputLock)},
@@ -220,6 +221,8 @@ public:
 
       if (shouldExit.load() == true)
       {
+        std::lock_guard<std::mutex> lockOutput{screenOutputLock};
+
         errorOut << "Abnormal termination\n";
         errorOut << "Error code: " << messageCode(errorMessage);
       }
@@ -233,6 +236,8 @@ public:
     }
     catch(const std::exception& ex)
     {
+      std::lock_guard<std::mutex> lockOutput{screenOutputLock};
+
       errorOut << ex.what();
       return globalMetrics;
     }
@@ -260,7 +265,7 @@ public:
 
 
 private:
-  std::mutex screenOutputLock;
+  std::mutex& screenOutputLock;
 
   std::shared_ptr<InputReader::InputBufferType> externalBuffer;
   std::shared_ptr<InputProcessor::InputBufferType> inputBuffer;

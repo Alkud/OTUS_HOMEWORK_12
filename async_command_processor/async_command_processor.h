@@ -1,4 +1,4 @@
-// command_processor.h in Otus homework#11 project
+// command_processor.h in Otus homework#12 project
 
 #pragma once
 
@@ -16,13 +16,16 @@ class AsyncCommandProcessor : public MessageBroadcaster
 {
 public:
 
-  AsyncCommandProcessor(const std::string& newProcessorName,
-                        const size_t newBulkSize = 3,
-                        const char newBulkOpenDelimiter = '{',
-                        const char newBulkCloseDelimiter = '}',
-                        std::ostream& newOutputStream = std::cout,
-                        std::ostream& newErrorStream = std::cerr,
-                        std::ostream& newMetricsStream = std::cout) :
+  AsyncCommandProcessor(
+      const std::string& newProcessorName,
+      const size_t newBulkSize = 3,
+      const char newBulkOpenDelimiter = '{',
+      const char newBulkCloseDelimiter = '}',
+      std::ostream& newOutputStream = std::cout,
+      std::ostream& newErrorStream = std::cerr,
+      std::ostream& newMetricsStream = std::cout
+  ) :
+    screenOutputLock{},
     processorName{newProcessorName},
     bulkSize{newBulkSize},
     bulkOpenDelimiter{newBulkOpenDelimiter},
@@ -59,7 +62,8 @@ public:
         bulkCloseDelimiter,
         outputStream,
         errorStream,
-        metricsStream
+        metricsStream,
+        screenOutputLock
       );
 
       entryPoint = processor->getEntryPoint();
@@ -88,7 +92,9 @@ public:
     }
     catch (const std::exception& ex)
     {
-      std::cerr << "Connection failed. Reason: " << ex.what() << std::endl;
+      std::lock_guard<std::mutex> lockOutput{screenOutputLock};
+
+      errorStream << "Connection failed. Reason: " << ex.what() << std::endl;
       return false;
     }
   }
@@ -103,6 +109,8 @@ public:
      }
 
      /* Output metrics */
+     std::lock_guard<std::mutex> lockOutput{screenOutputLock};
+
      metricsStream << processorName << " metrics:\n";
      metricsStream << "total received - "
                    << globalMetrics["input reader"]->totalReceptionCount << " data chunk(s), "
@@ -174,7 +182,12 @@ public:
     return metrics;
   }
 
+  std::mutex& getScreenOutputLock()
+  { return screenOutputLock;}
+
 private:
+  std::mutex screenOutputLock;
+
   const std::string processorName;
   const size_t bulkSize;
   const char bulkOpenDelimiter;

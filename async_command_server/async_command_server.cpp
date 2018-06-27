@@ -3,36 +3,68 @@
 #include "async_command_server.h"
 
 
-AsyncCommandServer::AsyncCommandServer(const asio::ip::address_v4 newAddress,
-                                       const uint16_t newPortNumber,
-                                       const size_t newBulkSize,
-                                       const char newBulkOpenDelimiter,
-                                       const char newBulkCloseDelimiter,
-                                       std::ostream& newOutputStream,
-                                       std::ostream& newErrorStream,
-                                       std::ostream& newMetricsStream) :
+AsyncCommandServer::AsyncCommandServer(
+    const asio::ip::address_v4 newAddress,
+    const uint16_t newPortNumber,
+    const size_t newBulkSize,
+    const char newBulkOpenDelimiter,
+    const char newBulkCloseDelimiter,
+    std::ostream& newOutputStream,
+    std::ostream& newErrorStream,
+    std::ostream& newMetricsStream
+  ) :
   address{newAddress},
   portNumber{newPortNumber},
   service{},
-  asyncAcceptor{std::make_unique<AsyncAcceptor>(newAddress,
-                                                newPortNumber,
-                                                service,
-                                                newBulkSize,
-                                                newBulkOpenDelimiter,
-                                                newBulkCloseDelimiter,
-                                                newOutputStream,
-                                                newErrorStream,
-                                                newMetricsStream)}
+
+  asyncAcceptor{std::make_unique<AsyncAcceptor>(
+    newAddress,
+    newPortNumber,
+    service,
+    newBulkSize,
+    newBulkOpenDelimiter,
+    newBulkCloseDelimiter,
+    newOutputStream,
+    newErrorStream,
+    newMetricsStream
+)},
+errorStream{newErrorStream},
+outputLock{asyncAcceptor->getScreenOutputLock()}
 {}
 
-void AsyncCommandServer::start() noexcept
+AsyncCommandServer::~AsyncCommandServer()
+{
+  if (workingThread.joinable())
+  {
+    stop();
+  }
+}
+
+void AsyncCommandServer::start()
+{
+  workingThread = std::thread{&AsyncCommandServer::run, this};
+}
+
+void AsyncCommandServer::stop()
+{
+  asyncAcceptor->stop();
+  if (workingThread.joinable())
+  {
+    workingThread.join();
+  }
+  service.stop();
+}
+
+void AsyncCommandServer::run() noexcept
 {
   try
   {
+    asyncAcceptor->start();
     service.run();
   }
-  catch(const std::exception& ex)
+  catch (const std::exception& ex)
   {
-    std::cerr << ex.what() << std::endl;
+    std::lock_guard<std::mutex> lockOutput{outputLock};
+    errorStream << "Server stopped. Reason: " << ex.what();
   }
 }

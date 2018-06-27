@@ -1,4 +1,4 @@
-// publisher.h in Otus homework#11 project
+// publisher.h in Otus homework#12 project
 
 #pragma once
 

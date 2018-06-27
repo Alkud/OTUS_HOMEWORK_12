@@ -1,4 +1,4 @@
-// input_processor.h in Otus homework#7 project
+// input_processor.h in Otus homework#12 project
 
 #pragma once
 

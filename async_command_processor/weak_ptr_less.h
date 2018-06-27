@@ -1,4 +1,8 @@
+// weak_ptr_less.h in Otus homework#12 project
+
 #pragma once
+
+#include <memory>
 
 template <class T>
 struct WeakPtrLess

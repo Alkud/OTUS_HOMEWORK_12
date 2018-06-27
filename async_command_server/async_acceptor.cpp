@@ -33,7 +33,9 @@ processor{
   )
 },
 
-shouldExit{false}
+shouldExit{false},
+errorStream{newErrorStream},
+outputLock{processor->getScreenOutputLock()}
 {}
 
 void AsyncAcceptor::start()
@@ -44,9 +46,11 @@ void AsyncAcceptor::start()
   {
     if (error != 0)
     {
-      std::cerr << "Acceptor stopped. Reason: "
-                << error.message()
-                << ". Error code: " << error.value();
+      std::lock_guard<std::mutex> lockOutput{outputLock};
+
+      errorStream << "Acceptor stopped. Reason: "
+                  << error.message()
+                  << ". Error code: " << error.value();
 
       shouldExit.store(true);
 
@@ -64,14 +68,16 @@ void AsyncAcceptor::stop()
 
 void AsyncAcceptor::onAcception()
 {
-  socket.async_read_some(asio::buffer(readBuffer.get(), READ_BUFFER_SIZE),
+  asio::async_read(socket, asio::buffer(readBuffer.get(), READ_BUFFER_SIZE),
   [this](const system::error_code& error, std::size_t bytes_transferred)
   {
     if (error != 0)
     {
-      std::cerr << "Acceptor stopped. Reason: "
-                << error.message()
-                << ". Error code: " << error.value();
+      std::lock_guard<std::mutex> lockOutput{outputLock};
+
+      errorStream << "Acceptor stopped. Reason: "
+                  << error.message()
+                  << ". Error code: " << error.value();
 
       shouldExit.store(true);
 
@@ -79,7 +85,13 @@ void AsyncAcceptor::onAcception()
     }
 
     onRead(bytes_transferred);
+    if (bytes_transferred < READ_BUFFER_SIZE)
+    {
+      onAcception();
+    }
   });
+
+  socket.close();
 
   if (shouldExit.load() != true)
   {
@@ -87,9 +99,11 @@ void AsyncAcceptor::onAcception()
     {
       if (error != 0)
       {
-        std::cerr << "Acceptor stopped. Reason: "
-                  << error.message()
-                  << ". Error code: " << error.value();
+        std::lock_guard<std::mutex> lockOutput{outputLock};
+
+        errorStream << "Acceptor stopped. Reason: "
+                    << error.message()
+                    << ". Error code: " << error.value() << '\n';
 
         shouldExit.store(true);
 

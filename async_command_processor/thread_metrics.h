@@ -1,3 +1,5 @@
+// thread_metrics.h in Otus homework#12 project
+
 #pragma once
 
 #include <cstddef>

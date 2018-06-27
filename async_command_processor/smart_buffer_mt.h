@@ -1,4 +1,4 @@
-// smart_buffer.h in Otus homework#10 project
+// smart_buffer.h in Otus homework#12 project
 
 #pragma once
 

@@ -1,4 +1,4 @@
-// input_reader.h in Otus homework#7 project
+// input_reader.h in Otus homework#12 project
 
 #pragma once
 

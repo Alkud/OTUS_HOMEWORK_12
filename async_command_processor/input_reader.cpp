@@ -1,4 +1,4 @@
-// input_reader.cpp in Otus homework#7 project
+// input_reader.cpp in Otus homework#12 project
 
 #include "input_reader.h"
 #include <string>

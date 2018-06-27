@@ -1,4 +1,4 @@
-// input_processor.cpp in Otus homework#7 project
+// input_processor.cpp in Otus homework#12 project
 
 #include "input_processor.h"
 

@@ -27,13 +27,23 @@ public:
 
   ~AsyncCommandServer();
 
-  void start() noexcept;
+  void start();
 
   void stop();
 
+  std::mutex& getScreenOutputLock()
+  { return outputLock; }
+
 private:
+
+  void run() noexcept;
   asio::ip::address_v4 address;
   uint16_t portNumber;
   asio::io_service service;
   std::unique_ptr<AsyncAcceptor> asyncAcceptor;
+
+  std::thread workingThread{};
+
+  std::ostream& errorStream;
+  std::mutex& outputLock;
 };

@@ -1,4 +1,4 @@
-// publisher.cpp in Otus homework#11 project
+// publisher.cpp in Otus homework#12 project
 
 #include "publisher_mt.h"
 
