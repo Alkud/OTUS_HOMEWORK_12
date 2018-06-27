@@ -5,14 +5,14 @@
 #include <memory>
 #include <mutex>
 #include <thread>
-#include <array>
+#include <vector>
 #include <boost/asio.hpp>
 #include <boost/asio/io_service.hpp>
 #include "../async_command_processor/async_command_processor.h"
 
 using namespace boost;
 
-constexpr size_t READ_BUFFER_SIZE = 128;
+constexpr size_t READ_BUFFER_SIZE = 2;
 
 class AsyncReader : public std::enable_shared_from_this<AsyncReader>
 {
@@ -42,6 +42,9 @@ private:
   SharedProcessor processor;
 
   std::unique_ptr<char[]> readBuffer;
+
+  std::vector<char> bulkBuffer;
+  bool bulkOpen;
 
   std::ostream& errorStream;
   std::mutex& outputLock;

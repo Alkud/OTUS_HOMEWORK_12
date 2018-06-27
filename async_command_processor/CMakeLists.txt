@@ -4,6 +4,8 @@
 add_library(processor
   async_worker.h
   command_processor_instance.h
+  async_command_input.h async_command_input.cpp
+  async_command_output.h
   broadcasters.h
   listeners.h
   async_command_processor.h  

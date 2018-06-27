@@ -42,7 +42,7 @@ private:
   asio::io_service service;
   std::unique_ptr<AsyncAcceptor> asyncAcceptor;
 
-  std::thread workingThread{};
+  std::vector<std::thread> workingThreads;
 
   std::ostream& errorStream;
   std::mutex& outputLock;

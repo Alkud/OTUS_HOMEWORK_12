@@ -7,6 +7,7 @@ AsyncReader::AsyncReader(AsyncReader::SharedSocket newSocket,
 ):
   socket{newSocket}, processor{newProcessor},
   readBuffer{std::make_unique<char[]>(READ_BUFFER_SIZE)},
+  bulkBuffer{}, bulkOpen{false},
   errorStream{newErrorStream}, outputLock{newOutputLock},
   sharedThis{}
 {  
@@ -63,6 +64,17 @@ void AsyncReader::onReading(std::size_t bytes_transferred)
 {
   if (processor != nullptr)
   {
+    std::stringstream tempBuffer{};
+    for (size_t idx{0}; idx < bytes_transferred; ++idx)
+    {
+      tempBuffer << readBuffer[idx];
+    }
+
+    std::string tempString{};
+    while(std::getline(tempBuffer, tempString))
+    {
+      if (tempString != "{\n")
+    }
     processor->receiveData(readBuffer.get(), bytes_transferred);
   }
 }

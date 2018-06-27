@@ -34,24 +34,38 @@ outputLock{asyncAcceptor->getScreenOutputLock()}
 
 AsyncCommandServer::~AsyncCommandServer()
 {
-  if (workingThread.joinable())
-  {
-    stop();
-  }
+  stop();
 }
 
 void AsyncCommandServer::start()
 {
-  //workingThread = std::thread{&AsyncCommandServer::run, this};
-  run();
+  asyncAcceptor->start();
+
+  for (size_t idx{0}; idx < 4; ++idx)
+  {
+    workingThreads.push_back(std::thread{&AsyncCommandServer::run, this});
+  }
+
+  for (auto& thread : workingThreads)
+  {
+    if (thread.joinable() == true)
+    {
+      thread.join();
+    }
+  }
+
+  asyncAcceptor->stop();
 }
 
 void AsyncCommandServer::stop()
 {
   asyncAcceptor->stop();
-  if (workingThread.joinable())
+  for (auto& thread : workingThreads)
   {
-    workingThread.join();
+    if (thread.joinable() == true)
+    {
+      thread.join();
+    }
   }
   service.stop();
 }
@@ -60,9 +74,7 @@ void AsyncCommandServer::run() noexcept
 {
   try
   {
-    asyncAcceptor->start();
-    service.run();
-    asyncAcceptor->stop();
+    service.run();    
   }
   catch (const std::exception& ex)
   {
