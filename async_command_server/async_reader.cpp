@@ -114,7 +114,7 @@ void AsyncReader::onReading(std::size_t bytes_transferred)
       characterBuffer.clear();
       if (tempString.empty() != true)
       {
-        if (readBuffer[bytes_transferred -1] != '\n')
+        if (readBuffer[bytes_transferred - 1] != '\n')
         {
           characterBuffer << tempString;
         }
@@ -122,6 +122,10 @@ void AsyncReader::onReading(std::size_t bytes_transferred)
         {
           processInputString(tempString);
         }
+      }
+      else if ('\n' == readBuffer[0]) // process empty command
+      {
+        processInputString(tempString);
       }
       break;
     }

@@ -164,7 +164,7 @@ void checkMetrics(const SharedGlobalMetrics& metrics,
   BOOST_CHECK (loggingMetrics == *metrics.at("publisher"));
 }
 
-BOOST_AUTO_TEST_SUITE(homework_12_test)
+BOOST_AUTO_TEST_SUITE(BASIC_TESTS)
 
 BOOST_AUTO_TEST_CASE(simple_test)
 {
@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE(simple_test)
 
     SharedGlobalMetrics metrics;
 
-    auto serverOutput(getServerOutput(testStrings, '{', '}', 4, DebugOutput::debug_on, metrics));
+    auto serverOutput(getServerOutput(testStrings, '{', '}', 4, DebugOutput::debug_off, metrics));
 
     /* make sure server output is correct */
     BOOST_CHECK(serverOutput[0][0] == "bulk: 1, 2, 3, 4");
@@ -199,7 +199,7 @@ BOOST_AUTO_TEST_CASE(two_connections_no_mix_test)
 
     SharedGlobalMetrics metrics;
 
-    auto serverOutput(getServerOutput(testStrings, '{', '}', 2, DebugOutput::debug_on, metrics));
+    auto serverOutput(getServerOutput(testStrings, '{', '}', 2, DebugOutput::debug_off, metrics));
 
     /* make sure server output is correct */
     BOOST_CHECK(   (serverOutput[0][0] == "bulk: 1, 2, 3, 4"
@@ -228,7 +228,7 @@ BOOST_AUTO_TEST_CASE(four_connections_mixing_test)
 
     SharedGlobalMetrics metrics;
 
-    auto serverOutput(getServerOutput(testStrings, '{', '}', 1, DebugOutput::debug_on, metrics));
+    auto serverOutput(getServerOutput(testStrings, '{', '}', 1, DebugOutput::debug_off, metrics));
 
     /* make sure server output is correct */
     std::sort(serverOutput[0].begin(), serverOutput[0].end());
@@ -254,5 +254,54 @@ BOOST_AUTO_TEST_CASE(four_connections_mixing_test)
   }
 }
 
+BOOST_AUTO_TEST_CASE(empty_command_test)
+{
+  try
+  {
+    std::vector<std::string> testStrings {"\n"};
+
+    SharedGlobalMetrics metrics;
+
+    auto serverOutput(getServerOutput(testStrings, '<', '>', 19, DebugOutput::debug_off, metrics));
+
+    /* make sure server output is correct */
+    BOOST_CHECK(serverOutput[0][0] == "bulk: ");
+
+    /* make sure no errors occured */
+    BOOST_CHECK(serverOutput[1].size() == 0);
+
+    checkMetrics(metrics, 1, 1, 1, 1, 1, 2);
+  }
+  catch (const std::exception& ex)
+  {
+    std::cerr << ex.what();
+    BOOST_FAIL("");
+  }
+}
+
+BOOST_AUTO_TEST_CASE(unterminated_command_test)
+{
+  try
+  {
+    std::vector<std::string> testStrings {"aSde\n1\n18\nfGthyuyuyhgf"};
+
+    SharedGlobalMetrics metrics;
+
+    auto serverOutput(getServerOutput(testStrings, '[', ']', 6, DebugOutput::debug_off, metrics));
+
+    /* make sure server output is correct */
+    BOOST_CHECK(serverOutput[0][0] == "bulk: aSde, 1, 18");
+
+    /* make sure no errors occured */
+    BOOST_CHECK(serverOutput[1].size() == 0);
+
+    checkMetrics(metrics, 3, 10, 3, 3, 1, 2);
+  }
+  catch (const std::exception& ex)
+  {
+    std::cerr << ex.what();
+    BOOST_FAIL("");
+  }
+}
 
 BOOST_AUTO_TEST_SUITE_END()
