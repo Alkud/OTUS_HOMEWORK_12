@@ -25,7 +25,7 @@ enum class DebugOutput
 
 /* Helper functions */
 std::array<std::vector<std::string>, 3>
-getProcessorOutput
+getServerOutput
 (
   const std::string& inputString,
   char openDelimiter,

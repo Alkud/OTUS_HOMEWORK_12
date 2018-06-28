@@ -50,6 +50,7 @@ void AsyncCommandServer::start()
   {
     if (thread.joinable() == true)
     {
+
       thread.join();
     }
   }
@@ -74,7 +75,7 @@ void AsyncCommandServer::run() noexcept
 {
   try
   {
-    service.run();    
+    service.run();
   }
   catch (const std::exception& ex)
   {

@@ -34,6 +34,11 @@ public:
   std::mutex& getScreenOutputLock()
   { return outputLock; }
 
+  const SharedGlobalMetrics getMetrics()
+  {
+    return asyncAcceptor->getMetrics();
+  }
+
 private:
 
   void run() noexcept;

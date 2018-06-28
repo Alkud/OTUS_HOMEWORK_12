@@ -20,7 +20,7 @@ int homework(int argc, char* argv[], std::istream& inputStream, std::ostream& ou
 
   AsyncCommandServer server{
     asio::ip::address_v4::any(), portNumber,
-    bulkSize, '}', '}',
+    bulkSize, '{', '}',
     outputStream, errorStream, metricsStream
   };
 

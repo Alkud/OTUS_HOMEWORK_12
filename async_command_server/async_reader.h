@@ -6,6 +6,7 @@
 #include <mutex>
 #include <thread>
 #include <vector>
+#include <condition_variable>
 #include <boost/asio.hpp>
 #include <boost/asio/io_service.hpp>
 #include "../async_command_processor/async_command_processor.h"
@@ -25,6 +26,10 @@ public:
 
   AsyncReader(SharedSocket newSocket,
               SharedProcessor newProcessor,
+              asio::ip::tcp::acceptor& newAcceptor,
+              std::atomic_uint64_t& newReadercounter,
+              std::condition_variable& newTerminationNotifier,
+              std::mutex& newTerminationLock,
               std::ostream& newErrorStream,
               std::mutex& newOutputLock);
 
@@ -47,6 +52,12 @@ private:
 
   std::vector<char> bulkBuffer;
   bool bulkOpen;
+
+  asio::ip::tcp::acceptor& acceptor;
+  std::atomic_uint64_t& readerCounter;
+
+  std::condition_variable& terminationNotifier;
+  std::mutex& terminationLock;
 
   std::ostream& errorStream;
   std::mutex& outputLock;

@@ -1,7 +1,14 @@
 #include "async_reader.h"
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 AsyncReader::AsyncReader(AsyncReader::SharedSocket newSocket,
   AsyncReader::SharedProcessor newProcessor,
+  asio::ip::tcp::acceptor& newAcceptor,
+  std::atomic_uint64_t& newReaderCounter,
+  std::condition_variable& newTerminationNotifier,
+  std::mutex& newTerminationLock,
   std::ostream& newErrorStream,
   std::mutex& newOutputLock
 ):
@@ -9,9 +16,13 @@ AsyncReader::AsyncReader(AsyncReader::SharedSocket newSocket,
   //readBuffer{std::make_unique<char[]>(READ_BUFFER_SIZE)},
   readBuffer{},
   bulkBuffer{}, bulkOpen{false},
+  acceptor{newAcceptor}, readerCounter{newReaderCounter},
+  terminationNotifier{newTerminationNotifier},
+  terminationLock{newTerminationLock},
   errorStream{newErrorStream}, outputLock{newOutputLock},
   sharedThis{}
-{  
+{
+  ++readerCounter;
 }
 
 void AsyncReader::start()
@@ -56,6 +67,24 @@ void AsyncReader::doRead()
     }
     else
     {
+      socket->close();
+      --readerCounter;
+      terminationNotifier.notify_all();
+
+      std::this_thread::sleep_for(200ms);
+
+      std::unique_lock<std::mutex> lockTermination{terminationLock};
+      terminationNotifier.wait_for(lockTermination, 1s, [this]()
+      {
+        return readerCounter.load() == 0;
+      });
+      lockTermination.unlock();
+
+      if (readerCounter.load() == 0)
+      {
+        acceptor.cancel();
+      }
+
       sharedThis.reset();
     }
   });
@@ -78,10 +107,23 @@ void AsyncReader::onReading(std::size_t bytes_transferred)
   {
     std::getline(characterBuffer, tempString);
 
-    if (!characterBuffer)
+    characterBuffer.peek();
+
+    if (characterBuffer.good() != true)
     {
       characterBuffer.clear();
-      characterBuffer << tempString;
+      if (tempString.empty() != true)
+      {
+        if (readBuffer[bytes_transferred -1] != '\n')
+        {
+          characterBuffer << tempString;
+        }
+        else
+        {
+          tempString.append("\n");
+          processor->receiveData(tempString.c_str(), tempString.size());
+        }
+      }
       break;
     }
 
@@ -124,5 +166,4 @@ void AsyncReader::onReading(std::size_t bytes_transferred)
       }
     }
   }
-
 }
