@@ -12,7 +12,7 @@
 
 using namespace boost;
 
-constexpr size_t READ_BUFFER_SIZE = 2;
+constexpr size_t READ_BUFFER_SIZE = 64;
 
 class AsyncReader : public std::enable_shared_from_this<AsyncReader>
 {
@@ -41,7 +41,9 @@ private:
   SharedSocket socket;
   SharedProcessor processor;
 
-  std::unique_ptr<char[]> readBuffer;
+  std::array<char, READ_BUFFER_SIZE> readBuffer;
+
+  std::stringstream characterBuffer{};
 
   std::vector<char> bulkBuffer;
   bool bulkOpen;

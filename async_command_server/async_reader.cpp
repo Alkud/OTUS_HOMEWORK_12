@@ -6,7 +6,8 @@ AsyncReader::AsyncReader(AsyncReader::SharedSocket newSocket,
   std::mutex& newOutputLock
 ):
   socket{newSocket}, processor{newProcessor},
-  readBuffer{std::make_unique<char[]>(READ_BUFFER_SIZE)},
+  //readBuffer{std::make_unique<char[]>(READ_BUFFER_SIZE)},
+  readBuffer{},
   bulkBuffer{}, bulkOpen{false},
   errorStream{newErrorStream}, outputLock{newOutputLock},
   sharedThis{}
@@ -33,7 +34,7 @@ void AsyncReader::stop()
 
 void AsyncReader::doRead()
 {
-  socket->async_read_some(asio::buffer(readBuffer.get(), READ_BUFFER_SIZE),
+  socket->async_read_some(asio::buffer(readBuffer),
   [this](const system::error_code& error, std::size_t bytes_transferred)
   {
     if (error != 0)
@@ -62,19 +63,66 @@ void AsyncReader::doRead()
 
 void AsyncReader::onReading(std::size_t bytes_transferred)
 {
-  if (processor != nullptr)
+  if (processor == nullptr)
   {
-    std::stringstream tempBuffer{};
-    for (size_t idx{0}; idx < bytes_transferred; ++idx)
+    return;
+  }
+
+  for (size_t idx{0}; idx < bytes_transferred; ++idx)
+  {
+    characterBuffer << readBuffer[idx];
+  }
+
+  std::string tempString{};
+  for (;;)
+  {
+    std::getline(characterBuffer, tempString);
+
+    if (!characterBuffer)
     {
-      tempBuffer << readBuffer[idx];
+      characterBuffer.clear();
+      characterBuffer << tempString;
+      break;
     }
 
-    std::string tempString{};
-    while(std::getline(tempBuffer, tempString))
+    if ("{" == tempString)
     {
-      if (tempString != "{\n")
+      bulkBuffer.push_back('{');
+      bulkBuffer.push_back('\n');
+      bulkOpen = true;
     }
-    processor->receiveData(readBuffer.get(), bytes_transferred);
+    else if ("}" == tempString)
+    {
+      if (true == bulkOpen)
+      {
+        bulkBuffer.push_back('}');
+        bulkBuffer.push_back('\n');
+        processor->receiveData(bulkBuffer.data(), bulkBuffer.size());
+        bulkBuffer.clear();
+        bulkOpen = false;
+      }
+      else
+      {
+        tempString.append("\n");
+        processor->receiveData(tempString.c_str(), tempString.size());
+      }
+    }
+    else
+    {
+      if (true == bulkOpen)
+      {
+        tempString.append("\n");
+        for (const auto & ch : tempString)
+        {
+          bulkBuffer.push_back(ch);
+        }
+      }
+      else
+      {
+        tempString.append("\n");
+        processor->receiveData(tempString.c_str(), tempString.size());
+      }
+    }
   }
+
 }
