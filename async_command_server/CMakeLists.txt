@@ -2,7 +2,7 @@
 
 # set library name and content
 add_library(server
-  async_command_server.h async_command_server.cpp
+  async_command_server.h
   async_acceptor.h async_acceptor.cpp
   async_reader.h async_reader.cpp
 )

@@ -100,7 +100,6 @@ void AsyncAcceptor::onAcception(SharedSocket acceptedSocket)
   if (shouldExit.load() != true)
   {    
     currentReader->start();
-    //acceptor.listen();
     doAccept();
   }
   else

@@ -33,10 +33,26 @@ public:
     outputStream{newOutputStream},
     errorStream{newErrorStream},
     metricsStream{newMetricsStream},
-    processor{nullptr}, entryPoint{nullptr},
-    commandBuffer{nullptr}, bulkBuffer{nullptr},
-    metrics{}
-  {}
+
+    processor{
+      std::make_shared<CommandProcessorInstance<loggingThreadCount>>(
+        bulkSize,
+        bulkOpenDelimiter,
+        bulkCloseDelimiter,
+        outputStream,
+        errorStream,
+        metricsStream,
+        screenOutputLock
+      )
+    },
+
+    entryPoint{processor->getEntryPoint()},
+    commandBuffer{processor->getInputBuffer()},
+    bulkBuffer{processor->getOutputBuffer()},
+    metrics{processor->getMetrics()}
+  {
+    this->addMessageListener(entryPoint);
+  }
 
   ~AsyncCommandProcessor()
   {
@@ -51,28 +67,10 @@ public:
     try
     {
       /* ignore repetitive connection attempts*/
-      if (processor != nullptr || workingThread.joinable() == true)
+      if (workingThread.joinable() == true)
       {
         return false;
       }
-
-      processor = std::make_shared<CommandProcessorInstance<loggingThreadCount>>(
-        bulkSize,
-        bulkOpenDelimiter,
-        bulkCloseDelimiter,
-        outputStream,
-        errorStream,
-        metricsStream,
-        screenOutputLock
-      );
-
-      entryPoint = processor->getEntryPoint();
-      commandBuffer = processor->getInputBuffer();
-      bulkBuffer = processor->getOutputBuffer();
-      this->addMessageListener(entryPoint);
-
-      metrics = processor->getMetrics();
-
 
       #ifdef NDEBUG
       #else
@@ -101,7 +99,8 @@ public:
 
   void run(const bool outputMetrics = true)
   {
-     auto globalMetrics {processor->run()};
+     //auto globalMetrics {processor->run()};
+     processor->run();
 
      if (outputMetrics != true)
      {
@@ -113,23 +112,23 @@ public:
 
      metricsStream << '\n' << processorName << " metrics:\n";
      metricsStream << "total received - "
-                   << globalMetrics["input reader"]->totalReceptionCount << " data chunk(s), "
-                   << globalMetrics["input reader"]->totalCharacterCount << " character(s), "
-                   << globalMetrics["input reader"]->totalStringCount << " string(s)" << std::endl
+                   << metrics["input reader"]->totalReceptionCount << " data chunk(s), "
+                   << metrics["input reader"]->totalCharacterCount << " character(s), "
+                   << metrics["input reader"]->totalStringCount << " string(s)" << std::endl
                    << "total processed - "
-                   << globalMetrics["input processor"]->totalStringCount << " string(s), "
-                   << globalMetrics["input processor"]->totalCommandCount << " command(s), "
-                   << globalMetrics["input processor"]->totalBulkCount << " bulk(s)" << std::endl
+                   << metrics["input processor"]->totalStringCount << " string(s), "
+                   << metrics["input processor"]->totalCommandCount << " command(s), "
+                   << metrics["input processor"]->totalBulkCount << " bulk(s)" << std::endl
                    << "total displayed - "
-                   << globalMetrics["publisher"]->totalBulkCount << " bulk(s), "
-                   << globalMetrics["publisher"]->totalCommandCount << " command(s)" << std::endl;
+                   << metrics["publisher"]->totalBulkCount << " bulk(s), "
+                   << metrics["publisher"]->totalCommandCount << " command(s)" << std::endl;
 
      for (size_t threadIndex{}; threadIndex < loggingThreadCount; ++threadIndex)
      {
        auto threadName = std::string{"logger thread#"} + std::to_string(threadIndex);
        metricsStream << "total saved by thread #" << threadIndex << " - "
-                     << globalMetrics[threadName]->totalBulkCount << " bulk(s), "
-                     << globalMetrics[threadName]->totalCommandCount << " command(s)" << std::endl;
+                     << metrics[threadName]->totalBulkCount << " bulk(s), "
+                     << metrics[threadName]->totalCommandCount << " command(s)" << std::endl;
 
      }
      metricsStream << std::endl;

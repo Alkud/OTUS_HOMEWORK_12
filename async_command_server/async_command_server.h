@@ -10,29 +10,87 @@
 
 using namespace boost;
 
+template<size_t workingThreadCount = 2u>
 class AsyncCommandServer
 {
 public:
 
   AsyncCommandServer() = delete;
 
-  AsyncCommandServer(const asio::ip::address_v4 newAddress,
-                     const uint16_t newPortNumber,
-                     const size_t newBulkSize,
-                     const char newBulkOpenDelimiter = '{',
-                     const char newBulkCloseDelimiter = '}',
-                     std::ostream& newOutputStream = std::cout,
-                     std::ostream& newErrorStream = std::cerr,
-                     std::ostream& newMetricsStream = std::cout);
+  AsyncCommandServer(
+    const asio::ip::address_v4 newAddress,
+    const uint16_t newPortNumber,
+    const size_t newBulkSize,
+    const char newBulkOpenDelimiter = '{',
+    const char newBulkCloseDelimiter = '}',
+    std::ostream& newOutputStream = std::cout,
+    std::ostream& newErrorStream = std::cerr,
+    std::ostream& newMetricsStream = std::cout
+  ) :
+  address{newAddress},
+  portNumber{newPortNumber},
+  service{},
 
-  ~AsyncCommandServer();
+  asyncAcceptor{std::make_unique<AsyncAcceptor>(
+    newAddress,
+    newPortNumber,
+    service,
+    newBulkSize,
+    newBulkOpenDelimiter,
+    newBulkCloseDelimiter,
+    newOutputStream,
+    newErrorStream,
+    newMetricsStream
+  )},
+  errorStream{newErrorStream},
+  outputLock{asyncAcceptor->getScreenOutputLock()}
+  {}
 
-  void start();
+  ~AsyncCommandServer()
+  {
+    stop();
+  }
 
-  void stop();
+  void start()
+  {
+    asyncAcceptor->start();
+
+    for (size_t idx{0}; idx < workingThreadCount; ++idx)
+    {
+      workingThreads.push_back(std::thread{&AsyncCommandServer::run, this});
+    }
+
+    for (auto& thread : workingThreads)
+    {
+      if (thread.joinable() == true)
+      {
+
+        thread.join();
+      }
+    }
+
+    asyncAcceptor->stop();
+  }
+
+  void stop()
+  {
+    asyncAcceptor->stop();
+
+    for (auto& thread : workingThreads)
+    {
+      if (thread.joinable() == true)
+      {
+        thread.join();
+      }
+    }
+
+    service.stop();
+  }
 
   std::mutex& getScreenOutputLock()
-  { return outputLock; }
+  {
+    return outputLock;
+  }
 
   const SharedGlobalMetrics getMetrics()
   {
@@ -41,7 +99,20 @@ public:
 
 private:
 
-  void run() noexcept;
+  void run() noexcept
+  {
+    try
+    {
+      service.run();
+    }
+    catch (const std::exception& ex)
+    {
+      std::lock_guard<std::mutex> lockOutput{outputLock};
+      errorStream << "Server stopped. Reason: " << ex.what() << '\n';
+    }
+  }
+
+
   asio::ip::address_v4 address;
   uint16_t portNumber;
   asio::io_service service;
