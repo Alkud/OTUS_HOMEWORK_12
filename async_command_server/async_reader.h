@@ -43,6 +43,8 @@ private:
 
   void onReading(std::size_t bytes_transferred);
 
+  void processInputString(std::string& inputString);
+
   SharedSocket socket;
   SharedProcessor processor;
 

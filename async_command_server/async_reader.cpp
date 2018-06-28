@@ -120,50 +120,54 @@ void AsyncReader::onReading(std::size_t bytes_transferred)
         }
         else
         {
-          tempString.append("\n");
-          processor->receiveData(tempString.c_str(), tempString.size());
+          processInputString(tempString);
         }
       }
       break;
     }
 
-    if ("{" == tempString)
+    processInputString(tempString);
+  }
+}
+
+void AsyncReader::processInputString(std::string& inputString)
+{
+  if ("{" == inputString)
+  {
+    bulkBuffer.push_back('{');
+    bulkBuffer.push_back('\n');
+    bulkOpen = true;
+  }
+  else if ("}" == inputString)
+  {
+    if (true == bulkOpen)
     {
-      bulkBuffer.push_back('{');
+      bulkBuffer.push_back('}');
       bulkBuffer.push_back('\n');
-      bulkOpen = true;
+      processor->receiveData(bulkBuffer.data(), bulkBuffer.size());
+      bulkBuffer.clear();
+      bulkOpen = false;
     }
-    else if ("}" == tempString)
+    else
     {
-      if (true == bulkOpen)
+      inputString.append("\n");
+      processor->receiveData(inputString.c_str(), inputString.size());
+    }
+  }
+  else
+  {
+    if (true == bulkOpen)
+    {
+      inputString.append("\n");
+      for (const auto & ch : inputString)
       {
-        bulkBuffer.push_back('}');
-        bulkBuffer.push_back('\n');
-        processor->receiveData(bulkBuffer.data(), bulkBuffer.size());
-        bulkBuffer.clear();
-        bulkOpen = false;
-      }
-      else
-      {
-        tempString.append("\n");
-        processor->receiveData(tempString.c_str(), tempString.size());
+        bulkBuffer.push_back(ch);
       }
     }
     else
     {
-      if (true == bulkOpen)
-      {
-        tempString.append("\n");
-        for (const auto & ch : tempString)
-        {
-          bulkBuffer.push_back(ch);
-        }
-      }
-      else
-      {
-        tempString.append("\n");
-        processor->receiveData(tempString.c_str(), tempString.size());
-      }
+      inputString.append("\n");
+      processor->receiveData(inputString.c_str(), inputString.size());
     }
   }
 }
