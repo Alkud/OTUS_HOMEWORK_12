@@ -64,7 +64,6 @@ public:
     {
       if (thread.joinable() == true)
       {
-
         thread.join();
       }
     }

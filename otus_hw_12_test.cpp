@@ -3,10 +3,8 @@
 #define BOOST_TEST_MODULE OTUS_HW_12_TEST
 
 #include <boost/test/included/unit_test.hpp>
-#include "homework_12.h"
 #include "./async_command_server/async_command_server.h"
-
-
+#include "homework_12.h"
 
 #include <string>
 #include <iostream>
@@ -16,6 +14,10 @@
 #include <chrono>
 #include <thread>
 #include <vector>
+#include <array>
+#include <algorithm>
+
+using namespace boost;
 
 enum class DebugOutput
 {
@@ -24,10 +26,32 @@ enum class DebugOutput
 };
 
 /* Helper functions */
+/* By Béchu Jérôme. SOURCE: https://gist.github.com/bechu/2423333 */
+void sendMessage(const asio::ip::address_v4 address, const uint16_t portNumber, const std::string& message)
+{
+  asio::io_service service;
+
+  asio::ip::tcp::endpoint endpoint{address, portNumber};
+
+  asio::ip::tcp::socket socket{service};
+
+  socket.connect(endpoint);
+
+  std::array<char, 1280> sendBuffer;
+
+  std::copy(message.begin(), message.end(), sendBuffer.begin());
+
+  system::error_code error;
+
+  socket.write_some(asio::buffer(sendBuffer, message.size()), error);
+
+  socket.close();
+}
+
 std::array<std::vector<std::string>, 3>
 getServerOutput
 (
-  const std::string& inputString,
+  const std::vector<std::string>& inputStrings,
   char openDelimiter,
   char closeDelimiter,
   size_t bulkSize,
@@ -40,17 +64,44 @@ getServerOutput
   std::stringstream errorStream{};
   std::stringstream metricsStream{};
 
+  uint16_t portNumber{12345};
+
+  auto serverAddress{asio::ip::address_v4::any()};
+
+  AsyncCommandServer<2> testServer {
+    serverAddress, portNumber,
+    bulkSize, openDelimiter, closeDelimiter,
+    outputStream, errorStream, metricsStream
+  };
+
+  metrics = testServer.getMetrics();
+
+  std::thread serverThread{[&testServer]()
   {
-    AsyncCommandProcessor<2> testProcessor {
-      "test processor",
-      bulkSize, openDelimiter, closeDelimiter,
-      outputStream, errorStream, metricsStream
-    };
+    testServer.start();
+  }};
 
-    testProcessor.run(true);
+  std::vector<std::thread> sendingThreads{};
 
-    metrics = testProcessor.getMetrics();
+  for (const auto& stringToSend : inputStrings)
+  {
+    sendingThreads.push_back(
+      std::thread {[serverAddress, portNumber, &stringToSend]()
+      {
+        sendMessage(serverAddress, portNumber, stringToSend);
+      }}
+    );
   }
+
+  for (auto& thread : sendingThreads)
+  {
+    if (thread.joinable())
+    {
+      thread.join();
+    }
+  }
+
+  serverThread.join();
 
   std::array<std::vector<std::string>, 3> result {};
 
@@ -77,29 +128,6 @@ getServerOutput
   return result;
 }
 
-
-void*
-mockConnect(
-    size_t bulkSize,
-    std::stringstream& outputStream,
-    std::stringstream& errorStream,
-    std::stringstream& metricsStream
-)
-{
-  auto newCommandProcessor {new AsyncCommandProcessor<2>(
-      "mock processor", bulkSize, '{', '}', outputStream, errorStream
-    )
-  };
-
-  if (newCommandProcessor->connect() == true)
-  {
-    return reinterpret_cast<void*> (newCommandProcessor);
-  }
-  else
-  {
-    return nullptr;
-  }
-}
 
 void checkMetrics(const SharedGlobalMetrics& metrics,
   const size_t receptionCountExpected,
@@ -136,9 +164,10 @@ void checkMetrics(const SharedGlobalMetrics& metrics,
 
 BOOST_AUTO_TEST_SUITE(homework_12_test)
 
-BOOST_AUTO_TEST_CASE( test_1 )
+BOOST_AUTO_TEST_CASE(simple_test)
 {
-
+  std::string testString {"1\n2\n3\n4\n"};
+  auto serverOutput(getServerOutput(testString, '{', '}', ))
 }
 
 BOOST_AUTO_TEST_SUITE_END()
