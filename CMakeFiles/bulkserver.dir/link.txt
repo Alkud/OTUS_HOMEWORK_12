@@ -1,0 +1,1 @@
+/usr/bin/g++    -rdynamic CMakeFiles/bulkserver.dir/bulkserver.cpp.o CMakeFiles/bulkserver.dir/homework_12.cpp.o  -o bulkserver -lpthread async_command_server/libserver.a async_command_processor/libprocessor.a -lboost_system -lpthread 

@@ -1,0 +1,1 @@
+/usr/bin/g++    -rdynamic CMakeFiles/otus_hw_12_test.dir/otus_hw_12_test.cpp.o  -o otus_hw_12_test -lpthread async_command_server/libserver.a async_command_processor/libprocessor.a -lboost_system -lboost_unit_test_framework -lpthread 

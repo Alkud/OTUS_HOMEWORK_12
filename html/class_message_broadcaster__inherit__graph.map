@@ -1,0 +1,9 @@
+<map id="MessageBroadcaster" name="MessageBroadcaster">
+<area shape="rect" id="node2" href="$class_async_command_processor.html" title="AsyncCommandProcessor\l\&lt; loggingThreadCount \&gt;" alt="" coords="207,5,385,46"/>
+<area shape="rect" id="node3" href="$class_command_processor_instance.html" title="CommandProcessorInstance\l\&lt; loggingThreadCount \&gt;" alt="" coords="201,70,391,111"/>
+<area shape="rect" id="node4" href="$class_input_processor.html" title="InputProcessor" alt="" coords="241,136,351,163"/>
+<area shape="rect" id="node5" href="$class_input_reader.html" title="InputReader" alt="" coords="249,187,343,213"/>
+<area shape="rect" id="node6" href="$class_logger.html" title="Logger\&lt; threadCount \&gt;" alt="" coords="218,237,374,264"/>
+<area shape="rect" id="node7" href="$class_publisher.html" title="Publisher" alt="" coords="258,288,334,315"/>
+<area shape="rect" id="node8" href="$class_smart_buffer.html" title="SmartBuffer\&lt; T \&gt;" alt="" coords="234,339,358,365"/>
+</map>

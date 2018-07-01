@@ -1,0 +1,2 @@
+/usr/bin/ar qc libserver.a  CMakeFiles/server.dir/async_acceptor.cpp.o CMakeFiles/server.dir/async_reader.cpp.o
+/usr/bin/ranlib libserver.a
