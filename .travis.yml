@@ -5,6 +5,7 @@ notifications:
   email: false
 before_script:
 - sudo apt-get install libboost-test-dev -y
+- sudo apt-get install libboost-system-dev -y
 - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
 - sudo apt-get update
 - sudo apt-get install g++-6 -y
