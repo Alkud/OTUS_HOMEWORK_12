@@ -5,14 +5,15 @@
 #include <memory>
 #include <mutex>
 #include <thread>
-#include <array>
+#include <vector>
+#include <condition_variable>
 #include <boost/asio.hpp>
 #include <boost/asio/io_service.hpp>
 #include "../async_command_processor/async_command_processor.h"
 
 using namespace boost;
 
-constexpr size_t READ_BUFFER_SIZE = 128;
+constexpr size_t READ_BUFFER_SIZE = 64;
 
 class AsyncReader : public std::enable_shared_from_this<AsyncReader>
 {
@@ -25,6 +26,10 @@ public:
 
   AsyncReader(SharedSocket newSocket,
               SharedProcessor newProcessor,
+              asio::ip::tcp::acceptor& newAcceptor,
+              std::atomic_uint64_t& newReadercounter,
+              std::condition_variable& newTerminationNotifier,
+              std::mutex& newTerminationLock,
               std::ostream& newErrorStream,
               std::mutex& newOutputLock);
 
@@ -38,10 +43,23 @@ private:
 
   void onReading(std::size_t bytes_transferred);
 
+  void processInputString(std::string& inputString);
+
   SharedSocket socket;
   SharedProcessor processor;
 
-  std::unique_ptr<char[]> readBuffer;
+  std::array<char, READ_BUFFER_SIZE> readBuffer;
+
+  std::stringstream characterBuffer{};
+
+  std::vector<char> bulkBuffer;
+  bool bulkOpen;
+
+  asio::ip::tcp::acceptor& acceptor;
+  std::atomic_uint64_t& readerCounter;
+
+  std::condition_variable& terminationNotifier;
+  std::mutex& terminationLock;
 
   std::ostream& errorStream;
   std::mutex& outputLock;

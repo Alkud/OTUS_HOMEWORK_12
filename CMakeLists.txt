@@ -37,7 +37,7 @@ set(homework_12
 add_executable(bulkserver bulkserver.cpp ${homework_12})
 
 #Set test target_link_libraries
-add_executable(otus_hw_12_test otus_hw_12_test.cpp ${homework_12})
+add_executable(otus_hw_12_test otus_hw_12_test.cpp)
 
 #Enable tests
 enable_testing()
@@ -60,10 +60,7 @@ set_target_properties(otus_hw_12_test PROPERTIES
 #Link
 target_link_libraries(bulkserver pthread server processor)
 
-target_link_libraries(otus_hw_12_test pthread processor server)
-
-target_link_libraries(otus_hw_12_test
-                      ${Boost_LIBRARIES})
+target_link_libraries(otus_hw_12_test pthread server processor ${Boost_LIBRARIES})
 
 install(TARGETS bulkserver RUNTIME DESTINATION bin)
 

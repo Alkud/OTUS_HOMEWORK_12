@@ -6,6 +6,7 @@
 #include <mutex>
 #include <thread>
 #include <array>
+#include <condition_variable>
 #include <boost/asio.hpp>
 #include <boost/asio/io_service.hpp>
 #include "async_reader.h"
@@ -38,6 +39,11 @@ public:
   std::mutex& getScreenOutputLock()
   { return outputLock; }
 
+  const SharedGlobalMetrics getMetrics()
+  {
+    return processor->getMetrics();
+  }
+
 private:
 
   void doAccept();
@@ -53,8 +59,14 @@ private:
 
   SharedAsyncReader currentReader;
 
+  std::atomic_uint64_t activeReaderCount;
+  std::condition_variable terminationNotifier;
+  std::mutex terminationLock;
+
   std::atomic_bool shouldExit;
 
   std::ostream& errorStream;
   std::mutex& outputLock;
+
+  SharedGlobalMetrics metrics;
 };

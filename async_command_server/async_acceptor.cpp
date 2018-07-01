@@ -32,9 +32,11 @@ processor{
   )
 },
 
+currentReader{}, activeReaderCount{},
 shouldExit{false},
 errorStream{newErrorStream},
-outputLock{processor->getScreenOutputLock()}
+outputLock{processor->getScreenOutputLock()},
+metrics {}
 {}
 
 void AsyncAcceptor::start()
@@ -68,11 +70,14 @@ void AsyncAcceptor::doAccept()
   {
     if (error != 0)
     {
-      std::lock_guard<std::mutex> lockOutput{outputLock};
+      if (error.value() != 125)
+      {
+        std::lock_guard<std::mutex> lockOutput{outputLock};
 
-      errorStream << "Acceptor stopped. Reason: "
-                  << error.message()
-                  << ". Error code: " << error.value() << '\n';
+        errorStream << "Acceptor stopped. Reason: "
+                    << error.message()
+                    << ". Error code: " << error.value() << '\n';
+      }
 
       shouldExit.store(true);
 
@@ -86,13 +91,15 @@ void AsyncAcceptor::doAccept()
 void AsyncAcceptor::onAcception(SharedSocket acceptedSocket)
 {
   currentReader.reset( new AsyncReader(
-    acceptedSocket, processor, errorStream, outputLock
+    acceptedSocket, processor,
+    acceptor, activeReaderCount,
+    terminationNotifier, terminationLock,
+    errorStream, outputLock
   ));
 
   if (shouldExit.load() != true)
   {    
     currentReader->start();
-    //acceptor.listen();
     doAccept();
   }
   else

@@ -3,10 +3,7 @@
 #define BOOST_TEST_MODULE OTUS_HW_12_TEST
 
 #include <boost/test/included/unit_test.hpp>
-#include "homework_12.h"
 #include "./async_command_server/async_command_server.h"
-
-
 
 #include <string>
 #include <iostream>
@@ -16,6 +13,10 @@
 #include <chrono>
 #include <thread>
 #include <vector>
+#include <array>
+#include <algorithm>
+
+using namespace boost;
 
 enum class DebugOutput
 {
@@ -23,34 +24,93 @@ enum class DebugOutput
   debug_off
 };
 
+constexpr size_t MAX_TEST_MESSAGE_SIZE = 1280;
+
 /* Helper functions */
+/* By Béchu Jérôme. SOURCE: https://gist.github.com/bechu/2423333 */
+void sendMessage(const asio::ip::address_v4 address, const uint16_t portNumber, std::string& message)
+{
+  asio::io_service service;
+
+  asio::ip::tcp::endpoint endpoint{address, portNumber};
+
+  asio::ip::tcp::socket socket{service};
+
+  socket.connect(endpoint);
+
+  std::array<char, MAX_TEST_MESSAGE_SIZE> sendBuffer;
+
+  if (message.length() > MAX_TEST_MESSAGE_SIZE)
+  {
+    message.resize(MAX_TEST_MESSAGE_SIZE);
+  }
+
+  std::copy(message.begin(), message.end(), sendBuffer.begin());
+
+  system::error_code error;
+
+  socket.write_some(asio::buffer(sendBuffer, message.size()), error);
+
+  socket.close();
+}
+
 std::array<std::vector<std::string>, 3>
-getProcessorOutput
+getServerOutput
 (
-  const std::string& inputString,
+  std::vector<std::string>& inputStrings,
   char openDelimiter,
   char closeDelimiter,
   size_t bulkSize,
   DebugOutput debugOutput,
-  SharedGlobalMetrics metrics
+  SharedGlobalMetrics& metrics
 )
 {
-  std::stringstream inputStream{inputString};
   std::stringstream outputStream{};
   std::stringstream errorStream{};
   std::stringstream metricsStream{};
 
-  {
-    AsyncCommandProcessor<2> testProcessor {
-      "test processor",
+  uint16_t portNumber{12345};
+
+  auto serverAddress{asio::ip::address_v4::any()};
+
+  { /* server working scope */
+
+    AsyncCommandServer<4> testServer {
+      serverAddress, portNumber,
       bulkSize, openDelimiter, closeDelimiter,
       outputStream, errorStream, metricsStream
     };
 
-    testProcessor.run(true);
+    metrics = testServer.getMetrics();
 
-    metrics = testProcessor.getMetrics();
-  }
+    std::thread serverThread{[&testServer]()
+    {
+      testServer.start();
+    }};
+
+    std::vector<std::thread> sendingThreads{};
+
+    for (auto& stringToSend : inputStrings)
+    {
+      sendingThreads.push_back(
+        std::thread {[serverAddress, portNumber, &stringToSend]()
+        {
+          sendMessage(serverAddress, portNumber, stringToSend);
+        }}
+      );
+    }
+
+    for (auto& thread : sendingThreads)
+    {
+      if (thread.joinable())
+      {
+        thread.join();
+      }
+    }
+
+    serverThread.join();
+
+  } /* end of server working scope */
 
   std::array<std::vector<std::string>, 3> result {};
 
@@ -77,29 +137,6 @@ getProcessorOutput
   return result;
 }
 
-
-void*
-mockConnect(
-    size_t bulkSize,
-    std::stringstream& outputStream,
-    std::stringstream& errorStream,
-    std::stringstream& metricsStream
-)
-{
-  auto newCommandProcessor {new AsyncCommandProcessor<2>(
-      "mock processor", bulkSize, '{', '}', outputStream, errorStream
-    )
-  };
-
-  if (newCommandProcessor->connect() == true)
-  {
-    return reinterpret_cast<void*> (newCommandProcessor);
-  }
-  else
-  {
-    return nullptr;
-  }
-}
 
 void checkMetrics(const SharedGlobalMetrics& metrics,
   const size_t receptionCountExpected,
@@ -134,11 +171,144 @@ void checkMetrics(const SharedGlobalMetrics& metrics,
   BOOST_CHECK (loggingMetrics == *metrics.at("publisher"));
 }
 
-BOOST_AUTO_TEST_SUITE(homework_12_test)
+BOOST_AUTO_TEST_SUITE(BASIC_TESTS)
 
-BOOST_AUTO_TEST_CASE( test_1 )
+BOOST_AUTO_TEST_CASE(simple_test)
 {
+  try
+  {
+    std::vector<std::string> testStrings {"1\n2\n3\n4\n"};
 
+    SharedGlobalMetrics metrics;
+
+    auto serverOutput(getServerOutput(testStrings, '{', '}', 4, DebugOutput::debug_off, metrics));
+
+    /* make sure server output is correct */
+    BOOST_CHECK(serverOutput[0][0] == "bulk: 1, 2, 3, 4");
+
+    /* make sure no errors occured */
+    BOOST_CHECK(serverOutput[1].size() == 0);
+
+    checkMetrics(metrics, 4, 8, 4, 4, 1, 2);
+  }
+  catch (const std::exception& ex)
+  {
+    std::cerr << ex.what();
+    BOOST_FAIL("");
+  }
+}
+
+BOOST_AUTO_TEST_CASE(two_connections_no_mix_test)
+{
+  try
+  {
+    std::vector<std::string> testStrings {{"{\n1\n2\n3\n4\n}\n"}, {"{\n11\n12\n13\n14\n}\n"}};
+
+    SharedGlobalMetrics metrics;
+
+    auto serverOutput(getServerOutput(testStrings, '{', '}', 2, DebugOutput::debug_off, metrics));
+
+    /* make sure server output is correct */
+    BOOST_CHECK(   (serverOutput[0][0] == "bulk: 1, 2, 3, 4"
+                    && serverOutput[0][1] == "bulk: 11, 12, 13, 14")
+                || (serverOutput[0][0] == "bulk: 11, 12, 13, 14"
+                    && serverOutput[0][1] == "bulk: 1, 2, 3, 4")     );
+
+    /* make sure no errors occured */
+    BOOST_CHECK(serverOutput[1].size() == 0);
+
+    checkMetrics(metrics, 2, 28, 12, 8, 2, 2);
+  }
+  catch (const std::exception& ex)
+  {
+    std::cerr << ex.what();
+    BOOST_FAIL("");
+  }
+}
+
+BOOST_AUTO_TEST_CASE(four_connections_mixing_test)
+{
+  try
+  {
+    std::vector<std::string> testStrings {{"11\n12\n13\n14\n"}, {"21\n22\n23\n24\n"},
+                                          {"31\n32\n33\n34\n"}, {"41\n42\n43\n44\n"}};
+
+    SharedGlobalMetrics metrics;
+
+    auto serverOutput(getServerOutput(testStrings, '{', '}', 1, DebugOutput::debug_off, metrics));
+
+    /* make sure server output is correct */
+    std::sort(serverOutput[0].begin(), serverOutput[0].end());
+
+    size_t idx {};
+    for (size_t decade{1}; decade < 5; ++decade)
+    {
+      for (size_t unit {1}; unit < 5; ++unit)
+      {
+        BOOST_CHECK(serverOutput[0][idx++] == std::string{"bulk: "} + std::to_string(unit + decade * 10));
+      }
+    }
+
+    /* make sure no errors occured */
+    BOOST_CHECK(serverOutput[1].size() == 0);
+
+    checkMetrics(metrics, 16, 48, 16, 16, 16, 2);
+  }
+  catch (const std::exception& ex)
+  {
+    std::cerr << ex.what();
+    BOOST_FAIL("");
+  }
+}
+
+BOOST_AUTO_TEST_CASE(empty_command_test)
+{
+  try
+  {
+    std::vector<std::string> testStrings {"\n"};
+
+    SharedGlobalMetrics metrics;
+
+    auto serverOutput(getServerOutput(testStrings, '<', '>', 19, DebugOutput::debug_off, metrics));
+
+    /* make sure server output is correct */
+    BOOST_CHECK(serverOutput[0][0] == "bulk: ");
+
+    /* make sure no errors occured */
+    BOOST_CHECK(serverOutput[1].size() == 0);
+
+    checkMetrics(metrics, 1, 1, 1, 1, 1, 2);
+  }
+  catch (const std::exception& ex)
+  {
+    std::cerr << ex.what();
+    BOOST_FAIL("");
+  }
+}
+
+BOOST_AUTO_TEST_CASE(unterminated_command_test)
+{
+  try
+  {
+    std::vector<std::string> testStrings {"aSde\n1\n18\nfGthyuyuyhgf"};
+
+    SharedGlobalMetrics metrics;
+
+    auto serverOutput(getServerOutput(testStrings, '[', ']', 6, DebugOutput::debug_off, metrics));
+
+    /* make sure server output is correct */
+    BOOST_CHECK(serverOutput[0][0] == "bulk: aSde, 1, 18");
+
+    /* make sure no errors occured */
+    BOOST_CHECK(serverOutput[1].size() == 0);
+
+    checkMetrics(metrics, 3, 10, 3, 3, 1, 2);
+  }
+  catch (const std::exception& ex)
+  {
+    std::cerr << ex.what();
+    BOOST_FAIL("");
+  }
 }
 
 BOOST_AUTO_TEST_SUITE_END()
