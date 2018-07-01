@@ -49,6 +49,7 @@ public:
     entryPoint{processor->getEntryPoint()},
     commandBuffer{processor->getInputBuffer()},
     bulkBuffer{processor->getOutputBuffer()},
+    accessLock{}, isDisconnected{false},
     metrics{processor->getMetrics()}
   {
     this->addMessageListener(entryPoint);
@@ -134,9 +135,16 @@ public:
      metricsStream << std::endl;
   }
 
-  void receiveData(const char *data, std::size_t size) const
+  void receiveData(const char *data, std::size_t size)
   {
     if (nullptr == data || size == 0)
+    {
+      return;
+    }
+
+    std::lock_guard<std::mutex> lockAccess{accessLock};
+
+    if (isDisconnected)
     {
       return;
     }
@@ -159,6 +167,15 @@ public:
 
   void disconnect()
   {
+    std::lock_guard<std::mutex> lockAccess{accessLock};
+
+    if (isDisconnected)
+    {
+      return;
+    }
+
+    isDisconnected = true;
+
     sendMessage(Message::NoMoreData);
 
     #ifdef NDEBUG
@@ -201,7 +218,8 @@ private:
   std::shared_ptr<InputProcessor::InputBufferType> commandBuffer;
   std::shared_ptr<InputProcessor::OutputBufferType> bulkBuffer;
 
-  std::mutex dataEntryLock;
+  std::mutex accessLock;
+  bool isDisconnected;
 
   std::thread workingThread;
 

@@ -24,9 +24,11 @@ enum class DebugOutput
   debug_off
 };
 
+constexpr size_t MAX_TEST_MESSAGE_SIZE = 1280;
+
 /* Helper functions */
 /* By Béchu Jérôme. SOURCE: https://gist.github.com/bechu/2423333 */
-void sendMessage(const asio::ip::address_v4 address, const uint16_t portNumber, const std::string& message)
+void sendMessage(const asio::ip::address_v4 address, const uint16_t portNumber, std::string& message)
 {
   asio::io_service service;
 
@@ -36,7 +38,12 @@ void sendMessage(const asio::ip::address_v4 address, const uint16_t portNumber, 
 
   socket.connect(endpoint);
 
-  std::array<char, 1280> sendBuffer;
+  std::array<char, MAX_TEST_MESSAGE_SIZE> sendBuffer;
+
+  if (message.length() > MAX_TEST_MESSAGE_SIZE)
+  {
+    message.resize(MAX_TEST_MESSAGE_SIZE);
+  }
 
   std::copy(message.begin(), message.end(), sendBuffer.begin());
 
@@ -50,7 +57,7 @@ void sendMessage(const asio::ip::address_v4 address, const uint16_t portNumber, 
 std::array<std::vector<std::string>, 3>
 getServerOutput
 (
-  const std::vector<std::string>& inputStrings,
+  std::vector<std::string>& inputStrings,
   char openDelimiter,
   char closeDelimiter,
   size_t bulkSize,
@@ -83,7 +90,7 @@ getServerOutput
 
     std::vector<std::thread> sendingThreads{};
 
-    for (const auto& stringToSend : inputStrings)
+    for (auto& stringToSend : inputStrings)
     {
       sendingThreads.push_back(
         std::thread {[serverAddress, portNumber, &stringToSend]()
