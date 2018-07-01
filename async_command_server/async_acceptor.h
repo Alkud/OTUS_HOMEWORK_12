@@ -59,7 +59,7 @@ private:
 
   SharedAsyncReader currentReader;
 
-  std::atomic_uint64_t activeReaderCount;
+  std::atomic<size_t> activeReaderCount;
   std::condition_variable terminationNotifier;
   std::mutex terminationLock;
 

@@ -6,14 +6,13 @@ using namespace std::chrono_literals;
 AsyncReader::AsyncReader(AsyncReader::SharedSocket newSocket,
   AsyncReader::SharedProcessor newProcessor,
   asio::ip::tcp::acceptor& newAcceptor,
-  std::atomic_uint64_t& newReaderCounter,
+  std::atomic<size_t>& newReaderCounter,
   std::condition_variable& newTerminationNotifier,
   std::mutex& newTerminationLock,
   std::ostream& newErrorStream,
   std::mutex& newOutputLock
 ):
   socket{newSocket}, processor{newProcessor},
-  //readBuffer{std::make_unique<char[]>(READ_BUFFER_SIZE)},
   readBuffer{},
   bulkBuffer{}, bulkOpen{false},
   acceptor{newAcceptor}, readerCounter{newReaderCounter},
