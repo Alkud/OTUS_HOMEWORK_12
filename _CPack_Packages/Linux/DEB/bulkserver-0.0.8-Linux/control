@@ -1,9 +1,9 @@
 Package: bulkserver
-Version: 0.0.7
+Version: 0.0.8
 Section: devel
 Priority: optional
 Architecture: amd64
-Depends: , libboost-system1.54-dev
+Depends: libboost-system1.54-dev
 Installed-Size: 1699
 Maintainer: alexandr_kudinov@mail.ru
 Description: bulkserver built using CMake
