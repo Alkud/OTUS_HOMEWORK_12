@@ -58,7 +58,7 @@ set_target_properties(otus_hw_12_test PROPERTIES
 )
 
 #Link
-target_link_libraries(bulkserver pthread server processor)
+target_link_libraries(bulkserver pthread server processor ${Boost_LIBRARIES})
 
 target_link_libraries(otus_hw_12_test pthread server processor ${Boost_LIBRARIES})
 

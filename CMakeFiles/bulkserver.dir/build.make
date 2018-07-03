@@ -119,6 +119,7 @@ bulkserver: CMakeFiles/bulkserver.dir/build.make
 bulkserver: async_command_server/libserver.a
 bulkserver: async_command_processor/libprocessor.a
 bulkserver: /usr/lib/x86_64-linux-gnu/libboost_system.so
+bulkserver: /usr/lib/x86_64-linux-gnu/libboost_unit_test_framework.so
 bulkserver: CMakeFiles/bulkserver.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/travis/build/Alkud/OTUS_HOMEWORK_12/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable bulkserver"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/bulkserver.dir/link.txt --verbose=$(VERBOSE)

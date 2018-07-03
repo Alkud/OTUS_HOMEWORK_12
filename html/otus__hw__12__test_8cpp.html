@@ -126,9 +126,9 @@ Enumerations</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:abe937a39c0f8832b8829ad2d9d04ebfe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="otus__hw__12__test_8cpp.html#abe937a39c0f8832b8829ad2d9d04ebfe">sendMessage</a> (const asio::ip::address_v4 address, const uint16_t portNumber, std::string &amp;message)</td></tr>
 <tr class="separator:abe937a39c0f8832b8829ad2d9d04ebfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8ee782bb22bd0be730b3b5860d2b540"><td class="memItemLeft" align="right" valign="top">std::array&lt; std::vector<br class="typebreak"/>
-&lt; std::string &gt;, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="otus__hw__12__test_8cpp.html#aa8ee782bb22bd0be730b3b5860d2b540">getServerOutput</a> (std::vector&lt; std::string &gt; &amp;inputStrings, char openDelimiter, char closeDelimiter, size_t <a class="el" href="input__processor_8cpp.html#a642fd46fcccb815659284cd725d4a845">bulkSize</a>, <a class="el" href="otus__hw__12__test_8cpp.html#ad23721f303b059caeb1d8a751a39562b">DebugOutput</a> debugOutput, <a class="el" href="thread__metrics_8h.html#ac1589e063b43543469fafabc05566bcc">SharedGlobalMetrics</a> &amp;metrics)</td></tr>
-<tr class="separator:aa8ee782bb22bd0be730b3b5860d2b540"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd4e7a08afefbb068e76b7787fab591e"><td class="memItemLeft" align="right" valign="top">std::array&lt; std::vector<br class="typebreak"/>
+&lt; std::string &gt;, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="otus__hw__12__test_8cpp.html#abd4e7a08afefbb068e76b7787fab591e">getServerOutput</a> (std::vector&lt; std::string &gt; &amp;inputStrings, const char openDelimiter, const char closeDelimiter, const size_t <a class="el" href="input__processor_8cpp.html#a642fd46fcccb815659284cd725d4a845">bulkSize</a>, const <a class="el" href="otus__hw__12__test_8cpp.html#ad23721f303b059caeb1d8a751a39562b">DebugOutput</a> debugOutput, <a class="el" href="thread__metrics_8h.html#ac1589e063b43543469fafabc05566bcc">SharedGlobalMetrics</a> &amp;metrics)</td></tr>
+<tr class="separator:abd4e7a08afefbb068e76b7787fab591e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afdc43529996621945068d679b11acebd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="otus__hw__12__test_8cpp.html#afdc43529996621945068d679b11acebd">checkMetrics</a> (const <a class="el" href="thread__metrics_8h.html#ac1589e063b43543469fafabc05566bcc">SharedGlobalMetrics</a> &amp;metrics, const size_t receptionCountExpected, const size_t characterCountExpected, const size_t stringCountExpected, const size_t commandCountExpected, const size_t bulkCountExpected, const size_t loggingThreadCount)</td></tr>
 <tr class="separator:afdc43529996621945068d679b11acebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b8c8cc1d79c46c0621f435ec115640d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="otus__hw__12__test_8cpp.html#a6b8c8cc1d79c46c0621f435ec115640d">BOOST_AUTO_TEST_CASE</a> (simple_test)</td></tr>
@@ -324,7 +324,7 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aa8ee782bb22bd0be730b3b5860d2b540"></a>
+<a class="anchor" id="abd4e7a08afefbb068e76b7787fab591e"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -337,25 +337,25 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char&#160;</td>
+          <td class="paramtype">const char&#160;</td>
           <td class="paramname"><em>openDelimiter</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char&#160;</td>
+          <td class="paramtype">const char&#160;</td>
           <td class="paramname"><em>closeDelimiter</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
+          <td class="paramtype">const size_t&#160;</td>
           <td class="paramname"><em>bulkSize</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="otus__hw__12__test_8cpp.html#ad23721f303b059caeb1d8a751a39562b">DebugOutput</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="otus__hw__12__test_8cpp.html#ad23721f303b059caeb1d8a751a39562b">DebugOutput</a>&#160;</td>
           <td class="paramname"><em>debugOutput</em>, </td>
         </tr>
         <tr>

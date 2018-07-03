@@ -275,6 +275,10 @@ array
 -
 utility
 -
+csignal
+-
+atomic
+-
 homework_12.h
 /home/travis/build/Alkud/OTUS_HOMEWORK_12/homework_12.h
 ./async_command_server/async_command_server.h

@@ -82,13 +82,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">homework_12.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;array&gt;</code><br/>
 <code>#include &lt;utility&gt;</code><br/>
+<code>#include &lt;csignal&gt;</code><br/>
+<code>#include &lt;atomic&gt;</code><br/>
 <code>#include &quot;<a class="el" href="homework__12_8h_source.html">homework_12.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="async__command__server_8h_source.html">./async_command_server/async_command_server.h</a>&quot;</code><br/>
 </div><div class="textblock"><div class="dynheader">
@@ -96,16 +99,27 @@ Include dependency graph for homework_12.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="homework__12_8cpp__incl.png" border="0" usemap="#homework__12_8cpp" alt=""/></div>
 <map name="homework__12_8cpp" id="homework__12_8cpp">
-<area shape="rect" id="node4" href="homework__12_8h.html" title="homework_12.h" alt="" coords="805,171,920,197"/><area shape="rect" id="node6" href="async__command__server_8h.html" title="./async_command_server\l/async_command_server.h" alt="" coords="2589,81,2768,122"/><area shape="rect" id="node11" href="async__acceptor_8h.html" title="async_acceptor.h" alt="" coords="2072,171,2197,197"/><area shape="rect" id="node14" href="async__reader_8h.html" title="async_reader.h" alt="" coords="869,245,979,272"/><area shape="rect" id="node16" href="async__command__processor_8h.html" title="../async_command_processor\l/async_command_processor.h" alt="" coords="824,321,1023,362"/><area shape="rect" id="node20" href="command__processor__instance_8h.html" title="command_processor_instance.h" alt="" coords="819,411,1028,437"/><area shape="rect" id="node21" href="input__reader_8h.html" title="input_reader.h" alt="" coords="936,485,1040,512"/><area shape="rect" id="node29" href="smart__buffer__mt_8h.html" title="smart_buffer_mt.h" alt="" coords="1213,560,1341,587"/><area shape="rect" id="node41" href="input__processor_8h.html" title="input_processor.h" alt="" coords="1869,485,1995,512"/><area shape="rect" id="node44" href="publisher__mt_8h.html" title="publisher_mt.h" alt="" coords="805,485,912,512"/><area shape="rect" id="node45" href="logger__mt_8h.html" title="logger_mt.h" alt="" coords="1533,485,1624,512"/><area shape="rect" id="node23" href="broadcasters_8h.html" title="broadcasters.h" alt="" coords="643,635,751,661"/><area shape="rect" id="node35" href="async__worker_8h.html" title="async_worker.h" alt="" coords="1589,635,1704,661"/><area shape="rect" id="node38" href="thread__metrics_8h.html" title="thread_metrics.h" alt="" coords="1569,560,1687,587"/><area shape="rect" id="node27" href="listeners_8h.html" title="listeners.h" alt="" coords="456,709,537,736"/><area shape="rect" id="node28" href="weak__ptr__less_8h.html" title="weak_ptr_less.h" alt="" coords="936,709,1052,736"/></map>
+<area shape="rect" id="node6" href="homework__12_8h.html" title="homework_12.h" alt="" coords="1224,171,1339,197"/><area shape="rect" id="node8" href="async__command__server_8h.html" title="./async_command_server\l/async_command_server.h" alt="" coords="2753,81,2932,122"/><area shape="rect" id="node13" href="async__acceptor_8h.html" title="async_acceptor.h" alt="" coords="2555,171,2680,197"/><area shape="rect" id="node16" href="async__reader_8h.html" title="async_reader.h" alt="" coords="2629,245,2739,272"/><area shape="rect" id="node18" href="async__command__processor_8h.html" title="../async_command_processor\l/async_command_processor.h" alt="" coords="2151,321,2349,362"/><area shape="rect" id="node22" href="command__processor__instance_8h.html" title="command_processor_instance.h" alt="" coords="1813,411,2023,437"/><area shape="rect" id="node23" href="input__reader_8h.html" title="input_reader.h" alt="" coords="1435,485,1539,512"/><area shape="rect" id="node31" href="smart__buffer__mt_8h.html" title="smart_buffer_mt.h" alt="" coords="1575,560,1703,587"/><area shape="rect" id="node42" href="input__processor_8h.html" title="input_processor.h" alt="" coords="719,485,844,512"/><area shape="rect" id="node45" href="publisher__mt_8h.html" title="publisher_mt.h" alt="" coords="1788,485,1895,512"/><area shape="rect" id="node46" href="logger__mt_8h.html" title="logger_mt.h" alt="" coords="925,485,1016,512"/><area shape="rect" id="node25" href="broadcasters_8h.html" title="broadcasters.h" alt="" coords="1930,635,2037,661"/><area shape="rect" id="node36" href="async__worker_8h.html" title="async_worker.h" alt="" coords="1225,635,1340,661"/><area shape="rect" id="node39" href="thread__metrics_8h.html" title="thread_metrics.h" alt="" coords="1085,560,1203,587"/><area shape="rect" id="node29" href="listeners_8h.html" title="listeners.h" alt="" coords="1543,709,1624,736"/><area shape="rect" id="node30" href="weak__ptr__less_8h.html" title="weak_ptr_less.h" alt="" coords="1649,709,1765,736"/></map>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a0330a10c2e4e72081b31999d6570e52a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="homework__12_8cpp.html#a0330a10c2e4e72081b31999d6570e52a">homework</a> (int argc, char *argv[], std::istream &amp;inputStream, std::ostream &amp;outputStream, std::ostream &amp;errorStream, std::ostream &amp;metricsStream)</td></tr>
-<tr class="separator:a0330a10c2e4e72081b31999d6570e52a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8de1da4a1f7135a6c930b487d75ca15"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="homework__12_8cpp.html#ad8de1da4a1f7135a6c930b487d75ca15">terminationHandler</a> (int)</td></tr>
+<tr class="separator:ad8de1da4a1f7135a6c930b487d75ca15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19c55c17429392696d316a9aa1b82bef"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="homework__12_8cpp.html#a19c55c17429392696d316a9aa1b82bef">homework</a> (int argc, char *argv[], std::ostream &amp;outputStream, std::ostream &amp;errorStream, std::ostream &amp;metricsStream)</td></tr>
+<tr class="separator:a19c55c17429392696d316a9aa1b82bef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a06f0f84164bdec2797dde92d67ffc297"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="homework__12_8cpp.html#a06f0f84164bdec2797dde92d67ffc297">shouldExit</a> {false}</td></tr>
+<tr class="separator:a06f0f84164bdec2797dde92d67ffc297"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af78e15e6a7f37af31e137cc9327660fa"><td class="memItemLeft" align="right" valign="top">std::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="homework__12_8cpp.html#af78e15e6a7f37af31e137cc9327660fa">terminationNotifier</a></td></tr>
+<tr class="separator:af78e15e6a7f37af31e137cc9327660fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2af8fb9d5b5bf1935665c085771bb282"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="homework__12_8cpp.html#a2af8fb9d5b5bf1935665c085771bb282">terminationLock</a></td></tr>
+<tr class="separator:a2af8fb9d5b5bf1935665c085771bb282"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a0330a10c2e4e72081b31999d6570e52a"></a>
+<a class="anchor" id="a19c55c17429392696d316a9aa1b82bef"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -120,12 +134,6 @@ Functions</h2></td></tr>
           <td></td>
           <td class="paramtype">char *&#160;</td>
           <td class="paramname"><em>argv</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::istream &amp;&#160;</td>
-          <td class="paramname"><em>inputStream</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -149,6 +157,59 @@ Functions</h2></td></tr>
           <td></td>
           <td>)</td>
           <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad8de1da4a1f7135a6c930b487d75ca15"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void terminationHandler </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a class="anchor" id="a06f0f84164bdec2797dde92d67ffc297"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::atomic&lt;bool&gt; shouldExit {false}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a2af8fb9d5b5bf1935665c085771bb282"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::mutex terminationLock</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="af78e15e6a7f37af31e137cc9327660fa"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::condition_variable terminationNotifier</td>
         </tr>
       </table>
 </div><div class="memdoc">
