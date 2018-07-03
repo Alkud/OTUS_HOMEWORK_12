@@ -24,12 +24,15 @@ set (BOOST_MIN_VERSION "1.54.0")
 find_package(Boost COMPONENTS system unit_test_framework REQUIRED)
 find_package(Threads)
 
-set(Boost_USE_STATIC_LIBS   ON)
+get_filename_component(UTF_BASE_NAME ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY_RELEASE} NAME_WE)
+get_filename_component(UTF_PATH ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY_RELEASE} PATH)
+
+get_filename_component(SYS_BASE_NAME ${Boost_SYSTEM_LIBRARY_RELEASE} NAME_WE)
+get_filename_component(SYS_PATH ${Boost_SYSTEM_LIBRARY_RELEASE} PATH)
 
 
 set(BOOST_DEBUG                ON)
 set(Boost_USE_MULTITHREADED    ON)
-
 
 set(homework_12
     ${PROJECT_SOURCE_DIR}/homework_12.h
@@ -65,6 +68,15 @@ target_link_libraries(bulkserver pthread server processor ${Boost_LIBRARIES})
 target_link_libraries(otus_hw_12_test pthread server processor ${Boost_LIBRARIES})
 
 install(TARGETS bulkserver RUNTIME DESTINATION bin)
+
+install(FILES ${UTF_PATH}/${UTF_BASE_NAME}.so
+  DESTINATION lib
+)
+
+install(FILES ${SYS_PATH}/${SYS_BASE_NAME}.so
+  DESTINATION lib
+)
+
 
 set(CPACK_GENERATOR DEB)
 
