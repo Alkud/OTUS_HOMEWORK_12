@@ -24,6 +24,8 @@ set (BOOST_MIN_VERSION "1.54.0")
 find_package(Boost COMPONENTS system unit_test_framework REQUIRED)
 find_package(Threads)
 
+set(Boost_USE_STATIC_LIBS   ON)
+
 
 set(BOOST_DEBUG                ON)
 set(Boost_USE_MULTITHREADED    ON)
