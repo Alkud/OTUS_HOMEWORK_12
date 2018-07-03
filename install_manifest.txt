@@ -1,1 +1,3 @@
 /usr/bin/bulkserver
+/usr/lib/libboost_unit_test_framework.so
+/usr/lib/libboost_system.so
