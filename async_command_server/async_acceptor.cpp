@@ -4,7 +4,10 @@
 
 #include <string>
 #include <vector>
+#include <chrono>
 #include <boost/bind.hpp>
+
+using namespace std::chrono_literals;
 
 AsyncAcceptor::AsyncAcceptor(
   const asio::ip::address_v4 newAddress,
@@ -49,17 +52,27 @@ void AsyncAcceptor::stop()
 {
   shouldExit.store(true);
 
-  if (currentReader != nullptr)
+  while (activeReaderCount.load() != 0)
   {
-    currentReader->stop();
+    std::unique_lock<std::mutex> lockTermination{terminationLock};
+    terminationNotifier.wait_for(lockTermination, 100ms, [this]()
+    {
+      std::cout << "\nAcceptor waiting. Active readers: " << activeReaderCount.load() << "\n";
+
+      return activeReaderCount.load() == 0;
+    });
+    lockTermination.unlock();
+  }
+
+  if (acceptor.is_open())
+  {
+    acceptor.close();
   }
 
   if (processor != nullptr)
   {
     processor->disconnect();
   }
-
-  acceptor.cancel();
 }
 
 void AsyncAcceptor::doAccept()
@@ -79,12 +92,18 @@ void AsyncAcceptor::doAccept()
                     << ". Error code: " << error.value() << '\n';
       }
 
-      shouldExit.store(true);
+      if (shouldExit.load() != true)
+      {
+        stop();
+      }
 
       return;
     }
 
-    onAcception(socket);
+    if (shouldExit.load() != true)
+    {
+      onAcception(socket);
+    }
   });
 }
 
@@ -97,14 +116,10 @@ void AsyncAcceptor::onAcception(SharedSocket acceptedSocket)
     errorStream, outputLock
   ));
 
+  currentReader->start();
+
   if (shouldExit.load() != true)
-  {    
-    currentReader->start();
-    doAccept();
-  }
-  else
   {
-    processor->disconnect();
-    acceptor.close();
+    doAccept();
   }
 }

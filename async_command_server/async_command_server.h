@@ -59,16 +59,6 @@ public:
     {
       workingThreads.push_back(std::thread{&AsyncCommandServer::run, this});
     }
-
-    for (auto& thread : workingThreads)
-    {
-      if (thread.joinable() == true)
-      {
-        thread.join();
-      }
-    }
-
-    asyncAcceptor->stop();
   }
 
   void stop()

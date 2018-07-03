@@ -37,8 +37,21 @@ void AsyncReader::start()
 void AsyncReader::stop()
 {
   if (socket != nullptr)
-  {
-    socket->close();
+  {    
+    if (socket->is_open())
+    {
+      socket->shutdown(asio::ip::tcp::socket::shutdown_both);
+      socket->close();
+    }
+
+    if (readerCounter.load() != 0)
+    {
+      --readerCounter;
+    }
+
+    terminationNotifier.notify_all();
+
+    sharedThis.reset();
   }
 }
 
@@ -66,25 +79,7 @@ void AsyncReader::doRead()
     }
     else
     {
-      socket->close();
-      --readerCounter;
-      terminationNotifier.notify_all();
-
-      std::this_thread::sleep_for(200ms);
-
-      std::unique_lock<std::mutex> lockTermination{terminationLock};
-      terminationNotifier.wait_for(lockTermination, 1s, [this]()
-      {
-        return readerCounter.load() == 0;
-      });
-      lockTermination.unlock();
-
-      if (readerCounter.load() == 0)
-      {
-        acceptor.cancel();
-      }
-
-      sharedThis.reset();
+      stop();
     }
   });
 }

@@ -18,6 +18,8 @@
 
 using namespace boost;
 
+using namespace std::chrono_literals;
+
 enum class DebugOutput
 {
   debug_on,
@@ -58,10 +60,10 @@ std::array<std::vector<std::string>, 3>
 getServerOutput
 (
   std::vector<std::string>& inputStrings,
-  char openDelimiter,
-  char closeDelimiter,
-  size_t bulkSize,
-  DebugOutput debugOutput,
+  const char openDelimiter,
+  const char closeDelimiter,
+  const size_t bulkSize,
+  const DebugOutput debugOutput,
   SharedGlobalMetrics& metrics
 )
 {
@@ -69,7 +71,7 @@ getServerOutput
   std::stringstream errorStream{};
   std::stringstream metricsStream{};
 
-  uint16_t portNumber{12345};
+  const uint16_t portNumber{12345};
 
   auto serverAddress{asio::ip::address_v4::any()};
 
@@ -83,10 +85,7 @@ getServerOutput
 
     metrics = testServer.getMetrics();
 
-    std::thread serverThread{[&testServer]()
-    {
-      testServer.start();
-    }};
+    testServer.start();
 
     std::vector<std::thread> sendingThreads{};
 
@@ -96,6 +95,7 @@ getServerOutput
         std::thread {[serverAddress, portNumber, &stringToSend]()
         {
           sendMessage(serverAddress, portNumber, stringToSend);
+          std::this_thread::sleep_for(200ms);
         }}
       );
     }
@@ -108,7 +108,7 @@ getServerOutput
       }
     }
 
-    serverThread.join();
+    testServer.stop();
 
   } /* end of server working scope */
 
@@ -184,9 +184,17 @@ BOOST_AUTO_TEST_CASE(simple_test)
     auto serverOutput(getServerOutput(testStrings, '{', '}', 4, DebugOutput::debug_off, metrics));
 
     /* make sure server output is correct */
-    BOOST_CHECK(serverOutput[0][0] == "bulk: 1, 2, 3, 4");
+    if (serverOutput[0].size() == 1)
+    {
+      BOOST_CHECK(serverOutput[0][0] == "bulk: 1, 2, 3, 4");
+    }
+    else
+    {
+      std::cout << serverOutput[0].size() << std::endl;
+      BOOST_FAIL("");
+    }
 
-    /* make sure no errors occured */
+    /* make sure no errors occured */    
     BOOST_CHECK(serverOutput[1].size() == 0);
 
     checkMetrics(metrics, 4, 8, 4, 4, 1, 2);
@@ -209,10 +217,18 @@ BOOST_AUTO_TEST_CASE(two_connections_no_mix_test)
     auto serverOutput(getServerOutput(testStrings, '{', '}', 2, DebugOutput::debug_off, metrics));
 
     /* make sure server output is correct */
-    BOOST_CHECK(   (serverOutput[0][0] == "bulk: 1, 2, 3, 4"
-                    && serverOutput[0][1] == "bulk: 11, 12, 13, 14")
-                || (serverOutput[0][0] == "bulk: 11, 12, 13, 14"
-                    && serverOutput[0][1] == "bulk: 1, 2, 3, 4")     );
+    if (serverOutput[0].size() == 2)
+    {
+      BOOST_CHECK(   (serverOutput[0][0] == "bulk: 1, 2, 3, 4"
+                      && serverOutput[0][1] == "bulk: 11, 12, 13, 14")
+                  || (serverOutput[0][0] == "bulk: 11, 12, 13, 14"
+                      && serverOutput[0][1] == "bulk: 1, 2, 3, 4")     );
+    }
+    else
+    {
+      std::cout << serverOutput[0].size() << std::endl;
+      BOOST_FAIL("");
+    }
 
     /* make sure no errors occured */
     BOOST_CHECK(serverOutput[1].size() == 0);
@@ -238,15 +254,22 @@ BOOST_AUTO_TEST_CASE(four_connections_mixing_test)
     auto serverOutput(getServerOutput(testStrings, '{', '}', 1, DebugOutput::debug_off, metrics));
 
     /* make sure server output is correct */
-    std::sort(serverOutput[0].begin(), serverOutput[0].end());
-
-    size_t idx {};
-    for (size_t decade{1}; decade < 5; ++decade)
+    if (serverOutput[0].size() == 16)
     {
-      for (size_t unit {1}; unit < 5; ++unit)
+      std::sort(serverOutput[0].begin(), serverOutput[0].end());
+
+      size_t idx {};
+      for (size_t decade{1}; decade < 5; ++decade)
       {
-        BOOST_CHECK(serverOutput[0][idx++] == std::string{"bulk: "} + std::to_string(unit + decade * 10));
+        for (size_t unit {1}; unit < 5; ++unit)
+        {
+          BOOST_CHECK(serverOutput[0][idx++] == std::string{"bulk: "} + std::to_string(unit + decade * 10));
+        }
       }
+    }
+    else
+    {
+      BOOST_FAIL("");
     }
 
     /* make sure no errors occured */
@@ -272,7 +295,14 @@ BOOST_AUTO_TEST_CASE(empty_command_test)
     auto serverOutput(getServerOutput(testStrings, '<', '>', 19, DebugOutput::debug_off, metrics));
 
     /* make sure server output is correct */
-    BOOST_CHECK(serverOutput[0][0] == "bulk: ");
+    if (serverOutput[0].size() == 1)
+    {
+      BOOST_CHECK(serverOutput[0][0] == "bulk: ");
+    }
+    else
+    {
+      BOOST_FAIL("");
+    }
 
     /* make sure no errors occured */
     BOOST_CHECK(serverOutput[1].size() == 0);
@@ -297,7 +327,14 @@ BOOST_AUTO_TEST_CASE(unterminated_command_test)
     auto serverOutput(getServerOutput(testStrings, '[', ']', 6, DebugOutput::debug_off, metrics));
 
     /* make sure server output is correct */
-    BOOST_CHECK(serverOutput[0][0] == "bulk: aSde, 1, 18");
+    if (serverOutput[0].size() == 1)
+    {
+      BOOST_CHECK(serverOutput[0][0] == "bulk: aSde, 1, 18");
+    }
+    else
+    {
+      BOOST_FAIL("");
+    }
 
     /* make sure no errors occured */
     BOOST_CHECK(serverOutput[1].size() == 0);
