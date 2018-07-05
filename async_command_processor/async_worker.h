@@ -25,7 +25,9 @@ public:
 
   AsyncWorker(const std::string& newWorkerName) :
     shouldExit{false}, noMoreData{false}, isStopped{true}, notificationCount{0},
-    threadFinished{}, workerName{newWorkerName}, state{WorkerState::NotStarted}
+    threadNotifier{}, notifierLock{},
+    threadFinished{}, terminationLock{},
+    workerName{newWorkerName}, state{WorkerState::NotStarted}
   {
     futureResults.reserve(workingThreadCount);
     threadID.resize(workingThreadCount, std::thread::id{});
@@ -138,7 +140,7 @@ protected:
     return workSuccess;
   }
 
-  virtual void onThreadStart(const size_t threadIndex)
+  virtual void onThreadStart(const size_t /*threadIndex*/)
   {}
 
   virtual bool run(const size_t threadIndex)
@@ -258,7 +260,7 @@ protected:
   bool isStopped;
 
   std::atomic<size_t> notificationCount;
-  std::condition_variable threadNotifier{};
+  std::condition_variable threadNotifier;
   std::mutex notifierLock;
 
   std::array<std::atomic_bool, workingThreadCount> threadFinished;

@@ -32,7 +32,7 @@ InputReader::~InputReader()
   stop();
 }
 
-void InputReader::reactMessage(MessageBroadcaster* sender, Message message)
+void InputReader::reactMessage(MessageBroadcaster* /*sender*/, Message message)
 {
   if (messageCode(message) < 1000) // non error message
   {
@@ -82,7 +82,7 @@ const SharedMetrics InputReader::getMetrics()
   return threadMetrics;
 }
 
-bool InputReader::threadProcess(const size_t threadIndex)
+bool InputReader::threadProcess(const size_t /*threadIndex*/)
 {
   if (nullptr == inputBuffer)
   {
@@ -111,6 +111,8 @@ bool InputReader::threadProcess(const size_t threadIndex)
       putNextLine();
     }
   }
+
+  return true;
 }
 
 void InputReader::onThreadException(const std::exception& ex, const size_t threadIndex)
@@ -120,7 +122,7 @@ void InputReader::onThreadException(const std::exception& ex, const size_t threa
     errorOut << this->workerName << " thread #" << threadIndex << " stopped. Reason: " << ex.what() << std::endl;
   }
 
-  if (ex.what() == "Buffer is empty!")
+  if (ex.what() == std::string{"Buffer is empty!"})
   {
     errorMessage = Message::BufferEmpty;
   }
@@ -132,7 +134,7 @@ void InputReader::onThreadException(const std::exception& ex, const size_t threa
   sendMessage(errorMessage);
 }
 
-void InputReader::onTermination(const size_t threadIndex)
+void InputReader::onTermination(const size_t /*threadIndex*/)
 {
   #ifdef NDEBUG
   #else

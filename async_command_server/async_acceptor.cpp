@@ -35,6 +35,8 @@ processor{
   )
 },
 
+openDelimiter{newBulkOpenDelimiter}, closeDelimiter{newBulkCloseDelimiter},
+
 currentReader{}, activeReaderCount{},
 shouldExit{false},
 errorStream{newErrorStream},
@@ -111,6 +113,7 @@ void AsyncAcceptor::onAcception(SharedSocket acceptedSocket)
 {
   currentReader.reset( new AsyncReader(
     acceptedSocket, processor,
+    openDelimiter, closeDelimiter,
     acceptor, activeReaderCount,
     terminationNotifier, terminationLock,
     errorStream, outputLock

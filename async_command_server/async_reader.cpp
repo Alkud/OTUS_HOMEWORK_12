@@ -4,7 +4,7 @@
 using namespace std::chrono_literals;
 
 AsyncReader::AsyncReader(AsyncReader::SharedSocket newSocket,
-  AsyncReader::SharedProcessor newProcessor,
+  AsyncReader::SharedProcessor newProcessor, const char newOpenDelimiter, const char newCloseDelimiter,
   asio::ip::tcp::acceptor& newAcceptor,
   std::atomic<size_t>& newReaderCounter,
   std::condition_variable& newTerminationNotifier,
@@ -13,6 +13,7 @@ AsyncReader::AsyncReader(AsyncReader::SharedSocket newSocket,
   std::mutex& newOutputLock
 ):
   socket{newSocket}, processor{newProcessor},
+  openDelimiter{newOpenDelimiter}, closeDelimiter{newCloseDelimiter},
   readBuffer{},
   bulkBuffer{}, bulkOpen{false},
   acceptor{newAcceptor}, readerCounter{newReaderCounter},
@@ -130,17 +131,17 @@ void AsyncReader::onReading(std::size_t bytes_transferred)
 
 void AsyncReader::processInputString(std::string& inputString)
 {
-  if ("{" == inputString)
+  if (inputString == std::string{openDelimiter})
   {
-    bulkBuffer.push_back('{');
+    bulkBuffer.push_back(openDelimiter);
     bulkBuffer.push_back('\n');
     bulkOpen = true;
   }
-  else if ("}" == inputString)
+  else if (inputString == std::string{closeDelimiter})
   {
     if (true == bulkOpen)
     {
-      bulkBuffer.push_back('}');
+      bulkBuffer.push_back(closeDelimiter);
       bulkBuffer.push_back('\n');
       processor->receiveData(bulkBuffer.data(), bulkBuffer.size());
       bulkBuffer.clear();
