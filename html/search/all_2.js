@@ -7,6 +7,7 @@ var searchData=
   ['clearmessagelistenerlist',['clearMessageListenerList',['../class_message_broadcaster.html#a72bdc718a0558928fcb918399369dd80',1,'MessageBroadcaster']]],
   ['clearnotificationlistenerlist',['clearNotificationListenerList',['../class_notification_broadcaster.html#a4bd4e32ef80c196517b1fd0426ed3838',1,'NotificationBroadcaster']]],
   ['closecurrentbulk',['closeCurrentBulk',['../class_input_processor.html#aa6e65b44cd2ac7f603d25e60896c8362',1,'InputProcessor']]],
+  ['closedelimiter',['closeDelimiter',['../class_async_acceptor.html#a3169fbf1f561b70b94336626b7dbb927',1,'AsyncAcceptor::closeDelimiter()'],['../class_async_reader.html#a8246c31789553c250c47d662b137f089',1,'AsyncReader::closeDelimiter()']]],
   ['command_5fprocessor_5finstance_2eh',['command_processor_instance.h',['../command__processor__instance_8h.html',1,'']]],
   ['commandbuffer',['commandBuffer',['../class_async_command_processor.html#afdc1fd9a47482391f8fda410cce27456',1,'AsyncCommandProcessor']]],
   ['commandprocessorinstance',['CommandProcessorInstance',['../class_command_processor_instance.html',1,'CommandProcessorInstance&lt; loggingThreadCount &gt;'],['../class_command_processor_instance.html#aaa89840dd4bfaf0ac220258812396f3b',1,'CommandProcessorInstance::CommandProcessorInstance()']]],

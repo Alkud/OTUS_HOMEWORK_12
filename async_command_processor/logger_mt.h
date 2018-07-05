@@ -73,7 +73,7 @@ public:
     }
   }
 
-  void reactMessage(class MessageBroadcaster* sender, Message message) override
+  void reactMessage(class MessageBroadcaster* /*sender*/, Message message) override
   {
     if (messageCode(message) < 1000) // non error message
     {
@@ -188,7 +188,7 @@ private:
     this->shouldExit.store(true);
     this->threadNotifier.notify_all();
 
-    if (ex.what() == "Buffer is empty!")
+    if (ex.what() == std::string{"Buffer is empty!"})
     {
       errorMessage = Message::BufferEmpty;
     }
@@ -196,7 +196,7 @@ private:
     sendMessage(errorMessage);
   }
 
-  void onTermination(const size_t threadIndex) override
+  void onTermination(const size_t /*threadIndex*/) override
   {
     #ifdef NDEBUG
     #else

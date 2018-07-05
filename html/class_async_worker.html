@@ -118,8 +118,8 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a0fd39ec8089b6da51e2a29bab8b13a97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e410b9516796d11452fe0e107543bf4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#a4e410b9516796d11452fe0e107543bf4">waitForThreadTermination</a> ()</td></tr>
 <tr class="separator:a4e410b9516796d11452fe0e107543bf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ccefa4ba08012291153a0db5e8dcbee"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#a1ccefa4ba08012291153a0db5e8dcbee">onThreadStart</a> (const size_t threadIndex)</td></tr>
-<tr class="separator:a1ccefa4ba08012291153a0db5e8dcbee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afccb59ca79ffc05878151cdf9e906f20"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#afccb59ca79ffc05878151cdf9e906f20">onThreadStart</a> (const size_t)</td></tr>
+<tr class="separator:afccb59ca79ffc05878151cdf9e906f20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0eb4d633cb4ca3fec72440942f0048f9"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#a0eb4d633cb4ca3fec72440942f0048f9">run</a> (const size_t threadIndex)</td></tr>
 <tr class="separator:a0eb4d633cb4ca3fec72440942f0048f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a53ffa087efa86514f46d56b95852e9"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#a5a53ffa087efa86514f46d56b95852e9">threadProcess</a> (const size_t threadIndex)=0</td></tr>
@@ -143,7 +143,7 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:ad74ffc43c34fb72d091592dcff26ded2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f1eaf097abba38a681a83c22da5e6d2"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#a9f1eaf097abba38a681a83c22da5e6d2">notificationCount</a></td></tr>
 <tr class="separator:a9f1eaf097abba38a681a83c22da5e6d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e2f251afbb0ac6c4c294a2e8c40d20b"><td class="memItemLeft" align="right" valign="top">std::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#a6e2f251afbb0ac6c4c294a2e8c40d20b">threadNotifier</a> {}</td></tr>
+<tr class="memitem:a6e2f251afbb0ac6c4c294a2e8c40d20b"><td class="memItemLeft" align="right" valign="top">std::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#a6e2f251afbb0ac6c4c294a2e8c40d20b">threadNotifier</a></td></tr>
 <tr class="separator:a6e2f251afbb0ac6c4c294a2e8c40d20b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84909224522bcb8752f26b814cdbab20"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#a84909224522bcb8752f26b814cdbab20">notifierLock</a></td></tr>
 <tr class="separator:a84909224522bcb8752f26b814cdbab20"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -284,7 +284,7 @@ template&lt;size_t workingThreadCount = 1u&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_smart_buffer.html#a696aeb8bc301340c3570d7eb978276aa">SmartBuffer&lt; T &gt;</a>, <a class="el" href="class_input_reader.html#a866e3f21457e039fb86e365f461dc0c9">InputReader</a>, <a class="el" href="class_input_processor.html#a524f367c05610791212b586977db094a">InputProcessor</a>, and <a class="el" href="class_publisher.html#a5c03ca01cb2173255076e64b9303ead8">Publisher</a>.</p>
+<p>Implemented in <a class="el" href="class_smart_buffer.html#aa3881c8fb4ffc99a716ea624a6d6e1b6">SmartBuffer&lt; T &gt;</a>, <a class="el" href="class_input_reader.html#a866e3f21457e039fb86e365f461dc0c9">InputReader</a>, <a class="el" href="class_input_processor.html#a524f367c05610791212b586977db094a">InputProcessor</a>, and <a class="el" href="class_publisher.html#ae50fcbc0ae448419173467a75466583a">Publisher</a>.</p>
 
 </div>
 </div>
@@ -326,7 +326,7 @@ template&lt;size_t workingThreadCount = 1u&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a1ccefa4ba08012291153a0db5e8dcbee"></a>
+<a class="anchor" id="afccb59ca79ffc05878151cdf9e906f20"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -339,7 +339,7 @@ template&lt;size_t workingThreadCount = 1u&gt; </div>
           <td class="memname">virtual void <a class="el" href="class_async_worker.html">AsyncWorker</a>&lt; workingThreadCount &gt;::onThreadStart </td>
           <td>(</td>
           <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>threadIndex</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -502,7 +502,7 @@ template&lt;size_t workingThreadCount = 1u&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_smart_buffer.html#a4ba12efc87399e152f1cbe1b15e0382c">SmartBuffer&lt; T &gt;</a>, <a class="el" href="class_input_reader.html#a413999bcd323816218dd38ec5d40460b">InputReader</a>, <a class="el" href="class_input_processor.html#a051b76ad2269bd9e5c7e6df033654bf8">InputProcessor</a>, and <a class="el" href="class_publisher.html#ad3c07d531e538af16956dbbef8d235da">Publisher</a>.</p>
+<p>Implemented in <a class="el" href="class_smart_buffer.html#a978038146271f78f0c5a38f21953ecb8">SmartBuffer&lt; T &gt;</a>, <a class="el" href="class_input_reader.html#a341c9db22ed0d57b2eb74b2c09784bd1">InputReader</a>, <a class="el" href="class_input_processor.html#a52cd2f5f5696ca880e4e381b7020bdca">InputProcessor</a>, and <a class="el" href="class_publisher.html#a174fa24ad93abf5464131aa2a4b3157e">Publisher</a>.</p>
 
 </div>
 </div>
@@ -762,7 +762,7 @@ template&lt;size_t workingThreadCount = 1u&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::condition_variable <a class="el" href="class_async_worker.html">AsyncWorker</a>&lt; workingThreadCount &gt;::threadNotifier {}</td>
+          <td class="memname">std::condition_variable <a class="el" href="class_async_worker.html">AsyncWorker</a>&lt; workingThreadCount &gt;::threadNotifier</td>
         </tr>
       </table>
   </td>

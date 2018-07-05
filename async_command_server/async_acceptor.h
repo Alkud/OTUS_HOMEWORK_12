@@ -57,6 +57,9 @@ private:
 
   std::shared_ptr<AsyncCommandProcessor<2>> processor;
 
+  const char openDelimiter;
+  const char closeDelimiter;
+
   SharedAsyncReader currentReader;
 
   std::atomic<size_t> activeReaderCount;

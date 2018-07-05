@@ -138,6 +138,10 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:ab199c1f7fcd0b2d71bf2ab3dfacc0a29"><td class="memItemLeft" align="right" valign="top">std::shared_ptr<br class="typebreak"/>
 &lt; <a class="el" href="class_async_command_processor.html">AsyncCommandProcessor</a>&lt; 2 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_acceptor.html#ab199c1f7fcd0b2d71bf2ab3dfacc0a29">processor</a></td></tr>
 <tr class="separator:ab199c1f7fcd0b2d71bf2ab3dfacc0a29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a579dd92839937011215b0a5ffce08294"><td class="memItemLeft" align="right" valign="top">const char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_acceptor.html#a579dd92839937011215b0a5ffce08294">openDelimiter</a></td></tr>
+<tr class="separator:a579dd92839937011215b0a5ffce08294"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3169fbf1f561b70b94336626b7dbb927"><td class="memItemLeft" align="right" valign="top">const char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_acceptor.html#a3169fbf1f561b70b94336626b7dbb927">closeDelimiter</a></td></tr>
+<tr class="separator:a3169fbf1f561b70b94336626b7dbb927"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a343ca63ee0a836d78b820a7cc2bdb12f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="async__reader_8h.html#a9fcb6536c9031bcb7a1b8ccd6ad703e4">SharedAsyncReader</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_acceptor.html#a343ca63ee0a836d78b820a7cc2bdb12f">currentReader</a></td></tr>
 <tr class="separator:a343ca63ee0a836d78b820a7cc2bdb12f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aceeb1b385ef65d2202d8a7f94f59868f"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_acceptor.html#aceeb1b385ef65d2202d8a7f94f59868f">activeReaderCount</a></td></tr>
@@ -445,6 +449,26 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a3169fbf1f561b70b94336626b7dbb927"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char AsyncAcceptor::closeDelimiter</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a343ca63ee0a836d78b820a7cc2bdb12f"></a>
 <div class="memitem">
 <div class="memproto">
@@ -514,6 +538,26 @@ Private Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="thread__metrics_8h.html#ac1589e063b43543469fafabc05566bcc">SharedGlobalMetrics</a> AsyncAcceptor::metrics</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a579dd92839937011215b0a5ffce08294"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char AsyncAcceptor::openDelimiter</td>
         </tr>
       </table>
   </td>

@@ -164,8 +164,6 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a1e0b819411867ceed7f58bfef5ab9516"><td class="memItemLeft" align="right" valign="top">std::shared_ptr<br class="typebreak"/>
 &lt; <a class="el" href="class_input_processor.html#a80ed4b5c0fcfd1297bea56a9bc6fb2ca">InputProcessor::OutputBufferType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a1e0b819411867ceed7f58bfef5ab9516">outputBuffer</a></td></tr>
 <tr class="separator:a1e0b819411867ceed7f58bfef5ab9516"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a36e2841c4b31037473ee83fa248901"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_input_reader.html">InputReader</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a1a36e2841c4b31037473ee83fa248901">inputReader</a></td></tr>
-<tr class="separator:a1a36e2841c4b31037473ee83fa248901"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38f19e2c1a7ba209adc75d3c4f32e6ca"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_logger.html">Logger</a><br class="typebreak"/>
 &lt; loggingThreadCount &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a38f19e2c1a7ba209adc75d3c4f32e6ca">logger</a></td></tr>
 <tr class="separator:a38f19e2c1a7ba209adc75d3c4f32e6ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -173,7 +171,9 @@ Private Attributes</h2></td></tr>
 <tr class="separator:adc28df20741dfc86c8fb7c34a8cd7d76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a041f8c26e033a60636db4bcba7c34a55"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_input_processor.html">InputProcessor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a041f8c26e033a60636db4bcba7c34a55">inputProcessor</a></td></tr>
 <tr class="separator:a041f8c26e033a60636db4bcba7c34a55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a315179d34844d5687b4f29a1c9a44524"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a315179d34844d5687b4f29a1c9a44524">inputStreamLock</a> {}</td></tr>
+<tr class="memitem:a1a36e2841c4b31037473ee83fa248901"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_input_reader.html">InputReader</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a1a36e2841c4b31037473ee83fa248901">inputReader</a></td></tr>
+<tr class="separator:a1a36e2841c4b31037473ee83fa248901"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a315179d34844d5687b4f29a1c9a44524"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a315179d34844d5687b4f29a1c9a44524">inputStreamLock</a></td></tr>
 <tr class="separator:a315179d34844d5687b4f29a1c9a44524"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94263e4c1e0aa62f311348e10a7264d7"><td class="memItemLeft" align="right" valign="top">std::atomic_bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a94263e4c1e0aa62f311348e10a7264d7">dataReceived</a></td></tr>
 <tr class="separator:a94263e4c1e0aa62f311348e10a7264d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -183,7 +183,7 @@ Private Attributes</h2></td></tr>
 <tr class="separator:ab2f9c48f2ba0defe35420dead7b80d9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae934fb344a66f329340d431ca66a2b55"><td class="memItemLeft" align="right" valign="top">std::atomic_bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#ae934fb344a66f329340d431ca66a2b55">shouldExit</a></td></tr>
 <tr class="separator:ae934fb344a66f329340d431ca66a2b55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a533dc972d295e48c2cca2c1cd11ddcf4"><td class="memItemLeft" align="right" valign="top">std::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a533dc972d295e48c2cca2c1cd11ddcf4">terminationNotifier</a> {}</td></tr>
+<tr class="memitem:a533dc972d295e48c2cca2c1cd11ddcf4"><td class="memItemLeft" align="right" valign="top">std::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a533dc972d295e48c2cca2c1cd11ddcf4">terminationNotifier</a></td></tr>
 <tr class="separator:a533dc972d295e48c2cca2c1cd11ddcf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84286333e3e6f3f145a99ba89f3a36b8"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a84286333e3e6f3f145a99ba89f3a36b8">notifierLock</a></td></tr>
 <tr class="separator:a84286333e3e6f3f145a99ba89f3a36b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -718,7 +718,7 @@ template&lt;size_t loggingThreadCount = 2u&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::mutex <a class="el" href="class_command_processor_instance.html">CommandProcessorInstance</a>&lt; loggingThreadCount &gt;::inputStreamLock {}</td>
+          <td class="memname">std::mutex <a class="el" href="class_command_processor_instance.html">CommandProcessorInstance</a>&lt; loggingThreadCount &gt;::inputStreamLock</td>
         </tr>
       </table>
   </td>
@@ -894,7 +894,7 @@ template&lt;size_t loggingThreadCount = 2u&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::condition_variable <a class="el" href="class_command_processor_instance.html">CommandProcessorInstance</a>&lt; loggingThreadCount &gt;::terminationNotifier {}</td>
+          <td class="memname">std::condition_variable <a class="el" href="class_command_processor_instance.html">CommandProcessorInstance</a>&lt; loggingThreadCount &gt;::terminationNotifier</td>
         </tr>
       </table>
   </td>

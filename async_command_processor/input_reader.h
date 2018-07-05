@@ -35,7 +35,7 @@ public:
 
   ~InputReader();
 
-  void reactMessage(MessageBroadcaster* sender, Message message) override;
+  void reactMessage(MessageBroadcaster*, Message message) override;
 
   void reactNotification(NotificationBroadcaster* sender) override;
 
@@ -45,7 +45,7 @@ public:
 
 private:
 
-  bool threadProcess(const size_t threadIndex) override;
+  bool threadProcess(const size_t) override;
   void onThreadException(const std::exception& ex, const size_t threadIndex) override;
   void onTermination(const size_t threadIndex) override;
 

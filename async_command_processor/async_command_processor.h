@@ -142,9 +142,9 @@ public:
       return;
     }
 
-    std::lock_guard<std::mutex> lockAccess{accessLock};
+    //std::lock_guard<std::mutex> lockAccess{accessLock};
 
-    if (isDisconnected)
+    if (isDisconnected.load() == true)
     {
       return;
     }
@@ -167,14 +167,14 @@ public:
 
   void disconnect()
   {
-    std::lock_guard<std::mutex> lockAccess{accessLock};
+    //std::lock_guard<std::mutex> lockAccess{accessLock};
 
-    if (isDisconnected)
+    if (isDisconnected.load() == true)
     {
       return;
     }
 
-    isDisconnected = true;
+    isDisconnected.store(true);
 
     sendMessage(Message::NoMoreData);
 
@@ -219,7 +219,7 @@ private:
   std::shared_ptr<InputProcessor::OutputBufferType> bulkBuffer;
 
   std::mutex accessLock;
-  bool isDisconnected;
+  std::atomic<bool> isDisconnected;
 
   std::thread workingThread;
 

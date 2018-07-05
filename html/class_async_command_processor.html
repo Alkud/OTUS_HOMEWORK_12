@@ -182,8 +182,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:abb83fe991b6a3059f4966f4228d3b732"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0eac12c1e7d154e94a958c5a231fcc5"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_command_processor.html#ab0eac12c1e7d154e94a958c5a231fcc5">accessLock</a></td></tr>
 <tr class="separator:ab0eac12c1e7d154e94a958c5a231fcc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afefe4a11da713faf1115d69e3256f0aa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_command_processor.html#afefe4a11da713faf1115d69e3256f0aa">isDisconnected</a></td></tr>
-<tr class="separator:afefe4a11da713faf1115d69e3256f0aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae82db75be40a52d0b754ff29df767af1"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_command_processor.html#ae82db75be40a52d0b754ff29df767af1">isDisconnected</a></td></tr>
+<tr class="separator:ae82db75be40a52d0b754ff29df767af1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab36f5b2fdc41e1e8552889087c755ba9"><td class="memItemLeft" align="right" valign="top">std::thread&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_command_processor.html#ab36f5b2fdc41e1e8552889087c755ba9">workingThread</a></td></tr>
 <tr class="separator:ab36f5b2fdc41e1e8552889087c755ba9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09b89dc8aaf6a0005e30cb8c8904bbae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="thread__metrics_8h.html#ac1589e063b43543469fafabc05566bcc">SharedGlobalMetrics</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_command_processor.html#a09b89dc8aaf6a0005e30cb8c8904bbae">metrics</a></td></tr>
@@ -660,7 +660,7 @@ template&lt;size_t loggingThreadCount = 2u&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="afefe4a11da713faf1115d69e3256f0aa"></a>
+<a class="anchor" id="ae82db75be40a52d0b754ff29df767af1"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -670,7 +670,7 @@ template&lt;size_t loggingThreadCount = 2u&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="class_async_command_processor.html">AsyncCommandProcessor</a>&lt; loggingThreadCount &gt;::isDisconnected</td>
+          <td class="memname">std::atomic&lt;bool&gt; <a class="el" href="class_async_command_processor.html">AsyncCommandProcessor</a>&lt; loggingThreadCount &gt;::isDisconnected</td>
         </tr>
       </table>
   </td>

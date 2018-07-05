@@ -26,6 +26,8 @@ public:
 
   AsyncReader(SharedSocket newSocket,
               SharedProcessor newProcessor,
+              const char newOpenDelimiter,
+              const char newCloseDelimiter,
               asio::ip::tcp::acceptor& newAcceptor,
               std::atomic<size_t>& newReaderCounter,
               std::condition_variable& newTerminationNotifier,
@@ -47,6 +49,9 @@ private:
 
   SharedSocket socket;
   SharedProcessor processor;
+
+  const char openDelimiter;
+  const char closeDelimiter;
 
   std::array<char, READ_BUFFER_SIZE> readBuffer;
 
