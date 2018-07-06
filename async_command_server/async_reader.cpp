@@ -58,18 +58,25 @@ void AsyncReader::stop()
 
 void AsyncReader::doRead()
 {
-  socket->async_read_some(asio::buffer(readBuffer),
+  asio::async_read(*socket, asio::buffer(readBuffer),
   [this](const system::error_code& error, std::size_t bytes_transferred)
   {
     if (error != 0)
     {
-      std::lock_guard<std::mutex> lockOutput{outputLock};
+      switch (error.value())
+      {
+      case 2: // End Of File
+        break;
 
-      errorStream << "async_read error: "
-                  << error.message()
-                  << ". Error code: " << error.value() << '\n';
+      default:
+        std::lock_guard<std::mutex> lockOutput{outputLock};
 
-      return;
+        errorStream << "async_read error: "
+                    << error.message()
+                    << ". Error code: " << error.value() << '\n';
+
+        return;
+      }
     }
 
     onReading(bytes_transferred);
@@ -83,6 +90,13 @@ void AsyncReader::doRead()
       stop();
     }
   });
+
+  if (socket->available() == 0)
+  {
+//    auto t {socket->available()};
+//    std::cout << "\n          available : " << t << "\n";
+    socket->shutdown(asio::ip::tcp::socket::shutdown_receive);
+  }
 }
 
 void AsyncReader::onReading(std::size_t bytes_transferred)

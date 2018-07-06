@@ -13,7 +13,7 @@
 
 using namespace boost;
 
-constexpr size_t READ_BUFFER_SIZE = 1280;
+constexpr size_t READ_BUFFER_SIZE = 64;
 
 class AsyncReader : public std::enable_shared_from_this<AsyncReader>
 {
