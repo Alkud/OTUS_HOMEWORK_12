@@ -93,8 +93,6 @@ void AsyncReader::doRead()
 
   if (socket->available() == 0)
   {
-//    auto t {socket->available()};
-//    std::cout << "\n          available : " << t << "\n";
     socket->shutdown(asio::ip::tcp::socket::shutdown_receive);
   }
 }
