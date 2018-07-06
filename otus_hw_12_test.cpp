@@ -108,6 +108,8 @@ getServerOutput
       }
     }
 
+    std::this_thread::sleep_for(1000ms);
+
     testServer.stop();
 
   } /* end of server working scope */
