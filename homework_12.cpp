@@ -10,8 +10,8 @@
 
 std::atomic<bool> shouldExit{false};
 
-std::condition_variable terminationNotifier;
-std::mutex terminationLock;
+std::condition_variable terminationNotifier{};
+std::mutex terminationLock{};
 
 extern "C" void terminationHandler(int)
 {

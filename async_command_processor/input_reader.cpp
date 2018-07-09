@@ -160,11 +160,13 @@ void InputReader::putNextLine()
 
   std::getline(tempBuffer, nextString);
 
-  if (nextString.size() > (size_t)InputReaderSettings::MaxInputStringSize)
+  if (nextString.size() >
+      static_cast<size_t>(InputReaderSettings::MaxInputStringSize))
   {
     std::lock_guard<std::mutex> lockErrorOut{errorOutLock};
     errorOut << "Maximum command length exceeded! String truncated";
-    nextString = nextString.substr(0, (size_t)InputReaderSettings::MaxInputStringSize);
+    nextString = nextString.substr(0, static_cast<size_t>(
+                                     InputReaderSettings::MaxInputStringSize));
   }
 
   /* Refresh metrics */

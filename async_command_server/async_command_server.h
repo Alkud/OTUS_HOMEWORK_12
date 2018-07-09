@@ -48,7 +48,10 @@ public:
 
   ~AsyncCommandServer()
   {
-    stop();
+    #ifdef NDEBUG
+    #else
+      //std::cout << "-- Server destructor\n";
+    #endif
   }
 
   void start()
@@ -63,6 +66,11 @@ public:
 
   void stop()
   {
+    #ifdef NDEBUG
+    #else
+      //std::cout << "-- called Server::stop()\n";
+    #endif
+
     asyncAcceptor->stop();
 
     for (auto& thread : workingThreads)

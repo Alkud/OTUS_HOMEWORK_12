@@ -52,6 +52,11 @@ void AsyncAcceptor::start()
 
 void AsyncAcceptor::stop()
 {
+  #ifdef NDEBUG
+  #else
+    //std::cout << "-- Acceptor stop\n";
+  #endif
+
   shouldExit.store(true);
 
   while (activeReaderCount.load() != 0)
@@ -59,7 +64,10 @@ void AsyncAcceptor::stop()
     std::unique_lock<std::mutex> lockTermination{terminationLock};
     terminationNotifier.wait_for(lockTermination, 100ms, [this]()
     {
-      std::cout << "\nAcceptor waiting. Active readers: " << activeReaderCount.load() << "\n";
+      #ifdef NDEBUG
+      #else
+        //std::cout << "\n-- Acceptor waiting. Active readers: " << activeReaderCount.load() << "\n";
+      #endif
 
       return activeReaderCount.load() == 0;
     });
@@ -68,6 +76,11 @@ void AsyncAcceptor::stop()
 
   if (acceptor.is_open())
   {
+    #ifdef NDEBUG
+    #else
+      //std::cout << "-- acceptor close\n";
+    #endif
+
     acceptor.close();
   }
 
@@ -79,38 +92,40 @@ void AsyncAcceptor::stop()
 
 void AsyncAcceptor::doAccept()
 {
+  #ifdef NDEBUG
+  #else
+    //std::cout << "-- start doAccept\n";
+  #endif
+
   auto socket {std::make_shared<asio::ip::tcp::socket>(service)};
 
   acceptor.async_accept(*socket.get(), [this, socket](const system::error_code& error)
   {
-    if (error != 0)
+    if (!error)
     {
-      if (error.value() != 125)
-      {
-        std::lock_guard<std::mutex> lockOutput{outputLock};
-
-        errorStream << "Acceptor stopped. Reason: "
-                    << error.message()
-                    << ". Error code: " << error.value() << '\n';
-      }
-
       if (shouldExit.load() != true)
       {
-        stop();
+        onAcception(socket);
       }
-
-      return;
     }
-
-    if (shouldExit.load() != true)
+    else if (error != asio::error::operation_aborted)
     {
-      onAcception(socket);
+      std::lock_guard<std::mutex> lockOutput{outputLock};
+
+      errorStream << "Acceptor stopped. Reason: "
+                  << error.message()
+                  << ". Error code: " << error.value() << '\n';
     }
   });
 }
 
 void AsyncAcceptor::onAcception(SharedSocket acceptedSocket)
 {
+  #ifdef NDEBUG
+  #else
+    //std::cout << "-- start onAcception\n";
+  #endif
+
   currentReader.reset( new AsyncReader(
     acceptedSocket, processor,
     openDelimiter, closeDelimiter,
