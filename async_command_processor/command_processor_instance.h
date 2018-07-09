@@ -113,7 +113,7 @@ public:
     terminationNotifier.notify_all();
   }
 
-  void reactMessage(MessageBroadcaster* sender, Message message)
+  void reactMessage(MessageBroadcaster* /*sender*/, Message message)
   {
     if (messageCode(message) < 1000) // non error message
     {
@@ -194,7 +194,7 @@ public:
         #endif
 
         std::unique_lock<std::mutex> lockNotifier{notifierLock};
-        terminationNotifier.wait_for(lockNotifier, std::chrono::seconds{1}, [this]()
+        terminationNotifier.wait_for(lockNotifier, std::chrono::milliseconds{100}, [this]()
         {
           return (  shouldExit.load()
 

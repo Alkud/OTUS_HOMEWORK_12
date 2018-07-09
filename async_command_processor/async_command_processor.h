@@ -11,8 +11,11 @@
 #include <condition_variable>
 #include "command_processor_instance.h"
 
+using namespace std::chrono_literals;
+
 template <size_t loggingThreadCount = 2u>
-class AsyncCommandProcessor : public MessageBroadcaster
+class AsyncCommandProcessor : public std::enable_shared_from_this<AsyncCommandProcessor<loggingThreadCount>>,
+                              public MessageBroadcaster
 {
 public:
 
@@ -25,8 +28,12 @@ public:
       std::ostream& newErrorStream = std::cerr,
       std::ostream& newMetricsStream = std::cout
   ) :
-    screenOutputLock{},
     processorName{newProcessorName},
+    accessLock{},
+    disconnected{false}, receiving{false},
+    terminationLock{},
+    terminationNotifier{}, activeReceptionCount{},
+
     bulkSize{newBulkSize},
     bulkOpenDelimiter{newBulkOpenDelimiter},
     bulkCloseDelimiter{newBulkCloseDelimiter},
@@ -49,21 +56,26 @@ public:
     entryPoint{processor->getEntryPoint()},
     commandBuffer{processor->getInputBuffer()},
     bulkBuffer{processor->getOutputBuffer()},
-    accessLock{}, isDisconnected{false},
-    metrics{processor->getMetrics()}
+    metrics{processor->getMetrics()},
+    selfDestroy{}
   {
+    #ifdef NDEBUG
+    #else
+        //std::cout << "\n                            AsyncCP constructor\n";
+    #endif
+
     this->addMessageListener(entryPoint);
   }
 
   ~AsyncCommandProcessor()
   {
-    if (workingThread.joinable() == true)
-    {
-      workingThread.join();
-    }
+    #ifdef NDEBUG
+    #else
+        //std::cout << "\n                            AsyncCP destructor\n";
+    #endif
   }
 
-  bool connect(const bool outputMetrics = true) noexcept
+  bool connect(const bool outputMetrics = false) noexcept
   {
     try
     {
@@ -92,15 +104,13 @@ public:
     catch (const std::exception& ex)
     {
       std::lock_guard<std::mutex> lockOutput{screenOutputLock};
-
       errorStream << "Connection failed. Reason: " << ex.what() << std::endl;
       return false;
     }
   }
 
-  void run(const bool outputMetrics = true)
+  void run(const bool outputMetrics = false)
   {
-     //auto globalMetrics {processor->run()};
      processor->run();
 
      if (outputMetrics != true)
@@ -137,51 +147,121 @@ public:
 
   void receiveData(const char *data, std::size_t size)
   {
-    if (nullptr == data || size == 0)
+    ++activeReceptionCount;
+
+    std::unique_lock<std::mutex> lockAccess{accessLock};
+
+    if (nullptr == data || size == 0 || disconnected.load() == true)
     {
+      #ifdef NDEBUG
+      #else
+//        std::lock_guard<std::mutex> lockScreenOutput{screenOutputLock};
+//        std::cout << "                                stop receiving\n";
+      #endif
+
+      lockAccess.unlock();
+
+      --activeReceptionCount;
+
+      terminationNotifier.notify_all();
+
       return;
     }
 
-    //std::lock_guard<std::mutex> lockAccess{accessLock};
+    lockAccess.unlock();
 
-    if (isDisconnected.load() == true)
     {
-      return;
+       #ifdef NDEBUG
+       #else
+//         std::lock_guard<std::mutex> lockScreenOutput{screenOutputLock};
+//         std::cout << "                                receiving started\n";
+       #endif
     }
 
-    if (entryPoint != nullptr)
+
+    if (entryPoint != nullptr && disconnected.load() != true)
     {
       InputReader::EntryDataType newData{};
       for (size_t idx{0}; idx < size; ++idx)
       {
         newData.push_back(data[idx]);
       }
+
       entryPoint->putItem(std::move(newData));
     }
 
-    #ifdef NDEBUG
-    #else
-      //std::cout << "\n                    AsyncCP received data\n";
-    #endif
+    {
+      #ifdef NDEBUG
+      #else
+//        std::lock_guard<std::mutex> lockScreenOutput{screenOutputLock};
+//        std::cout << "                                receiving finished\n";
+      #endif
+    }
+
+   --activeReceptionCount;
+
+   terminationNotifier.notify_all();
+
+   return;
   }
 
   void disconnect()
   {
-    //std::lock_guard<std::mutex> lockAccess{accessLock};
+    std::unique_lock<std::mutex> lockAccess{accessLock};
 
-    if (isDisconnected.load() == true)
+    disconnected.store(true);
+
     {
-      return;
+      #ifdef NDEBUG
+      #else
+//        std::lock_guard<std::mutex> lockScreenOutput{screenOutputLock};
+//        std::cout << "                                disconnect started\n";
+      #endif
     }
 
-    isDisconnected.store(true);
-
     sendMessage(Message::NoMoreData);
+
+    //lockAccess.unlock();
+
+    {
+      #ifdef NDEBUG
+      #else
+//        std::lock_guard<std::mutex> lockScreenOutput{screenOutputLock};
+//        std::cout << "                                disconnect finished\n";
+      #endif
+    }
+
+    //std::unique_lock<std::mutex> lockTermination{terminationLock};
+
+    while (activeReceptionCount.load() != 0)
+    {
+      terminationNotifier.wait_for(lockAccess, 100ms, [this]()
+      {
+        return activeReceptionCount.load() == 0;
+      });
+    }
+
+    lockAccess.unlock();
+
+    #ifdef NDEBUG
+    #else
+      //std::cout << "\n                    AsyncCP finishing\n";
+    #endif
+
+    if (workingThread.joinable() == true)
+    {
+      workingThread.join();
+    }
 
     #ifdef NDEBUG
     #else
       //std::cout << "\n                    AsyncCP disconnect\n";
     #endif
+  }
+
+  bool isDisconnected()
+  {
+    return disconnected.load();
   }
 
   const std::shared_ptr<InputProcessor::InputBufferType>&
@@ -202,9 +282,20 @@ public:
   { return screenOutputLock;}
 
 private:
-  std::mutex screenOutputLock;
+
+  static std::mutex screenOutputLock;
 
   const std::string processorName;
+
+  std::mutex accessLock;
+  std::atomic<bool> disconnected;
+  std::atomic<bool> receiving;
+
+  std::mutex terminationLock;
+  std::atomic<size_t> activeReceptionCount;
+  std::condition_variable terminationNotifier;
+
+
   const size_t bulkSize;
   const char bulkOpenDelimiter;
   const char bulkCloseDelimiter;
@@ -218,12 +309,14 @@ private:
   std::shared_ptr<InputProcessor::InputBufferType> commandBuffer;
   std::shared_ptr<InputProcessor::OutputBufferType> bulkBuffer;
 
-  std::mutex accessLock;
-  std::atomic<bool> isDisconnected;
-
   std::thread workingThread;
 
   SharedGlobalMetrics metrics;
 
   std::size_t timeStampID;
+
+  std::thread selfDestroy;
 };
+
+template <size_t loggingThreadCount>
+std::mutex AsyncCommandProcessor<loggingThreadCount>::screenOutputLock{};
