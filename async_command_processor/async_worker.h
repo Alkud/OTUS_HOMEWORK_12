@@ -9,6 +9,10 @@
 #include <array>
 #include <future>
 #include <cassert>
+#include <iostream>
+#include <random>
+#include <sstream>
+#include <iomanip>
 
 enum class WorkerState
 {
@@ -31,6 +35,7 @@ public:
   {
     futureResults.reserve(workingThreadCount);
     threadID.resize(workingThreadCount, std::thread::id{});
+    stringThreadID.resize(workingThreadCount, std::string{});
     for (auto& item : threadFinished)
     {
       item.store(false);
@@ -39,6 +44,7 @@ public:
 
   virtual ~AsyncWorker()
   {
+    stop();
     #ifdef NDEBUG
     #else
       //std::cout << "\n                    " << workerName << " destructor, shouldExit = " << shouldExit << "\n";
@@ -87,7 +93,7 @@ public:
       {
         shouldExit.store(true);
         threadNotifier.notify_all();
-        result.wait_for(std::chrono::milliseconds(500));
+        result.wait_for(std::chrono::milliseconds(100));
       }
     }
 
@@ -97,6 +103,8 @@ public:
     }
 
     isStopped = true;
+
+    futureResults.clear();
   }
 
   WorkerState getWorkerState()
@@ -105,6 +113,10 @@ public:
   }
 
 protected:
+
+  static std::mt19937 idGenerator;
+
+  std::hash<std::thread::id> threadIdHasher{};
 
   void startWorkingThreads()
   {
@@ -151,7 +163,11 @@ protected:
     {
       /* get unique thread ID */
       threadID[threadIndex] = std::this_thread::get_id();
+      std::stringstream idStream{};
+      idStream << threadID[threadIndex] << "-" << std::setw(12) << std::setfill('0') << idGenerator();
+      stringThreadID[threadIndex] = idStream.str();
 
+      /* main data processing loop */
       while(shouldExit.load() != true
             && (noMoreData.load() != true || notificationCount.load() > 0))
       {
@@ -179,13 +195,13 @@ protected:
           {
             #ifdef NDEBUG
             #else
-              //std::cout << "\n                     " << this->workerName
-              //          << " waiting. shouldExit="<< shouldExit
-              //          << ", noMoreData=" << noMoreData
-              //          << "notificationCount=" << notificationCount.load() << "\n";
+//              std::cout << "\n                     " << this->workerName
+//                        << " waiting. shouldExit="<< shouldExit
+//                        << ", noMoreData=" << noMoreData
+//                        << "notificationCount=" << notificationCount.load() << "\n";
             #endif
 
-            threadNotifier.wait_for(lockNotifier, std::chrono::milliseconds(1000), [this]()
+            threadNotifier.wait_for(lockNotifier, std::chrono::milliseconds(100), [this]()
             {
               return this->noMoreData.load() || this->notificationCount.load() > 0 || this->shouldExit.load();
             });
@@ -253,7 +269,8 @@ protected:
   virtual void onTermination(const size_t threadIndex) = 0;
 
   std::vector<std::future<bool>> futureResults{};
-  std::vector<std::thread::id> threadID;
+  std::vector<std::thread::id> threadID{};
+  std::vector<std::string> stringThreadID{};
   std::atomic<bool> shouldExit;
   std::atomic<bool> noMoreData;
 
@@ -270,3 +287,7 @@ protected:
 
   std::atomic<WorkerState> state;
 };
+
+template<size_t workingThreadCount>
+std::mt19937
+AsyncWorker<workingThreadCount>::idGenerator{workingThreadCount};

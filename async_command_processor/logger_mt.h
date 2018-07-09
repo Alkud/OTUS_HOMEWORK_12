@@ -1,4 +1,4 @@
-// logger.h in Otus homework#12 project
+// logger.h in Otus homework#11 project
 
 #pragma once
 
@@ -34,7 +34,7 @@ public:
          const std::string& newDestinationDirectory = "") :
     AsyncWorker<threadCount>{newWorkerName},
     buffer{newBuffer}, destinationDirectory{newDestinationDirectory},
-    previousTimeStamp{}, additionalNameSection{}, stringThreadID{},
+    previousTimeStamp{}, additionalNameSection{},
     errorOut{newErrorOut}, errorOutLock{newErrorOutLock},
     threadMetrics{}
   {
@@ -51,7 +51,6 @@ public:
       additionalNameSection.push_back(1u);
     }
 
-    stringThreadID.resize(threadCount);
   }
 
   ~Logger()
@@ -73,7 +72,7 @@ public:
     }
   }
 
-  void reactMessage(class MessageBroadcaster* /*sender*/, Message message) override
+  void reactMessage(class MessageBroadcaster*, Message message) override
   {
     if (messageCode(message) < 1000) // non error message
     {
@@ -107,7 +106,7 @@ public:
 
   auto getStringThreadID()
   {
-    return std::make_shared<std::vector<std::string>>(stringThreadID);
+    return std::make_shared<std::vector<std::string>>(this->stringThreadID);
   }
 
   const SharedMultyMetrics getMetrics()
@@ -149,11 +148,12 @@ private:
     };
 
     std::stringstream fileNameSuffix{};
-    fileNameSuffix << ::getpid() << stringThreadID[threadIndex] << "_" << additionalNameSection[threadIndex];
+    fileNameSuffix << ::getpid()<< "-" << this->stringThreadID[threadIndex]
+                   << "_" << additionalNameSection[threadIndex];
     auto logFileName {bulkFileName + "_" + fileNameSuffix.str() + ".log"};
 
 
-    std::ofstream logFile{logFileName};
+    std::ofstream logFile{logFileName, std::ios::trunc};
 
     if(!logFile)
     {
@@ -196,7 +196,7 @@ private:
     sendMessage(errorMessage);
   }
 
-  void onTermination(const size_t /*threadIndex*/) override
+  void onTermination(const size_t) override
   {
     #ifdef NDEBUG
     #else
@@ -209,20 +209,12 @@ private:
     }
   }
 
-  void onThreadStart(const size_t threadIndex) override
-  {
-    std::stringstream stringID{};
-    stringID << std::this_thread::get_id();
-    stringThreadID[threadIndex] = stringID.str();
-  }
-
 
   SharedSizeStringBuffer buffer;
   std::string destinationDirectory;
 
   size_t previousTimeStamp;
   std::vector<size_t> additionalNameSection;
-  std::vector<std::string> stringThreadID;
 
   std::ostream& errorOut;
   std::mutex& errorOutLock;

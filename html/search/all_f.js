@@ -27,6 +27,6 @@ var searchData=
   ['state',['state',['../class_async_worker.html#a586cf4490e20774a5f740b7fc5045cf1',1,'AsyncWorker']]],
   ['stop',['stop',['../class_async_worker.html#a13c539c8916321931bf79def8ffcffec',1,'AsyncWorker::stop()'],['../class_async_acceptor.html#a99935da949236f09505dead2aa3bd9f6',1,'AsyncAcceptor::stop()'],['../class_async_command_server.html#a7cc4d35b6dc167ce9d247d8b88e5c340',1,'AsyncCommandServer::stop()'],['../class_async_reader.html#aeb399294f912ef6cbca8ac3730e283a6',1,'AsyncReader::stop()']]],
   ['stringbuffer',['StringBuffer',['../smart__buffer__mt_8h.html#a9166a8e78fd6f09969cd64d77289298d',1,'smart_buffer_mt.h']]],
-  ['stringthreadid',['stringThreadID',['../class_logger.html#a1e067056657638942881f0b002a5d4bb',1,'Logger::stringThreadID()'],['../class_logger.html#a7bc5cb459c66858b7450d19e9ce8b001',1,'Logger::stringThreadID()']]],
+  ['stringthreadid',['stringThreadID',['../class_async_worker.html#aaf71e715aa6ef33a914b29479198fe0e',1,'AsyncWorker']]],
   ['systemerror',['SystemError',['../broadcasters_8h.html#aff97733e4706e994965da50c70605422ab932b91f686c2aa588adfd9a407155ca',1,'broadcasters.h']]]
 ];

@@ -39,6 +39,14 @@ future
 -
 cassert
 -
+iostream
+-
+random
+-
+sstream
+-
+iomanip
+-
 
 /home/travis/build/Alkud/OTUS_HOMEWORK_12/./async_command_processor/broadcasters.h
 set

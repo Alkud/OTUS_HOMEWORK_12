@@ -89,7 +89,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">logger_mt.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="logger__mt_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// logger.h in Otus homework#12 project</span></div>
+<a href="logger__mt_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// logger.h in Otus homework#11 project</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor"></span></div>
@@ -125,7 +125,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;         <span class="keyword">const</span> std::string&amp; newDestinationDirectory = <span class="stringliteral">&quot;&quot;</span>) :</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="class_async_worker.html">AsyncWorker</a>&lt;threadCount&gt;{newWorkerName},</div>
 <div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="class_logger.html#ae708053a3f3818a168a82e745647bd9b">   36</a></span>&#160;    <a class="code" href="class_logger.html#a770283bf894f169f7246ef3612167917">buffer</a>{newBuffer}, <a class="code" href="class_logger.html#ae708053a3f3818a168a82e745647bd9b">destinationDirectory</a>{newDestinationDirectory},</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="class_logger.html#a1e067056657638942881f0b002a5d4bb">   37</a></span>&#160;    <a class="code" href="class_logger.html#ae7100760bee186fbf2a29912df663f55">previousTimeStamp</a>{}, <a class="code" href="class_logger.html#a4021e7a8a9ed768e84c79d463942aa2f">additionalNameSection</a>{}, <a class="code" href="class_logger.html#a1e067056657638942881f0b002a5d4bb">stringThreadID</a>{},</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="class_logger.html#ae7100760bee186fbf2a29912df663f55">   37</a></span>&#160;    <a class="code" href="class_logger.html#ae7100760bee186fbf2a29912df663f55">previousTimeStamp</a>{}, <a class="code" href="class_logger.html#a4021e7a8a9ed768e84c79d463942aa2f">additionalNameSection</a>{},</div>
 <div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="class_logger.html#a2b2909ba06d28dc5ed1072b91de4c94b">   38</a></span>&#160;    <a class="code" href="class_logger.html#abb298fc74b1d87de485d535d2700075d">errorOut</a>{newErrorOut}, <a class="code" href="class_logger.html#a2b2909ba06d28dc5ed1072b91de4c94b">errorOutLock</a>{newErrorOutLock},</div>
 <div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="class_logger.html#aa61d876c4e69d921026e2b967914dac7">   39</a></span>&#160;    <a class="code" href="class_logger.html#aa61d876c4e69d921026e2b967914dac7">threadMetrics</a>{}</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  {</div>
@@ -142,109 +142,109 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      <a class="code" href="class_logger.html#a4021e7a8a9ed768e84c79d463942aa2f">additionalNameSection</a>.push_back(1u);</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    }</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <a class="code" href="class_logger.html#a1e067056657638942881f0b002a5d4bb">stringThreadID</a>.resize(threadCount);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  ~<a class="code" href="class_logger.html">Logger</a>()</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    this-&gt;<a class="code" href="class_async_worker.html#a13c539c8916321931bf79def8ffcffec">stop</a>();</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  }</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_notification_listener.html#a2d9072be9a7384d87a83509a9b40b565">reactNotification</a>(<a class="code" href="class_notification_broadcaster.html">NotificationBroadcaster</a>* sender)<span class="keyword"> override</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="class_logger.html#a770283bf894f169f7246ef3612167917">buffer</a>.get() == sender)</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">      #ifdef NDEBUG</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #else</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor"></span>        <span class="comment">//std::cout &lt;&lt; this-&gt;workerName &lt;&lt; &quot; reactNotification\n&quot;;</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">      #endif</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      ++this-&gt;<a class="code" href="class_async_worker.html#a9f1eaf097abba38a681a83c22da5e6d2">notificationCount</a>;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      this-&gt;<a class="code" href="class_async_worker.html#a6e2f251afbb0ac6c4c294a2e8c40d20b">threadNotifier</a>.notify_one();</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    }</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_message_listener.html#abda257bfbab240f70cf619ca38a4b69b">reactMessage</a>(<span class="keyword">class</span> <a class="code" href="class_message_broadcaster.html">MessageBroadcaster</a>* <span class="comment">/*sender*/</span>, <a class="code" href="broadcasters_8h.html#aff97733e4706e994965da50c70605422">Message</a> message)<span class="keyword"> override</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="broadcasters_8h.html#aed1d20d3dbc85e3d55156ac530e49442">messageCode</a>(message) &lt; 1000) <span class="comment">// non error message</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    {</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      <span class="keywordflow">switch</span>(message)</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="broadcasters_8h.html#aff97733e4706e994965da50c70605422a72c846e189c7a9cb5ecedde873e4e203">Message::NoMoreData</a> :</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        this-&gt;<a class="code" href="class_async_worker.html#aada84414491e4b995f2d95c0136ca265">noMoreData</a>.store(<span class="keyword">true</span>);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">          #ifdef NDEBUG</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor"></span><span class="preprocessor">          #else</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor"></span>            <span class="comment">//std::cout &lt;&lt; &quot;\n                     &quot; &lt;&lt; this-&gt;workerName&lt;&lt; &quot; NoMoreData received\n&quot;;</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">          #endif</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;          this-&gt;<a class="code" href="class_async_worker.html#a6e2f251afbb0ac6c4c294a2e8c40d20b">threadNotifier</a>.notify_all();</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;          <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      <span class="keywordflow">default</span>:</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;      }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    }</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordflow">else</span>                             <span class="comment">// error message</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    {</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      <span class="keywordflow">if</span> (this-&gt;<a class="code" href="class_async_worker.html#ad9ddf369aab8745b691ba4f24676c88f">shouldExit</a>.load() != <span class="keyword">true</span>)</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      {</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        this-&gt;<a class="code" href="class_async_worker.html#ad9ddf369aab8745b691ba4f24676c88f">shouldExit</a>.store(<span class="keyword">true</span>);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        this-&gt;<a class="code" href="class_async_worker.html#a6e2f251afbb0ac6c4c294a2e8c40d20b">threadNotifier</a>.notify_all();</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <a class="code" href="class_message_broadcaster.html#ae8e7f93dbbcf8cc1c62574ca6b71f2f8">sendMessage</a>(message);</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      }</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    }</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  }</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="keyword">auto</span> getStringThreadID()</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  {</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordflow">return</span> std::make_shared&lt;std::vector&lt;std::string&gt;&gt;(<a class="code" href="class_logger.html#a1e067056657638942881f0b002a5d4bb">stringThreadID</a>);</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  }</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="keyword">const</span> <a class="code" href="thread__metrics_8h.html#ae5877028144abdb2fd0d601eae9bcf2e">SharedMultyMetrics</a> getMetrics()</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  {</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="class_logger.html#aa61d876c4e69d921026e2b967914dac7">threadMetrics</a>;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  }</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="class_async_worker.html#a5a53ffa087efa86514f46d56b95852e9">threadProcess</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> threadIndex)<span class="keyword"> override</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">nullptr</span> == <a class="code" href="class_logger.html#a770283bf894f169f7246ef3612167917">buffer</a>)</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    {</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;      <span class="keywordflow">throw</span>(std::invalid_argument{<span class="stringliteral">&quot;Logger source buffer not defined!&quot;</span>});</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    }</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keyword">auto</span> bufferReply{<a class="code" href="class_logger.html#a770283bf894f169f7246ef3612167917">buffer</a>-&gt;getItem(shared_from_this())};</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">false</span> == bufferReply.first)</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    {</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="preprocessor">      #ifdef NDEBUG</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #else</span></div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="preprocessor"></span>        <span class="comment">//std::cout &lt;&lt; &quot;\n                     &quot; &lt;&lt; this-&gt;workerName&lt;&lt; &quot; FALSE received\n&quot;;</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="preprocessor">      #endif</span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    }</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="keyword">auto</span> nextBulkInfo{bufferReply.second};</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keywordflow">if</span> (nextBulkInfo.first != <a class="code" href="class_logger.html#ae7100760bee186fbf2a29912df663f55">previousTimeStamp</a>)</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    {</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;      <a class="code" href="class_logger.html#a4021e7a8a9ed768e84c79d463942aa2f">additionalNameSection</a>[threadIndex] = 1u;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;      <a class="code" href="class_logger.html#ae7100760bee186fbf2a29912df663f55">previousTimeStamp</a> = nextBulkInfo.first;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    }</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    std::string bulkFileName{</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;      <a class="code" href="class_logger.html#ae708053a3f3818a168a82e745647bd9b">destinationDirectory</a> + std::to_string(nextBulkInfo.first)</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    };</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    std::stringstream fileNameSuffix{};</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    fileNameSuffix &lt;&lt; ::getpid() &lt;&lt; <a class="code" href="class_logger.html#a1e067056657638942881f0b002a5d4bb">stringThreadID</a>[threadIndex] &lt;&lt; <span class="stringliteral">&quot;_&quot;</span> &lt;&lt; <a class="code" href="class_logger.html#a4021e7a8a9ed768e84c79d463942aa2f">additionalNameSection</a>[threadIndex];</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  ~<a class="code" href="class_logger.html">Logger</a>()</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    this-&gt;<a class="code" href="class_async_worker.html#a13c539c8916321931bf79def8ffcffec">stop</a>();</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_notification_listener.html#a2d9072be9a7384d87a83509a9b40b565">reactNotification</a>(<a class="code" href="class_notification_broadcaster.html">NotificationBroadcaster</a>* sender)<span class="keyword"> override</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="class_logger.html#a770283bf894f169f7246ef3612167917">buffer</a>.get() == sender)</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">      #ifdef NDEBUG</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #else</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor"></span>        <span class="comment">//std::cout &lt;&lt; this-&gt;workerName &lt;&lt; &quot; reactNotification\n&quot;;</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">      #endif</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      ++this-&gt;<a class="code" href="class_async_worker.html#a9f1eaf097abba38a681a83c22da5e6d2">notificationCount</a>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      this-&gt;<a class="code" href="class_async_worker.html#a6e2f251afbb0ac6c4c294a2e8c40d20b">threadNotifier</a>.notify_one();</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  }</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_message_listener.html#abda257bfbab240f70cf619ca38a4b69b">reactMessage</a>(<span class="keyword">class</span> <a class="code" href="class_message_broadcaster.html">MessageBroadcaster</a>*, <a class="code" href="broadcasters_8h.html#aff97733e4706e994965da50c70605422">Message</a> message)<span class="keyword"> override</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="broadcasters_8h.html#aed1d20d3dbc85e3d55156ac530e49442">messageCode</a>(message) &lt; 1000) <span class="comment">// non error message</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      <span class="keywordflow">switch</span>(message)</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="broadcasters_8h.html#aff97733e4706e994965da50c70605422a72c846e189c7a9cb5ecedde873e4e203">Message::NoMoreData</a> :</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        this-&gt;<a class="code" href="class_async_worker.html#aada84414491e4b995f2d95c0136ca265">noMoreData</a>.store(<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">          #ifdef NDEBUG</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor"></span><span class="preprocessor">          #else</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor"></span>            <span class="comment">//std::cout &lt;&lt; &quot;\n                     &quot; &lt;&lt; this-&gt;workerName&lt;&lt; &quot; NoMoreData received\n&quot;;</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">          #endif</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;          this-&gt;<a class="code" href="class_async_worker.html#a6e2f251afbb0ac6c4c294a2e8c40d20b">threadNotifier</a>.notify_all();</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;          <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;      <span class="keywordflow">default</span>:</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;      }</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    }</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordflow">else</span>                             <span class="comment">// error message</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      <span class="keywordflow">if</span> (this-&gt;<a class="code" href="class_async_worker.html#ad9ddf369aab8745b691ba4f24676c88f">shouldExit</a>.load() != <span class="keyword">true</span>)</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      {</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        this-&gt;<a class="code" href="class_async_worker.html#ad9ddf369aab8745b691ba4f24676c88f">shouldExit</a>.store(<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        this-&gt;<a class="code" href="class_async_worker.html#a6e2f251afbb0ac6c4c294a2e8c40d20b">threadNotifier</a>.notify_all();</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <a class="code" href="class_message_broadcaster.html#ae8e7f93dbbcf8cc1c62574ca6b71f2f8">sendMessage</a>(message);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;      }</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    }</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  }</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keyword">auto</span> getStringThreadID()</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  {</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keywordflow">return</span> std::make_shared&lt;std::vector&lt;std::string&gt;&gt;(this-&gt;<a class="code" href="class_async_worker.html#aaf71e715aa6ef33a914b29479198fe0e">stringThreadID</a>);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  }</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <span class="keyword">const</span> <a class="code" href="thread__metrics_8h.html#ae5877028144abdb2fd0d601eae9bcf2e">SharedMultyMetrics</a> getMetrics()</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  {</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="class_logger.html#aa61d876c4e69d921026e2b967914dac7">threadMetrics</a>;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  }</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="class_async_worker.html#a5a53ffa087efa86514f46d56b95852e9">threadProcess</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> threadIndex)<span class="keyword"> override</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">nullptr</span> == <a class="code" href="class_logger.html#a770283bf894f169f7246ef3612167917">buffer</a>)</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    {</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;      <span class="keywordflow">throw</span>(std::invalid_argument{<span class="stringliteral">&quot;Logger source buffer not defined!&quot;</span>});</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    }</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keyword">auto</span> bufferReply{<a class="code" href="class_logger.html#a770283bf894f169f7246ef3612167917">buffer</a>-&gt;getItem(shared_from_this())};</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">false</span> == bufferReply.first)</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    {</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="preprocessor">      #ifdef NDEBUG</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #else</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="preprocessor"></span>        <span class="comment">//std::cout &lt;&lt; &quot;\n                     &quot; &lt;&lt; this-&gt;workerName&lt;&lt; &quot; FALSE received\n&quot;;</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="preprocessor">      #endif</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    }</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="keyword">auto</span> nextBulkInfo{bufferReply.second};</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keywordflow">if</span> (nextBulkInfo.first != <a class="code" href="class_logger.html#ae7100760bee186fbf2a29912df663f55">previousTimeStamp</a>)</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    {</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;      <a class="code" href="class_logger.html#a4021e7a8a9ed768e84c79d463942aa2f">additionalNameSection</a>[threadIndex] = 1u;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;      <a class="code" href="class_logger.html#ae7100760bee186fbf2a29912df663f55">previousTimeStamp</a> = nextBulkInfo.first;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    }</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    std::string bulkFileName{</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;      <a class="code" href="class_logger.html#ae708053a3f3818a168a82e745647bd9b">destinationDirectory</a> + std::to_string(nextBulkInfo.first)</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    };</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    std::stringstream fileNameSuffix{};</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    fileNameSuffix &lt;&lt; ::getpid()&lt;&lt; <span class="stringliteral">&quot;-&quot;</span> &lt;&lt; this-&gt;<a class="code" href="class_async_worker.html#aaf71e715aa6ef33a914b29479198fe0e">stringThreadID</a>[threadIndex]</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                   &lt;&lt; <span class="stringliteral">&quot;_&quot;</span> &lt;&lt; <a class="code" href="class_logger.html#a4021e7a8a9ed768e84c79d463942aa2f">additionalNameSection</a>[threadIndex];</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keyword">auto</span> logFileName {bulkFileName + <span class="stringliteral">&quot;_&quot;</span> + fileNameSuffix.str() + <span class="stringliteral">&quot;.log&quot;</span>};</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    std::ofstream logFile{logFileName};</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    std::ofstream logFile{logFileName, std::ios::trunc};</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="keywordflow">if</span>(!logFile)</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    {</div>
@@ -287,7 +287,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <a class="code" href="class_message_broadcaster.html#ae8e7f93dbbcf8cc1c62574ca6b71f2f8">sendMessage</a>(<a class="code" href="class_logger.html#a832c519b286ae12bd2dd1a0457d42eeb">errorMessage</a>);</div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;  }</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_async_worker.html#aadcc78e641e59eb36f60de2894c57994">onTermination</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> <span class="comment">/*threadIndex*/</span>)<span class="keyword"> override</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_async_worker.html#aadcc78e641e59eb36f60de2894c57994">onTermination</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span>)<span class="keyword"> override</span></div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="keyword">  </span>{</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="preprocessor">    #ifdef NDEBUG</span></div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="preprocessor"></span><span class="preprocessor">    #else</span></div>
@@ -300,42 +300,34 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    }</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;  }</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_async_worker.html#afccb59ca79ffc05878151cdf9e906f20">onThreadStart</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> threadIndex)<span class="keyword"> override</span></div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    std::stringstream stringID{};</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    stringID &lt;&lt; std::this_thread::get_id();</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <a class="code" href="class_logger.html#a1e067056657638942881f0b002a5d4bb">stringThreadID</a>[threadIndex] = stringID.str();</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;  }</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;  <a class="code" href="smart__buffer__mt_8h.html#a74179bee4f33e3fb26e7adbcfa2e17d4">SharedSizeStringBuffer</a> <a class="code" href="class_logger.html#a770283bf894f169f7246ef3612167917">buffer</a>;</div>
+<div class="line"><a name="l00214"></a><span class="lineno"><a class="line" href="class_logger.html#a12ef37aebb84b27a0c4619044e68fe97">  214</a></span>&#160;  std::string <a class="code" href="class_logger.html#a12ef37aebb84b27a0c4619044e68fe97">destinationDirectory</a>;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;</div>
+<div class="line"><a name="l00216"></a><span class="lineno"><a class="line" href="class_logger.html#a504e461e6a66a902f1464452b4863cf0">  216</a></span>&#160;  <span class="keywordtype">size_t</span> <a class="code" href="class_logger.html#a504e461e6a66a902f1464452b4863cf0">previousTimeStamp</a>;</div>
+<div class="line"><a name="l00217"></a><span class="lineno"><a class="line" href="class_logger.html#aed5365702e805b6453c631d079d08a06">  217</a></span>&#160;  std::vector&lt;size_t&gt; <a class="code" href="class_logger.html#aed5365702e805b6453c631d079d08a06">additionalNameSection</a>;</div>
 <div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;  <a class="code" href="smart__buffer__mt_8h.html#a74179bee4f33e3fb26e7adbcfa2e17d4">SharedSizeStringBuffer</a> <a class="code" href="class_logger.html#a770283bf894f169f7246ef3612167917">buffer</a>;</div>
-<div class="line"><a name="l00221"></a><span class="lineno"><a class="line" href="class_logger.html#a12ef37aebb84b27a0c4619044e68fe97">  221</a></span>&#160;  std::string <a class="code" href="class_logger.html#a12ef37aebb84b27a0c4619044e68fe97">destinationDirectory</a>;</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;</div>
-<div class="line"><a name="l00223"></a><span class="lineno"><a class="line" href="class_logger.html#a504e461e6a66a902f1464452b4863cf0">  223</a></span>&#160;  <span class="keywordtype">size_t</span> <a class="code" href="class_logger.html#a504e461e6a66a902f1464452b4863cf0">previousTimeStamp</a>;</div>
-<div class="line"><a name="l00224"></a><span class="lineno"><a class="line" href="class_logger.html#aed5365702e805b6453c631d079d08a06">  224</a></span>&#160;  std::vector&lt;size_t&gt; <a class="code" href="class_logger.html#aed5365702e805b6453c631d079d08a06">additionalNameSection</a>;</div>
-<div class="line"><a name="l00225"></a><span class="lineno"><a class="line" href="class_logger.html#a7bc5cb459c66858b7450d19e9ce8b001">  225</a></span>&#160;  std::vector&lt;std::string&gt; <a class="code" href="class_logger.html#a7bc5cb459c66858b7450d19e9ce8b001">stringThreadID</a>;</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;</div>
-<div class="line"><a name="l00227"></a><span class="lineno"><a class="line" href="class_logger.html#aca4f9328402dec97b5991f8f8d008e3a">  227</a></span>&#160;  std::ostream&amp; <a class="code" href="class_logger.html#aca4f9328402dec97b5991f8f8d008e3a">errorOut</a>;</div>
-<div class="line"><a name="l00228"></a><span class="lineno"><a class="line" href="class_logger.html#adda9f925c46ae52a2ea7247107766923">  228</a></span>&#160;  std::mutex&amp; <a class="code" href="class_logger.html#adda9f925c46ae52a2ea7247107766923">errorOutLock</a>;</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;</div>
-<div class="line"><a name="l00230"></a><span class="lineno"><a class="line" href="class_logger.html#a3ffe281c47ffcecfaf9daabfbb1c0a02">  230</a></span>&#160;  <a class="code" href="thread__metrics_8h.html#ae5877028144abdb2fd0d601eae9bcf2e">SharedMultyMetrics</a> <a class="code" href="class_logger.html#a3ffe281c47ffcecfaf9daabfbb1c0a02">threadMetrics</a>;</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;</div>
-<div class="line"><a name="l00232"></a><span class="lineno"><a class="line" href="class_logger.html#a832c519b286ae12bd2dd1a0457d42eeb">  232</a></span>&#160;  <a class="code" href="broadcasters_8h.html#aff97733e4706e994965da50c70605422">Message</a> <a class="code" href="class_logger.html#a832c519b286ae12bd2dd1a0457d42eeb">errorMessage</a>{<a class="code" href="broadcasters_8h.html#aff97733e4706e994965da50c70605422ab932b91f686c2aa588adfd9a407155ca">Message::SystemError</a>};</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;};</div>
-<div class="ttc" id="class_logger_html_a12ef37aebb84b27a0c4619044e68fe97"><div class="ttname"><a href="class_logger.html#a12ef37aebb84b27a0c4619044e68fe97">Logger::destinationDirectory</a></div><div class="ttdeci">std::string destinationDirectory</div><div class="ttdef"><b>Definition:</b> logger_mt.h:221</div></div>
+<div class="line"><a name="l00219"></a><span class="lineno"><a class="line" href="class_logger.html#aca4f9328402dec97b5991f8f8d008e3a">  219</a></span>&#160;  std::ostream&amp; <a class="code" href="class_logger.html#aca4f9328402dec97b5991f8f8d008e3a">errorOut</a>;</div>
+<div class="line"><a name="l00220"></a><span class="lineno"><a class="line" href="class_logger.html#adda9f925c46ae52a2ea7247107766923">  220</a></span>&#160;  std::mutex&amp; <a class="code" href="class_logger.html#adda9f925c46ae52a2ea7247107766923">errorOutLock</a>;</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;</div>
+<div class="line"><a name="l00222"></a><span class="lineno"><a class="line" href="class_logger.html#a3ffe281c47ffcecfaf9daabfbb1c0a02">  222</a></span>&#160;  <a class="code" href="thread__metrics_8h.html#ae5877028144abdb2fd0d601eae9bcf2e">SharedMultyMetrics</a> <a class="code" href="class_logger.html#a3ffe281c47ffcecfaf9daabfbb1c0a02">threadMetrics</a>;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
+<div class="line"><a name="l00224"></a><span class="lineno"><a class="line" href="class_logger.html#a832c519b286ae12bd2dd1a0457d42eeb">  224</a></span>&#160;  <a class="code" href="broadcasters_8h.html#aff97733e4706e994965da50c70605422">Message</a> <a class="code" href="class_logger.html#a832c519b286ae12bd2dd1a0457d42eeb">errorMessage</a>{<a class="code" href="broadcasters_8h.html#aff97733e4706e994965da50c70605422ab932b91f686c2aa588adfd9a407155ca">Message::SystemError</a>};</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;};</div>
+<div class="ttc" id="class_logger_html_a12ef37aebb84b27a0c4619044e68fe97"><div class="ttname"><a href="class_logger.html#a12ef37aebb84b27a0c4619044e68fe97">Logger::destinationDirectory</a></div><div class="ttdeci">std::string destinationDirectory</div><div class="ttdef"><b>Definition:</b> logger_mt.h:214</div></div>
 <div class="ttc" id="class_async_worker_html_aadcc78e641e59eb36f60de2894c57994"><div class="ttname"><a href="class_async_worker.html#aadcc78e641e59eb36f60de2894c57994">AsyncWorker&lt; threadCount &gt;::onTermination</a></div><div class="ttdeci">virtual void onTermination(const size_t threadIndex)=0</div></div>
-<div class="ttc" id="class_logger_html_adda9f925c46ae52a2ea7247107766923"><div class="ttname"><a href="class_logger.html#adda9f925c46ae52a2ea7247107766923">Logger::errorOutLock</a></div><div class="ttdeci">std::mutex &amp; errorOutLock</div><div class="ttdef"><b>Definition:</b> logger_mt.h:228</div></div>
+<div class="ttc" id="class_logger_html_adda9f925c46ae52a2ea7247107766923"><div class="ttname"><a href="class_logger.html#adda9f925c46ae52a2ea7247107766923">Logger::errorOutLock</a></div><div class="ttdeci">std::mutex &amp; errorOutLock</div><div class="ttdef"><b>Definition:</b> logger_mt.h:220</div></div>
 <div class="ttc" id="broadcasters_8h_html_aff97733e4706e994965da50c70605422a97670e256d3a807ee17c2107c2a9f6bd"><div class="ttname"><a href="broadcasters_8h.html#aff97733e4706e994965da50c70605422a97670e256d3a807ee17c2107c2a9f6bd">Message::BufferEmpty</a></div><div class="ttdoc">source buffer empty while trying to read on notification </div></div>
 <div class="ttc" id="class_message_broadcaster_html"><div class="ttname"><a href="class_message_broadcaster.html">MessageBroadcaster</a></div><div class="ttdef"><b>Definition:</b> broadcasters.h:53</div></div>
 <div class="ttc" id="thread__metrics_8h_html_ae5877028144abdb2fd0d601eae9bcf2e"><div class="ttname"><a href="thread__metrics_8h.html#ae5877028144abdb2fd0d601eae9bcf2e">SharedMultyMetrics</a></div><div class="ttdeci">std::vector&lt; std::shared_ptr&lt; ThreadMetrics &gt;&gt; SharedMultyMetrics</div><div class="ttdef"><b>Definition:</b> thread_metrics.h:100</div></div>
 <div class="ttc" id="class_async_worker_html_a5a53ffa087efa86514f46d56b95852e9"><div class="ttname"><a href="class_async_worker.html#a5a53ffa087efa86514f46d56b95852e9">AsyncWorker&lt; threadCount &gt;::threadProcess</a></div><div class="ttdeci">virtual bool threadProcess(const size_t threadIndex)=0</div></div>
 <div class="ttc" id="listeners_8h_html"><div class="ttname"><a href="listeners_8h.html">listeners.h</a></div></div>
-<div class="ttc" id="class_logger_html_a3ffe281c47ffcecfaf9daabfbb1c0a02"><div class="ttname"><a href="class_logger.html#a3ffe281c47ffcecfaf9daabfbb1c0a02">Logger::threadMetrics</a></div><div class="ttdeci">SharedMultyMetrics threadMetrics</div><div class="ttdef"><b>Definition:</b> logger_mt.h:230</div></div>
-<div class="ttc" id="class_async_worker_html_a9f1eaf097abba38a681a83c22da5e6d2"><div class="ttname"><a href="class_async_worker.html#a9f1eaf097abba38a681a83c22da5e6d2">AsyncWorker&lt; threadCount &gt;::notificationCount</a></div><div class="ttdeci">std::atomic&lt; size_t &gt; notificationCount</div><div class="ttdef"><b>Definition:</b> async_worker.h:262</div></div>
+<div class="ttc" id="class_logger_html_a3ffe281c47ffcecfaf9daabfbb1c0a02"><div class="ttname"><a href="class_logger.html#a3ffe281c47ffcecfaf9daabfbb1c0a02">Logger::threadMetrics</a></div><div class="ttdeci">SharedMultyMetrics threadMetrics</div><div class="ttdef"><b>Definition:</b> logger_mt.h:222</div></div>
+<div class="ttc" id="class_async_worker_html_a9f1eaf097abba38a681a83c22da5e6d2"><div class="ttname"><a href="class_async_worker.html#a9f1eaf097abba38a681a83c22da5e6d2">AsyncWorker&lt; threadCount &gt;::notificationCount</a></div><div class="ttdeci">std::atomic&lt; size_t &gt; notificationCount</div><div class="ttdef"><b>Definition:</b> async_worker.h:279</div></div>
 <div class="ttc" id="class_logger_html"><div class="ttname"><a href="class_logger.html">Logger</a></div><div class="ttdef"><b>Definition:</b> logger_mt.h:23</div></div>
 <div class="ttc" id="smart__buffer__mt_8h_html_a74179bee4f33e3fb26e7adbcfa2e17d4"><div class="ttname"><a href="smart__buffer__mt_8h.html#a74179bee4f33e3fb26e7adbcfa2e17d4">SharedSizeStringBuffer</a></div><div class="ttdeci">std::shared_ptr&lt; SizeStringBuffer &gt; SharedSizeStringBuffer</div><div class="ttdef"><b>Definition:</b> smart_buffer_mt.h:287</div></div>
 <div class="ttc" id="class_logger_html_a770283bf894f169f7246ef3612167917"><div class="ttname"><a href="class_logger.html#a770283bf894f169f7246ef3612167917">Logger::buffer</a></div><div class="ttdeci">buffer</div><div class="ttdef"><b>Definition:</b> logger_mt.h:36</div></div>
-<div class="ttc" id="class_async_worker_html_aada84414491e4b995f2d95c0136ca265"><div class="ttname"><a href="class_async_worker.html#aada84414491e4b995f2d95c0136ca265">AsyncWorker&lt; threadCount &gt;::noMoreData</a></div><div class="ttdeci">std::atomic&lt; bool &gt; noMoreData</div><div class="ttdef"><b>Definition:</b> async_worker.h:258</div></div>
+<div class="ttc" id="class_async_worker_html_aada84414491e4b995f2d95c0136ca265"><div class="ttname"><a href="class_async_worker.html#aada84414491e4b995f2d95c0136ca265">AsyncWorker&lt; threadCount &gt;::noMoreData</a></div><div class="ttdeci">std::atomic&lt; bool &gt; noMoreData</div><div class="ttdef"><b>Definition:</b> async_worker.h:275</div></div>
 <div class="ttc" id="class_notification_listener_html"><div class="ttname"><a href="class_notification_listener.html">NotificationListener</a></div><div class="ttdef"><b>Definition:</b> listeners.h:23</div></div>
 <div class="ttc" id="broadcasters_8h_html_aff97733e4706e994965da50c70605422a72c846e189c7a9cb5ecedde873e4e203"><div class="ttname"><a href="broadcasters_8h.html#aff97733e4706e994965da50c70605422a72c846e189c7a9cb5ecedde873e4e203">Message::NoMoreData</a></div><div class="ttdoc">Data flow messages: </div></div>
 <div class="ttc" id="async__worker_8h_html"><div class="ttname"><a href="async__worker_8h.html">async_worker.h</a></div></div>
@@ -344,31 +336,29 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="ttc" id="broadcasters_8h_html_aff97733e4706e994965da50c70605422ab932b91f686c2aa588adfd9a407155ca"><div class="ttname"><a href="broadcasters_8h.html#aff97733e4706e994965da50c70605422ab932b91f686c2aa588adfd9a407155ca">Message::SystemError</a></div><div class="ttdoc">Error code messages: </div></div>
 <div class="ttc" id="class_logger_html_a2c33f8aeaed963419f7a3ea2757d3462"><div class="ttname"><a href="class_logger.html#a2c33f8aeaed963419f7a3ea2757d3462">Logger::Logger</a></div><div class="ttdeci">Logger(const std::string &amp;newWorkerName, const SharedSizeStringBuffer &amp;newBuffer, std::ostream &amp;newErrorOut, std::mutex &amp;newErrorOutLock, const std::string &amp;newDestinationDirectory=&quot;&quot;)</div><div class="ttdef"><b>Definition:</b> logger_mt.h:31</div></div>
 <div class="ttc" id="class_logger_html_abb298fc74b1d87de485d535d2700075d"><div class="ttname"><a href="class_logger.html#abb298fc74b1d87de485d535d2700075d">Logger::errorOut</a></div><div class="ttdeci">errorOut</div><div class="ttdef"><b>Definition:</b> logger_mt.h:38</div></div>
-<div class="ttc" id="class_logger_html_a7bc5cb459c66858b7450d19e9ce8b001"><div class="ttname"><a href="class_logger.html#a7bc5cb459c66858b7450d19e9ce8b001">Logger::stringThreadID</a></div><div class="ttdeci">std::vector&lt; std::string &gt; stringThreadID</div><div class="ttdef"><b>Definition:</b> logger_mt.h:225</div></div>
-<div class="ttc" id="class_async_worker_html_a6e2f251afbb0ac6c4c294a2e8c40d20b"><div class="ttname"><a href="class_async_worker.html#a6e2f251afbb0ac6c4c294a2e8c40d20b">AsyncWorker&lt; threadCount &gt;::threadNotifier</a></div><div class="ttdeci">std::condition_variable threadNotifier</div><div class="ttdef"><b>Definition:</b> async_worker.h:263</div></div>
+<div class="ttc" id="class_async_worker_html_a6e2f251afbb0ac6c4c294a2e8c40d20b"><div class="ttname"><a href="class_async_worker.html#a6e2f251afbb0ac6c4c294a2e8c40d20b">AsyncWorker&lt; threadCount &gt;::threadNotifier</a></div><div class="ttdeci">std::condition_variable threadNotifier</div><div class="ttdef"><b>Definition:</b> async_worker.h:280</div></div>
 <div class="ttc" id="class_notification_broadcaster_html"><div class="ttname"><a href="class_notification_broadcaster.html">NotificationBroadcaster</a></div><div class="ttdef"><b>Definition:</b> broadcasters.h:111</div></div>
 <div class="ttc" id="broadcasters_8h_html_aed1d20d3dbc85e3d55156ac530e49442"><div class="ttname"><a href="broadcasters_8h.html#aed1d20d3dbc85e3d55156ac530e49442">messageCode</a></div><div class="ttdeci">std::enable_if_t&lt; std::is_integral&lt; T &gt;::value, T &gt; messageCode(const Message &amp;message)</div><div class="ttdef"><b>Definition:</b> broadcasters.h:46</div></div>
-<div class="ttc" id="class_async_worker_html_afccb59ca79ffc05878151cdf9e906f20"><div class="ttname"><a href="class_async_worker.html#afccb59ca79ffc05878151cdf9e906f20">AsyncWorker&lt; threadCount &gt;::onThreadStart</a></div><div class="ttdeci">virtual void onThreadStart(const size_t)</div><div class="ttdef"><b>Definition:</b> async_worker.h:143</div></div>
-<div class="ttc" id="class_async_worker_html_ad9ddf369aab8745b691ba4f24676c88f"><div class="ttname"><a href="class_async_worker.html#ad9ddf369aab8745b691ba4f24676c88f">AsyncWorker&lt; threadCount &gt;::shouldExit</a></div><div class="ttdeci">std::atomic&lt; bool &gt; shouldExit</div><div class="ttdef"><b>Definition:</b> async_worker.h:257</div></div>
+<div class="ttc" id="class_async_worker_html_ad9ddf369aab8745b691ba4f24676c88f"><div class="ttname"><a href="class_async_worker.html#ad9ddf369aab8745b691ba4f24676c88f">AsyncWorker&lt; threadCount &gt;::shouldExit</a></div><div class="ttdeci">std::atomic&lt; bool &gt; shouldExit</div><div class="ttdef"><b>Definition:</b> async_worker.h:274</div></div>
 <div class="ttc" id="class_notification_listener_html_a2d9072be9a7384d87a83509a9b40b565"><div class="ttname"><a href="class_notification_listener.html#a2d9072be9a7384d87a83509a9b40b565">NotificationListener::reactNotification</a></div><div class="ttdeci">virtual void reactNotification(NotificationBroadcaster *sender)=0</div><div class="ttdoc">Describes object&#39;s reaction to a notification. </div></div>
-<div class="ttc" id="class_async_worker_html_a13c539c8916321931bf79def8ffcffec"><div class="ttname"><a href="class_async_worker.html#a13c539c8916321931bf79def8ffcffec">AsyncWorker&lt; threadCount &gt;::stop</a></div><div class="ttdeci">void stop()</div><div class="ttdef"><b>Definition:</b> async_worker.h:68</div></div>
+<div class="ttc" id="class_async_worker_html_a13c539c8916321931bf79def8ffcffec"><div class="ttname"><a href="class_async_worker.html#a13c539c8916321931bf79def8ffcffec">AsyncWorker&lt; threadCount &gt;::stop</a></div><div class="ttdeci">void stop()</div><div class="ttdef"><b>Definition:</b> async_worker.h:74</div></div>
 <div class="ttc" id="thread__metrics_8h_html"><div class="ttname"><a href="thread__metrics_8h.html">thread_metrics.h</a></div></div>
-<div class="ttc" id="class_logger_html_aed5365702e805b6453c631d079d08a06"><div class="ttname"><a href="class_logger.html#aed5365702e805b6453c631d079d08a06">Logger::additionalNameSection</a></div><div class="ttdeci">std::vector&lt; size_t &gt; additionalNameSection</div><div class="ttdef"><b>Definition:</b> logger_mt.h:224</div></div>
+<div class="ttc" id="class_logger_html_aed5365702e805b6453c631d079d08a06"><div class="ttname"><a href="class_logger.html#aed5365702e805b6453c631d079d08a06">Logger::additionalNameSection</a></div><div class="ttdeci">std::vector&lt; size_t &gt; additionalNameSection</div><div class="ttdef"><b>Definition:</b> logger_mt.h:217</div></div>
 <div class="ttc" id="class_logger_html_ae7100760bee186fbf2a29912df663f55"><div class="ttname"><a href="class_logger.html#ae7100760bee186fbf2a29912df663f55">Logger::previousTimeStamp</a></div><div class="ttdeci">previousTimeStamp</div><div class="ttdef"><b>Definition:</b> logger_mt.h:37</div></div>
 <div class="ttc" id="broadcasters_8h_html_aff97733e4706e994965da50c70605422"><div class="ttname"><a href="broadcasters_8h.html#aff97733e4706e994965da50c70605422">Message</a></div><div class="ttdeci">Message</div><div class="ttdoc">inteprocess exchange messages </div><div class="ttdef"><b>Definition:</b> broadcasters.h:14</div></div>
 <div class="ttc" id="class_logger_html_a2b2909ba06d28dc5ed1072b91de4c94b"><div class="ttname"><a href="class_logger.html#a2b2909ba06d28dc5ed1072b91de4c94b">Logger::errorOutLock</a></div><div class="ttdeci">errorOutLock</div><div class="ttdef"><b>Definition:</b> logger_mt.h:38</div></div>
-<div class="ttc" id="class_logger_html_a504e461e6a66a902f1464452b4863cf0"><div class="ttname"><a href="class_logger.html#a504e461e6a66a902f1464452b4863cf0">Logger::previousTimeStamp</a></div><div class="ttdeci">size_t previousTimeStamp</div><div class="ttdef"><b>Definition:</b> logger_mt.h:223</div></div>
+<div class="ttc" id="class_logger_html_a504e461e6a66a902f1464452b4863cf0"><div class="ttname"><a href="class_logger.html#a504e461e6a66a902f1464452b4863cf0">Logger::previousTimeStamp</a></div><div class="ttdeci">size_t previousTimeStamp</div><div class="ttdef"><b>Definition:</b> logger_mt.h:216</div></div>
 <div class="ttc" id="class_async_worker_html_a76e320f2dc1db5ac99639dfeb2c990c7"><div class="ttname"><a href="class_async_worker.html#a76e320f2dc1db5ac99639dfeb2c990c7">AsyncWorker&lt; threadCount &gt;::onThreadException</a></div><div class="ttdeci">virtual void onThreadException(const std::exception &amp;ex, const size_t threadIndex)=0</div></div>
-<div class="ttc" id="class_async_worker_html"><div class="ttname"><a href="class_async_worker.html">AsyncWorker</a></div><div class="ttdef"><b>Definition:</b> async_worker.h:21</div></div>
+<div class="ttc" id="class_async_worker_html"><div class="ttname"><a href="class_async_worker.html">AsyncWorker</a></div><div class="ttdef"><b>Definition:</b> async_worker.h:25</div></div>
 <div class="ttc" id="class_logger_html_aa61d876c4e69d921026e2b967914dac7"><div class="ttname"><a href="class_logger.html#aa61d876c4e69d921026e2b967914dac7">Logger::threadMetrics</a></div><div class="ttdeci">threadMetrics</div><div class="ttdef"><b>Definition:</b> logger_mt.h:39</div></div>
 <div class="ttc" id="class_message_broadcaster_html_ae8e7f93dbbcf8cc1c62574ca6b71f2f8"><div class="ttname"><a href="class_message_broadcaster.html#ae8e7f93dbbcf8cc1c62574ca6b71f2f8">MessageBroadcaster::sendMessage</a></div><div class="ttdeci">virtual void sendMessage(Message message)</div><div class="ttdoc">Send instruction to all registered listeners. </div><div class="ttdef"><b>Definition:</b> broadcasters.h:82</div></div>
 <div class="ttc" id="class_message_listener_html_abda257bfbab240f70cf619ca38a4b69b"><div class="ttname"><a href="class_message_listener.html#abda257bfbab240f70cf619ca38a4b69b">MessageListener::reactMessage</a></div><div class="ttdeci">virtual void reactMessage(MessageBroadcaster *sender, Message message)=0</div><div class="ttdoc">Describes object&#39;s reaction to a message. </div></div>
-<div class="ttc" id="class_async_worker_html_af71a3c3ed83afcc6ac38623973016801"><div class="ttname"><a href="class_async_worker.html#af71a3c3ed83afcc6ac38623973016801">AsyncWorker&lt; threadCount &gt;::workerName</a></div><div class="ttdeci">const std::string workerName</div><div class="ttdef"><b>Definition:</b> async_worker.h:269</div></div>
-<div class="ttc" id="class_async_worker_html_a27fb8708b6ab9a4180f3e92bb8222435"><div class="ttname"><a href="class_async_worker.html#a27fb8708b6ab9a4180f3e92bb8222435">AsyncWorker&lt; threadCount &gt;::threadFinished</a></div><div class="ttdeci">std::array&lt; std::atomic_bool, workingThreadCount &gt; threadFinished</div><div class="ttdef"><b>Definition:</b> async_worker.h:266</div></div>
+<div class="ttc" id="class_async_worker_html_af71a3c3ed83afcc6ac38623973016801"><div class="ttname"><a href="class_async_worker.html#af71a3c3ed83afcc6ac38623973016801">AsyncWorker&lt; threadCount &gt;::workerName</a></div><div class="ttdeci">const std::string workerName</div><div class="ttdef"><b>Definition:</b> async_worker.h:286</div></div>
+<div class="ttc" id="class_async_worker_html_aaf71e715aa6ef33a914b29479198fe0e"><div class="ttname"><a href="class_async_worker.html#aaf71e715aa6ef33a914b29479198fe0e">AsyncWorker&lt; threadCount &gt;::stringThreadID</a></div><div class="ttdeci">std::vector&lt; std::string &gt; stringThreadID</div><div class="ttdef"><b>Definition:</b> async_worker.h:273</div></div>
+<div class="ttc" id="class_async_worker_html_a27fb8708b6ab9a4180f3e92bb8222435"><div class="ttname"><a href="class_async_worker.html#a27fb8708b6ab9a4180f3e92bb8222435">AsyncWorker&lt; threadCount &gt;::threadFinished</a></div><div class="ttdeci">std::array&lt; std::atomic_bool, workingThreadCount &gt; threadFinished</div><div class="ttdef"><b>Definition:</b> async_worker.h:283</div></div>
 <div class="ttc" id="class_logger_html_ae708053a3f3818a168a82e745647bd9b"><div class="ttname"><a href="class_logger.html#ae708053a3f3818a168a82e745647bd9b">Logger::destinationDirectory</a></div><div class="ttdeci">destinationDirectory</div><div class="ttdef"><b>Definition:</b> logger_mt.h:36</div></div>
-<div class="ttc" id="class_logger_html_aca4f9328402dec97b5991f8f8d008e3a"><div class="ttname"><a href="class_logger.html#aca4f9328402dec97b5991f8f8d008e3a">Logger::errorOut</a></div><div class="ttdeci">std::ostream &amp; errorOut</div><div class="ttdef"><b>Definition:</b> logger_mt.h:227</div></div>
-<div class="ttc" id="class_logger_html_a832c519b286ae12bd2dd1a0457d42eeb"><div class="ttname"><a href="class_logger.html#a832c519b286ae12bd2dd1a0457d42eeb">Logger::errorMessage</a></div><div class="ttdeci">Message errorMessage</div><div class="ttdef"><b>Definition:</b> logger_mt.h:232</div></div>
-<div class="ttc" id="class_logger_html_a1e067056657638942881f0b002a5d4bb"><div class="ttname"><a href="class_logger.html#a1e067056657638942881f0b002a5d4bb">Logger::stringThreadID</a></div><div class="ttdeci">stringThreadID</div><div class="ttdef"><b>Definition:</b> logger_mt.h:37</div></div>
+<div class="ttc" id="class_logger_html_aca4f9328402dec97b5991f8f8d008e3a"><div class="ttname"><a href="class_logger.html#aca4f9328402dec97b5991f8f8d008e3a">Logger::errorOut</a></div><div class="ttdeci">std::ostream &amp; errorOut</div><div class="ttdef"><b>Definition:</b> logger_mt.h:219</div></div>
+<div class="ttc" id="class_logger_html_a832c519b286ae12bd2dd1a0457d42eeb"><div class="ttname"><a href="class_logger.html#a832c519b286ae12bd2dd1a0457d42eeb">Logger::errorMessage</a></div><div class="ttdeci">Message errorMessage</div><div class="ttdef"><b>Definition:</b> logger_mt.h:224</div></div>
 <div class="ttc" id="smart__buffer__mt_8h_html"><div class="ttname"><a href="smart__buffer__mt_8h.html">smart_buffer_mt.h</a></div></div>
 <div class="ttc" id="class_logger_html_a4021e7a8a9ed768e84c79d463942aa2f"><div class="ttname"><a href="class_logger.html#a4021e7a8a9ed768e84c79d463942aa2f">Logger::additionalNameSection</a></div><div class="ttdeci">additionalNameSection</div><div class="ttdef"><b>Definition:</b> logger_mt.h:37</div></div>
 </div><!-- fragment --></div><!-- contents -->

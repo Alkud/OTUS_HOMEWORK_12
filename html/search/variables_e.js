@@ -6,5 +6,5 @@ var searchData=
   ['shouldexit',['shouldExit',['../class_async_worker.html#ad9ddf369aab8745b691ba4f24676c88f',1,'AsyncWorker::shouldExit()'],['../class_command_processor_instance.html#ae934fb344a66f329340d431ca66a2b55',1,'CommandProcessorInstance::shouldExit()'],['../class_async_acceptor.html#a7dc92416426765ae0a1d366a56bb93ba',1,'AsyncAcceptor::shouldExit()'],['../homework__12_8cpp.html#a06f0f84164bdec2797dde92d67ffc297',1,'shouldExit():&#160;homework_12.cpp']]],
   ['socket',['socket',['../class_async_reader.html#a8e42ee448123ff17418e8bcb98c23b0d',1,'AsyncReader']]],
   ['state',['state',['../class_async_worker.html#a586cf4490e20774a5f740b7fc5045cf1',1,'AsyncWorker']]],
-  ['stringthreadid',['stringThreadID',['../class_logger.html#a1e067056657638942881f0b002a5d4bb',1,'Logger::stringThreadID()'],['../class_logger.html#a7bc5cb459c66858b7450d19e9ce8b001',1,'Logger::stringThreadID()']]]
+  ['stringthreadid',['stringThreadID',['../class_async_worker.html#aaf71e715aa6ef33a914b29479198fe0e',1,'AsyncWorker']]]
 ];
