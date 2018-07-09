@@ -28,7 +28,7 @@ public:
                  const SharedSizeStringBuffer& newOutputBuffer,
                  std::ostream& newErrorOut, std::mutex& newErrorOutLock);
 
-  ~InputProcessor();
+  ~InputProcessor() override;
 
   void reactNotification(NotificationBroadcaster* sender) override;
 

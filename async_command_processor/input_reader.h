@@ -33,7 +33,7 @@ public:
               const SharedStringBuffer& newOutputBuffer,
               std::ostream& newErrorOut, std::mutex& newErrorOutLock);
 
-  ~InputReader();
+  ~InputReader() override;
 
   void reactMessage(MessageBroadcaster*, Message message) override;
 

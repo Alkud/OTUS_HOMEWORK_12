@@ -1,3 +1,5 @@
+// async_reader.cpp in Otus homework#12 project
+
 #include "async_reader.h"
 #include <chrono>
 
@@ -37,6 +39,11 @@ void AsyncReader::start()
 
 void AsyncReader::stop()
 {
+  #ifdef NDEBUG
+  #else
+    //std::cout << "-- reader stop\n";
+  #endif
+
   if (socket != nullptr)
   {    
     if (socket->is_open())
@@ -58,36 +65,41 @@ void AsyncReader::stop()
 
 void AsyncReader::doRead()
 {
+  #ifdef NDEBUG
+  #else
+    //std::cout << "-- start doRead\n";
+  #endif
+
   asio::async_read(*socket, asio::buffer(readBuffer),
   asio::transfer_at_least(1),
   [this](const system::error_code& error, std::size_t bytes_transferred)
   {
-    if (error != 0)
+    if (!error)
     {
-      switch (error.value())
-      {
-      case 2: // End Of File
-        break;
+      onReading(bytes_transferred);
 
-      default:
-        std::lock_guard<std::mutex> lockOutput{outputLock};
+      #ifdef NDEBUG
+      #else
+        //std::cout << "-- continue doRead\n";
+      #endif
 
-        errorStream << "async_read error: "
-                    << error.message()
-                    << ". Error code: " << error.value() << '\n';
-
-        return;
-      }
-    }
-
-    onReading(bytes_transferred);
-
-    if (READ_BUFFER_SIZE == bytes_transferred)
-    {
       doRead();
+    }
+    else if (error != asio::error::eof)
+    {
+      std::lock_guard<std::mutex> lockOutput{outputLock};
+
+      errorStream << "async_read error: "
+                  << error.message()
+                  << ". Error code: " << error.value() << '\n';
     }
     else
     {
+      #ifdef NDEBUG
+      #else
+        //std::cout << "-- doRead Eof\n";
+      #endif
+
       stop();
     }
   });
@@ -95,6 +107,11 @@ void AsyncReader::doRead()
 
 void AsyncReader::onReading(std::size_t bytes_transferred)
 {
+  #ifdef NDEBUG
+  #else
+    //std::cout << "-- start onReading\n";
+  #endif
+
   if (processor == nullptr)
   {
     return;
@@ -112,7 +129,7 @@ void AsyncReader::onReading(std::size_t bytes_transferred)
 
     characterBuffer.peek();
 
-    if (characterBuffer.good() != true)
+    if (characterBuffer.good() != true) // last portion of data received
     {
       characterBuffer.clear();
       if (tempString.empty() != true)

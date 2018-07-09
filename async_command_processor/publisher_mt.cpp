@@ -95,8 +95,8 @@ bool Publisher::threadProcess(const size_t /*threadIndex*/)
   /* Refresh metrics */
   ++threadMetrics->totalBulkCount;
     threadMetrics->totalCommandCount
-      += std::count(nextBulkInfo.second.begin(),
-                    nextBulkInfo.second.end(), ',') + 1;
+      += static_cast<size_t>(std::count(nextBulkInfo.second.begin(),
+                    nextBulkInfo.second.end(), ',') + 1);
 
   return true;
 }

@@ -25,7 +25,7 @@ public:
             std::ostream& newOutput, std::mutex& newOutpuLock,
             std::ostream& newErrorOut, std::mutex& newErrorOutLock);
 
-  ~Publisher();
+  ~Publisher() override;
 
   void reactNotification(NotificationBroadcaster* sender) override;
 

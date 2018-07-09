@@ -139,86 +139,94 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
 <div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="class_async_command_server.html#a85e85a4d297452fbf83cbcd68542b848">   49</a></span>&#160;  <a class="code" href="class_async_command_server.html#a85e85a4d297452fbf83cbcd68542b848">~AsyncCommandServer</a>()</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    stop();</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  }</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="class_async_command_server.html#a54dcf54957edc04f87e6e1f7d28307b4">   54</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_async_command_server.html#a54dcf54957edc04f87e6e1f7d28307b4">start</a>()</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    asyncAcceptor-&gt;start();</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> idx{0}; idx &lt; workingThreadCount; ++idx)</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      workingThreads.push_back(std::thread{&amp;<a class="code" href="class_async_command_server.html#a4dc39a14641e6b91bda278d341ee5298">AsyncCommandServer::run</a>, <span class="keyword">this</span>});</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  }</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="class_async_command_server.html#a7cc4d35b6dc167ce9d247d8b88e5c340">   64</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_async_command_server.html#a7cc4d35b6dc167ce9d247d8b88e5c340">stop</a>()</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    asyncAcceptor-&gt;stop();</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; thread : workingThreads)</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      <span class="keywordflow">if</span> (thread.joinable() == <span class="keyword">true</span>)</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        thread.join();</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      }</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    }</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">    #ifdef NDEBUG</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor"></span><span class="preprocessor">    #else</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor"></span>      <span class="comment">//std::cout &lt;&lt; &quot;-- Server destructor\n&quot;;</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor"></span>  }</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="class_async_command_server.html#a54dcf54957edc04f87e6e1f7d28307b4">   57</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_async_command_server.html#a54dcf54957edc04f87e6e1f7d28307b4">start</a>()</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    asyncAcceptor-&gt;start();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> idx{0}; idx &lt; workingThreadCount; ++idx)</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      workingThreads.push_back(std::thread{&amp;<a class="code" href="class_async_command_server.html#a4dc39a14641e6b91bda278d341ee5298">AsyncCommandServer::run</a>, <span class="keyword">this</span>});</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  }</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="class_async_command_server.html#a7cc4d35b6dc167ce9d247d8b88e5c340">   67</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_async_command_server.html#a7cc4d35b6dc167ce9d247d8b88e5c340">stop</a>()</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">    #ifdef NDEBUG</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor"></span><span class="preprocessor">    #else</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor"></span>      <span class="comment">//std::cout &lt;&lt; &quot;-- called Server::stop()\n&quot;;</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    asyncAcceptor-&gt;stop();</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    service.stop();</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  }</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="class_async_command_server.html#a892251c66de2e591c53b7995992b338e">   79</a></span>&#160;  std::mutex&amp; <a class="code" href="class_async_command_server.html#a892251c66de2e591c53b7995992b338e">getScreenOutputLock</a>()</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="publisher__mt_8cpp.html#ad3a3d4f5cd6bff14bf2212d3f84f80ad">outputLock</a>;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; thread : workingThreads)</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;      <span class="keywordflow">if</span> (thread.joinable() == <span class="keyword">true</span>)</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      {</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        thread.join();</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      }</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    }</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="class_async_command_server.html#aacfafcb8502dcf6a700baf62d557fc25">   84</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="thread__metrics_8h.html#ac1589e063b43543469fafabc05566bcc">SharedGlobalMetrics</a> <a class="code" href="class_async_command_server.html#aacfafcb8502dcf6a700baf62d557fc25">getMetrics</a>()</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordflow">return</span> asyncAcceptor-&gt;getMetrics();</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  }</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="class_async_command_server.html#a4dc39a14641e6b91bda278d341ee5298">   91</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_async_command_server.html#a4dc39a14641e6b91bda278d341ee5298">run</a>() noexcept</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  {</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordflow">try</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    {</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;      service.run();</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    }</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; ex)</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    {</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      std::lock_guard&lt;std::mutex&gt; lockOutput{<a class="code" href="publisher__mt_8cpp.html#ad3a3d4f5cd6bff14bf2212d3f84f80ad">outputLock</a>};</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      errorStream &lt;&lt; <span class="stringliteral">&quot;Server stopped. Reason: &quot;</span> &lt;&lt; ex.what() &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    }</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  }</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
-<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="class_async_command_server.html#a08faa1a6b5a4150ca98969e7d0b5b8e2">  105</a></span>&#160;  asio::ip::address_v4 <a class="code" href="class_async_command_server.html#a08faa1a6b5a4150ca98969e7d0b5b8e2">address</a>;</div>
-<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="class_async_command_server.html#a607518b037b4dca0c07784968dea4162">  106</a></span>&#160;  uint16_t <a class="code" href="class_async_command_server.html#a607518b037b4dca0c07784968dea4162">portNumber</a>;</div>
-<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="class_async_command_server.html#a1cac417a059bba92b1ac868484e2dc1d">  107</a></span>&#160;  asio::io_service <a class="code" href="class_async_command_server.html#a1cac417a059bba92b1ac868484e2dc1d">service</a>;</div>
-<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="class_async_command_server.html#a1e06dc33be1c0941ae43c1ad86f3983d">  108</a></span>&#160;  std::unique_ptr&lt;AsyncAcceptor&gt; <a class="code" href="class_async_command_server.html#a1e06dc33be1c0941ae43c1ad86f3983d">asyncAcceptor</a>;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="class_async_command_server.html#a67b730495996f8d77ae19eb096367d6e">  110</a></span>&#160;  std::vector&lt;std::thread&gt; <a class="code" href="class_async_command_server.html#a67b730495996f8d77ae19eb096367d6e">workingThreads</a>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    service.stop();</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="class_async_command_server.html#a892251c66de2e591c53b7995992b338e">   87</a></span>&#160;  std::mutex&amp; <a class="code" href="class_async_command_server.html#a892251c66de2e591c53b7995992b338e">getScreenOutputLock</a>()</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="publisher__mt_8cpp.html#ad3a3d4f5cd6bff14bf2212d3f84f80ad">outputLock</a>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  }</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="class_async_command_server.html#aacfafcb8502dcf6a700baf62d557fc25">   92</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="thread__metrics_8h.html#ac1589e063b43543469fafabc05566bcc">SharedGlobalMetrics</a> <a class="code" href="class_async_command_server.html#aacfafcb8502dcf6a700baf62d557fc25">getMetrics</a>()</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  {</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordflow">return</span> asyncAcceptor-&gt;getMetrics();</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  }</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="class_async_command_server.html#a4dc39a14641e6b91bda278d341ee5298">   99</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_async_command_server.html#a4dc39a14641e6b91bda278d341ee5298">run</a>() noexcept</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  {</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordflow">try</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    {</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;      service.run();</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    }</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; ex)</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    {</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      std::lock_guard&lt;std::mutex&gt; lockOutput{<a class="code" href="publisher__mt_8cpp.html#ad3a3d4f5cd6bff14bf2212d3f84f80ad">outputLock</a>};</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;      errorStream &lt;&lt; <span class="stringliteral">&quot;Server stopped. Reason: &quot;</span> &lt;&lt; ex.what() &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    }</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  }</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="class_async_command_server.html#a52c7dee3352671d1681c8ee903ce531c">  112</a></span>&#160;  std::ostream&amp; <a class="code" href="class_async_command_server.html#a52c7dee3352671d1681c8ee903ce531c">errorStream</a>;</div>
-<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="class_async_command_server.html#af399d11cfd76085a60e19e752f927a45">  113</a></span>&#160;  std::mutex&amp; <a class="code" href="class_async_command_server.html#af399d11cfd76085a60e19e752f927a45">outputLock</a>;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;};</div>
-<div class="ttc" id="class_async_command_server_html_a54dcf54957edc04f87e6e1f7d28307b4"><div class="ttname"><a href="class_async_command_server.html#a54dcf54957edc04f87e6e1f7d28307b4">AsyncCommandServer::start</a></div><div class="ttdeci">void start()</div><div class="ttdef"><b>Definition:</b> async_command_server.h:54</div></div>
-<div class="ttc" id="class_async_command_server_html_a607518b037b4dca0c07784968dea4162"><div class="ttname"><a href="class_async_command_server.html#a607518b037b4dca0c07784968dea4162">AsyncCommandServer::portNumber</a></div><div class="ttdeci">uint16_t portNumber</div><div class="ttdef"><b>Definition:</b> async_command_server.h:106</div></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
+<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="class_async_command_server.html#a08faa1a6b5a4150ca98969e7d0b5b8e2">  113</a></span>&#160;  asio::ip::address_v4 <a class="code" href="class_async_command_server.html#a08faa1a6b5a4150ca98969e7d0b5b8e2">address</a>;</div>
+<div class="line"><a name="l00114"></a><span class="lineno"><a class="line" href="class_async_command_server.html#a607518b037b4dca0c07784968dea4162">  114</a></span>&#160;  uint16_t <a class="code" href="class_async_command_server.html#a607518b037b4dca0c07784968dea4162">portNumber</a>;</div>
+<div class="line"><a name="l00115"></a><span class="lineno"><a class="line" href="class_async_command_server.html#a1cac417a059bba92b1ac868484e2dc1d">  115</a></span>&#160;  asio::io_service <a class="code" href="class_async_command_server.html#a1cac417a059bba92b1ac868484e2dc1d">service</a>;</div>
+<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="class_async_command_server.html#a1e06dc33be1c0941ae43c1ad86f3983d">  116</a></span>&#160;  std::unique_ptr&lt;AsyncAcceptor&gt; <a class="code" href="class_async_command_server.html#a1e06dc33be1c0941ae43c1ad86f3983d">asyncAcceptor</a>;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="class_async_command_server.html#a67b730495996f8d77ae19eb096367d6e">  118</a></span>&#160;  std::vector&lt;std::thread&gt; <a class="code" href="class_async_command_server.html#a67b730495996f8d77ae19eb096367d6e">workingThreads</a>;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
+<div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="class_async_command_server.html#a52c7dee3352671d1681c8ee903ce531c">  120</a></span>&#160;  std::ostream&amp; <a class="code" href="class_async_command_server.html#a52c7dee3352671d1681c8ee903ce531c">errorStream</a>;</div>
+<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="class_async_command_server.html#af399d11cfd76085a60e19e752f927a45">  121</a></span>&#160;  std::mutex&amp; <a class="code" href="class_async_command_server.html#af399d11cfd76085a60e19e752f927a45">outputLock</a>;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;};</div>
+<div class="ttc" id="class_async_command_server_html_a54dcf54957edc04f87e6e1f7d28307b4"><div class="ttname"><a href="class_async_command_server.html#a54dcf54957edc04f87e6e1f7d28307b4">AsyncCommandServer::start</a></div><div class="ttdeci">void start()</div><div class="ttdef"><b>Definition:</b> async_command_server.h:57</div></div>
+<div class="ttc" id="class_async_command_server_html_a607518b037b4dca0c07784968dea4162"><div class="ttname"><a href="class_async_command_server.html#a607518b037b4dca0c07784968dea4162">AsyncCommandServer::portNumber</a></div><div class="ttdeci">uint16_t portNumber</div><div class="ttdef"><b>Definition:</b> async_command_server.h:114</div></div>
 <div class="ttc" id="thread__metrics_8h_html_ac1589e063b43543469fafabc05566bcc"><div class="ttname"><a href="thread__metrics_8h.html#ac1589e063b43543469fafabc05566bcc">SharedGlobalMetrics</a></div><div class="ttdeci">std::unordered_map&lt; std::string, std::shared_ptr&lt; ThreadMetrics &gt;&gt; SharedGlobalMetrics</div><div class="ttdef"><b>Definition:</b> thread_metrics.h:104</div></div>
-<div class="ttc" id="class_async_command_server_html_a4dc39a14641e6b91bda278d341ee5298"><div class="ttname"><a href="class_async_command_server.html#a4dc39a14641e6b91bda278d341ee5298">AsyncCommandServer::run</a></div><div class="ttdeci">void run() noexcept</div><div class="ttdef"><b>Definition:</b> async_command_server.h:91</div></div>
-<div class="ttc" id="class_async_command_server_html_a08faa1a6b5a4150ca98969e7d0b5b8e2"><div class="ttname"><a href="class_async_command_server.html#a08faa1a6b5a4150ca98969e7d0b5b8e2">AsyncCommandServer::address</a></div><div class="ttdeci">asio::ip::address_v4 address</div><div class="ttdef"><b>Definition:</b> async_command_server.h:105</div></div>
-<div class="ttc" id="class_async_command_server_html_a1cac417a059bba92b1ac868484e2dc1d"><div class="ttname"><a href="class_async_command_server.html#a1cac417a059bba92b1ac868484e2dc1d">AsyncCommandServer::service</a></div><div class="ttdeci">asio::io_service service</div><div class="ttdef"><b>Definition:</b> async_command_server.h:107</div></div>
+<div class="ttc" id="class_async_command_server_html_a4dc39a14641e6b91bda278d341ee5298"><div class="ttname"><a href="class_async_command_server.html#a4dc39a14641e6b91bda278d341ee5298">AsyncCommandServer::run</a></div><div class="ttdeci">void run() noexcept</div><div class="ttdef"><b>Definition:</b> async_command_server.h:99</div></div>
+<div class="ttc" id="class_async_command_server_html_a08faa1a6b5a4150ca98969e7d0b5b8e2"><div class="ttname"><a href="class_async_command_server.html#a08faa1a6b5a4150ca98969e7d0b5b8e2">AsyncCommandServer::address</a></div><div class="ttdeci">asio::ip::address_v4 address</div><div class="ttdef"><b>Definition:</b> async_command_server.h:113</div></div>
+<div class="ttc" id="class_async_command_server_html_a1cac417a059bba92b1ac868484e2dc1d"><div class="ttname"><a href="class_async_command_server.html#a1cac417a059bba92b1ac868484e2dc1d">AsyncCommandServer::service</a></div><div class="ttdeci">asio::io_service service</div><div class="ttdef"><b>Definition:</b> async_command_server.h:115</div></div>
 <div class="ttc" id="async__acceptor_8h_html"><div class="ttname"><a href="async__acceptor_8h.html">async_acceptor.h</a></div></div>
-<div class="ttc" id="class_async_command_server_html_a52c7dee3352671d1681c8ee903ce531c"><div class="ttname"><a href="class_async_command_server.html#a52c7dee3352671d1681c8ee903ce531c">AsyncCommandServer::errorStream</a></div><div class="ttdeci">std::ostream &amp; errorStream</div><div class="ttdef"><b>Definition:</b> async_command_server.h:112</div></div>
-<div class="ttc" id="class_async_command_server_html_aacfafcb8502dcf6a700baf62d557fc25"><div class="ttname"><a href="class_async_command_server.html#aacfafcb8502dcf6a700baf62d557fc25">AsyncCommandServer::getMetrics</a></div><div class="ttdeci">const SharedGlobalMetrics getMetrics()</div><div class="ttdef"><b>Definition:</b> async_command_server.h:84</div></div>
-<div class="ttc" id="class_async_command_server_html_a67b730495996f8d77ae19eb096367d6e"><div class="ttname"><a href="class_async_command_server.html#a67b730495996f8d77ae19eb096367d6e">AsyncCommandServer::workingThreads</a></div><div class="ttdeci">std::vector&lt; std::thread &gt; workingThreads</div><div class="ttdef"><b>Definition:</b> async_command_server.h:110</div></div>
-<div class="ttc" id="class_async_command_server_html_a1e06dc33be1c0941ae43c1ad86f3983d"><div class="ttname"><a href="class_async_command_server.html#a1e06dc33be1c0941ae43c1ad86f3983d">AsyncCommandServer::asyncAcceptor</a></div><div class="ttdeci">std::unique_ptr&lt; AsyncAcceptor &gt; asyncAcceptor</div><div class="ttdef"><b>Definition:</b> async_command_server.h:108</div></div>
-<div class="ttc" id="class_async_command_server_html_a7cc4d35b6dc167ce9d247d8b88e5c340"><div class="ttname"><a href="class_async_command_server.html#a7cc4d35b6dc167ce9d247d8b88e5c340">AsyncCommandServer::stop</a></div><div class="ttdeci">void stop()</div><div class="ttdef"><b>Definition:</b> async_command_server.h:64</div></div>
+<div class="ttc" id="class_async_command_server_html_a52c7dee3352671d1681c8ee903ce531c"><div class="ttname"><a href="class_async_command_server.html#a52c7dee3352671d1681c8ee903ce531c">AsyncCommandServer::errorStream</a></div><div class="ttdeci">std::ostream &amp; errorStream</div><div class="ttdef"><b>Definition:</b> async_command_server.h:120</div></div>
+<div class="ttc" id="class_async_command_server_html_aacfafcb8502dcf6a700baf62d557fc25"><div class="ttname"><a href="class_async_command_server.html#aacfafcb8502dcf6a700baf62d557fc25">AsyncCommandServer::getMetrics</a></div><div class="ttdeci">const SharedGlobalMetrics getMetrics()</div><div class="ttdef"><b>Definition:</b> async_command_server.h:92</div></div>
+<div class="ttc" id="class_async_command_server_html_a67b730495996f8d77ae19eb096367d6e"><div class="ttname"><a href="class_async_command_server.html#a67b730495996f8d77ae19eb096367d6e">AsyncCommandServer::workingThreads</a></div><div class="ttdeci">std::vector&lt; std::thread &gt; workingThreads</div><div class="ttdef"><b>Definition:</b> async_command_server.h:118</div></div>
+<div class="ttc" id="class_async_command_server_html_a1e06dc33be1c0941ae43c1ad86f3983d"><div class="ttname"><a href="class_async_command_server.html#a1e06dc33be1c0941ae43c1ad86f3983d">AsyncCommandServer::asyncAcceptor</a></div><div class="ttdeci">std::unique_ptr&lt; AsyncAcceptor &gt; asyncAcceptor</div><div class="ttdef"><b>Definition:</b> async_command_server.h:116</div></div>
+<div class="ttc" id="class_async_command_server_html_a7cc4d35b6dc167ce9d247d8b88e5c340"><div class="ttname"><a href="class_async_command_server.html#a7cc4d35b6dc167ce9d247d8b88e5c340">AsyncCommandServer::stop</a></div><div class="ttdeci">void stop()</div><div class="ttdef"><b>Definition:</b> async_command_server.h:67</div></div>
 <div class="ttc" id="class_async_command_server_html_ae84d4720a565cefc52de409a8d5c7f0f"><div class="ttname"><a href="class_async_command_server.html#ae84d4720a565cefc52de409a8d5c7f0f">AsyncCommandServer::AsyncCommandServer</a></div><div class="ttdeci">AsyncCommandServer(const asio::ip::address_v4 newAddress, const uint16_t newPortNumber, const size_t newBulkSize, const char newBulkOpenDelimiter= '{', const char newBulkCloseDelimiter= '}', std::ostream &amp;newOutputStream=std::cout, std::ostream &amp;newErrorStream=std::cerr, std::ostream &amp;newMetricsStream=std::cout)</div><div class="ttdef"><b>Definition:</b> async_command_server.h:20</div></div>
-<div class="ttc" id="class_async_command_server_html_a892251c66de2e591c53b7995992b338e"><div class="ttname"><a href="class_async_command_server.html#a892251c66de2e591c53b7995992b338e">AsyncCommandServer::getScreenOutputLock</a></div><div class="ttdeci">std::mutex &amp; getScreenOutputLock()</div><div class="ttdef"><b>Definition:</b> async_command_server.h:79</div></div>
+<div class="ttc" id="class_async_command_server_html_a892251c66de2e591c53b7995992b338e"><div class="ttname"><a href="class_async_command_server.html#a892251c66de2e591c53b7995992b338e">AsyncCommandServer::getScreenOutputLock</a></div><div class="ttdeci">std::mutex &amp; getScreenOutputLock()</div><div class="ttdef"><b>Definition:</b> async_command_server.h:87</div></div>
 <div class="ttc" id="publisher__mt_8cpp_html_ad3a3d4f5cd6bff14bf2212d3f84f80ad"><div class="ttname"><a href="publisher__mt_8cpp.html#ad3a3d4f5cd6bff14bf2212d3f84f80ad">outputLock</a></div><div class="ttdeci">outputLock</div><div class="ttdef"><b>Definition:</b> publisher_mt.cpp:11</div></div>
-<div class="ttc" id="class_async_command_server_html_af399d11cfd76085a60e19e752f927a45"><div class="ttname"><a href="class_async_command_server.html#af399d11cfd76085a60e19e752f927a45">AsyncCommandServer::outputLock</a></div><div class="ttdeci">std::mutex &amp; outputLock</div><div class="ttdef"><b>Definition:</b> async_command_server.h:113</div></div>
+<div class="ttc" id="class_async_command_server_html_af399d11cfd76085a60e19e752f927a45"><div class="ttname"><a href="class_async_command_server.html#af399d11cfd76085a60e19e752f927a45">AsyncCommandServer::outputLock</a></div><div class="ttdeci">std::mutex &amp; outputLock</div><div class="ttdef"><b>Definition:</b> async_command_server.h:121</div></div>
 <div class="ttc" id="class_async_command_server_html_a85e85a4d297452fbf83cbcd68542b848"><div class="ttname"><a href="class_async_command_server.html#a85e85a4d297452fbf83cbcd68542b848">AsyncCommandServer::~AsyncCommandServer</a></div><div class="ttdeci">~AsyncCommandServer()</div><div class="ttdef"><b>Definition:</b> async_command_server.h:49</div></div>
 <div class="ttc" id="class_async_command_server_html"><div class="ttname"><a href="class_async_command_server.html">AsyncCommandServer</a></div><div class="ttdef"><b>Definition:</b> async_command_server.h:14</div></div>
 </div><!-- fragment --></div><!-- contents -->

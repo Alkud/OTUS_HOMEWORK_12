@@ -95,7 +95,7 @@ getServerOutput
         std::thread {[serverAddress, portNumber, &stringToSend]()
         {
           sendMessage(serverAddress, portNumber, stringToSend);
-          std::this_thread::sleep_for(200ms);
+          std::this_thread::sleep_for(400ms);
         }}
       );
     }
@@ -196,6 +196,13 @@ BOOST_AUTO_TEST_CASE(simple_test)
 
     /* make sure no errors occured */    
     BOOST_CHECK(serverOutput[1].size() == 0);
+    if (serverOutput[1].size() != 0)
+    {
+        for (const auto& errorString : serverOutput[1])
+        {
+            std::cout << errorString << std::endl;
+        }
+    }
 
     checkMetrics(metrics, 4, 8, 4, 4, 1, 2);
   }
@@ -232,6 +239,13 @@ BOOST_AUTO_TEST_CASE(two_connections_no_mix_test)
 
     /* make sure no errors occured */
     BOOST_CHECK(serverOutput[1].size() == 0);
+    if (serverOutput[1].size() != 0)
+    {
+        for (const auto& errorString : serverOutput[1])
+        {
+            std::cout << errorString << std::endl;
+        }
+    }
 
     checkMetrics(metrics, 2, 28, 12, 8, 2, 2);
   }
@@ -274,6 +288,13 @@ BOOST_AUTO_TEST_CASE(four_connections_mixing_test)
 
     /* make sure no errors occured */
     BOOST_CHECK(serverOutput[1].size() == 0);
+    if (serverOutput[1].size() != 0)
+    {
+        for (const auto& errorString : serverOutput[1])
+        {
+            std::cout << errorString << std::endl;
+        }
+    }
 
     checkMetrics(metrics, 16, 48, 16, 16, 16, 2);
   }
@@ -306,6 +327,13 @@ BOOST_AUTO_TEST_CASE(empty_command_test)
 
     /* make sure no errors occured */
     BOOST_CHECK(serverOutput[1].size() == 0);
+    if (serverOutput[1].size() != 0)
+    {
+        for (const auto& errorString : serverOutput[1])
+        {
+            std::cout << errorString << std::endl;
+        }
+    }
 
     checkMetrics(metrics, 1, 1, 1, 1, 1, 2);
   }
@@ -338,6 +366,13 @@ BOOST_AUTO_TEST_CASE(unterminated_command_test)
 
     /* make sure no errors occured */
     BOOST_CHECK(serverOutput[1].size() == 0);
+    if (serverOutput[1].size() != 0)
+    {
+        for (const auto& errorString : serverOutput[1])
+        {
+            std::cout << errorString << std::endl;
+        }
+    }
 
     checkMetrics(metrics, 3, 10, 3, 3, 1, 2);
   }
