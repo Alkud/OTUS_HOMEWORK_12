@@ -59,6 +59,7 @@ void AsyncReader::stop()
 void AsyncReader::doRead()
 {
   asio::async_read(*socket, asio::buffer(readBuffer),
+  asio::transfer_at_least(1),
   [this](const system::error_code& error, std::size_t bytes_transferred)
   {
     if (error != 0)
@@ -91,10 +92,10 @@ void AsyncReader::doRead()
     }
   });
 
-  if (socket->available() == 0)
-  {
-    socket->shutdown(asio::ip::tcp::socket::shutdown_receive);
-  }
+//  if (socket->available() == 0)
+//  {
+//    socket->shutdown(asio::ip::tcp::socket::shutdown_receive);
+//  }
 }
 
 void AsyncReader::onReading(std::size_t bytes_transferred)
