@@ -12,6 +12,7 @@ var searchData=
   ['destinationdirectory',['destinationDirectory',['../class_logger.html#ae708053a3f3818a168a82e745647bd9b',1,'Logger::destinationDirectory()'],['../class_logger.html#a12ef37aebb84b27a0c4619044e68fe97',1,'Logger::destinationDirectory()']]],
   ['destinationnullptr',['DestinationNullptr',['../broadcasters_8h.html#aff97733e4706e994965da50c70605422ae69f558a400c216896ea6f967bf342e4',1,'broadcasters.h']]],
   ['disconnect',['disconnect',['../class_async_command_processor.html#a1757bd870687e5babd9f744b361ebab6',1,'AsyncCommandProcessor']]],
+  ['disconnected',['disconnected',['../class_async_command_processor.html#a87d0c15e13d669c066cde3d7e0d9c745',1,'AsyncCommandProcessor']]],
   ['doaccept',['doAccept',['../class_async_acceptor.html#a591053c08185947d0ceb44ce72525a19',1,'AsyncAcceptor']]],
   ['doread',['doRead',['../class_async_reader.html#a9ac21dc2471d21369b04cd8b7e59eb4c',1,'AsyncReader']]]
 ];

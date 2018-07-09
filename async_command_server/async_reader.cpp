@@ -91,11 +91,6 @@ void AsyncReader::doRead()
       stop();
     }
   });
-
-//  if (socket->available() == 0)
-//  {
-//    socket->shutdown(asio::ip::tcp::socket::shutdown_receive);
-//  }
 }
 
 void AsyncReader::onReading(std::size_t bytes_transferred)

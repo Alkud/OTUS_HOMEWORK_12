@@ -15,7 +15,6 @@ std::mutex terminationLock;
 
 extern "C" void terminationHandler(int)
 {
-  std::cout << "\nServer stopped\n";
   shouldExit.store(true);
   terminationNotifier.notify_all();
 }
@@ -40,8 +39,6 @@ int homework(int argc, char* argv[], std::ostream& outputStream,
     bulkSize, '{', '}',
     outputStream, errorStream, metricsStream
   };
-
-  std::cout << "\nServer started\n";
 
   server.start();
 

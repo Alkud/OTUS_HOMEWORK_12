@@ -259,7 +259,7 @@ private:
       #endif
 
       std::unique_lock<std::mutex> lockNotifier{notifierLock};
-      threadNotifier.wait_for(lockNotifier, std::chrono::milliseconds{1000}, [this]()
+      threadNotifier.wait_for(lockNotifier, std::chrono::milliseconds{100}, [this]()
       {        
         return dataReceived.load() == true;
       });

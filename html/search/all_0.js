@@ -3,6 +3,7 @@ var searchData=
   ['acceptor',['acceptor',['../class_async_acceptor.html#ab4e39fdc446ad743956edf19e1dbd112',1,'AsyncAcceptor::acceptor()'],['../class_async_reader.html#a2ba13225c852752f2f449568d41950c5',1,'AsyncReader::acceptor()']]],
   ['accesslock',['accessLock',['../class_async_command_processor.html#ab0eac12c1e7d154e94a958c5a231fcc5',1,'AsyncCommandProcessor']]],
   ['activereadercount',['activeReaderCount',['../class_async_acceptor.html#aceeb1b385ef65d2202d8a7f94f59868f',1,'AsyncAcceptor']]],
+  ['activereceptioncount',['activeReceptionCount',['../class_async_command_processor.html#a4151919abb9ccf86e52b79970bb604e3',1,'AsyncCommandProcessor']]],
   ['addcommandtobulk',['addCommandToBulk',['../class_input_processor.html#ab38266f1c7830c88b04bcff8f1001ad4',1,'InputProcessor']]],
   ['additionalnamesection',['additionalNameSection',['../class_logger.html#a4021e7a8a9ed768e84c79d463942aa2f',1,'Logger::additionalNameSection()'],['../class_logger.html#aed5365702e805b6453c631d079d08a06',1,'Logger::additionalNameSection()']]],
   ['addmessagelistener',['addMessageListener',['../class_message_broadcaster.html#ae93ef9f52518f8ad3ff58b011a6d0a2c',1,'MessageBroadcaster']]],

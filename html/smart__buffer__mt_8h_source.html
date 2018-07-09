@@ -338,7 +338,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="preprocessor">      #endif</span></div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;      std::unique_lock&lt;std::mutex&gt; lockNotifier{<a class="code" href="class_async_worker.html#a84909224522bcb8752f26b814cdbab20">notifierLock</a>};</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;      <a class="code" href="class_async_worker.html#a6e2f251afbb0ac6c4c294a2e8c40d20b">threadNotifier</a>.wait_for(lockNotifier, std::chrono::milliseconds{1000}, [<span class="keyword">this</span>]()</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;      <a class="code" href="class_async_worker.html#a6e2f251afbb0ac6c4c294a2e8c40d20b">threadNotifier</a>.wait_for(lockNotifier, std::chrono::milliseconds{100}, [<span class="keyword">this</span>]()</div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;      {        </div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="class_smart_buffer.html#aba06e760f4f035fff2e44927d15d9297">dataReceived</a>.load() == <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;      });</div>
