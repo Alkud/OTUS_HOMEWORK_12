@@ -24,7 +24,25 @@ AsyncReader::AsyncReader(AsyncReader::SharedSocket newSocket,
   errorStream{newErrorStream}, outputLock{newOutputLock},
   sharedThis{}
 {
+  #ifdef NDEBUG
+  #else
+  std::cout << "-- reader constructor\n";
+  #endif
+
   ++readerCounter;
+}
+
+AsyncReader::~AsyncReader()
+{
+  #ifdef NDEBUG
+  #else
+   std::cout << "-- reader destructor\n";
+  #endif
+
+  if (readerCounter.load() != 0)
+  {
+    --readerCounter;
+  }
 }
 
 void AsyncReader::start()
@@ -50,14 +68,14 @@ void AsyncReader::stop()
     {
       socket->shutdown(asio::ip::tcp::socket::shutdown_both);
       socket->close();
-    }
-
-    if (readerCounter.load() != 0)
-    {
-      --readerCounter;
-    }
+    }    
 
     terminationNotifier.notify_all();
+
+    #ifdef NDEBUG
+    #else
+      std::cout << "-- reader use count:" << sharedThis.use_count() << "\n";
+    #endif
 
     sharedThis.reset();
   }

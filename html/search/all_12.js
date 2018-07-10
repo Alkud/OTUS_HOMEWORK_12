@@ -2,6 +2,7 @@ var searchData=
 [
   ['_7easynccommandprocessor',['~AsyncCommandProcessor',['../class_async_command_processor.html#a8cf94a4106c01afae0a96ef507da99b1',1,'AsyncCommandProcessor']]],
   ['_7easynccommandserver',['~AsyncCommandServer',['../class_async_command_server.html#a85e85a4d297452fbf83cbcd68542b848',1,'AsyncCommandServer']]],
+  ['_7easyncreader',['~AsyncReader',['../class_async_reader.html#a5bdc5b79e3dea333dce5ef196a168ba9',1,'AsyncReader']]],
   ['_7easyncworker',['~AsyncWorker',['../class_async_worker.html#acb16bbc39d0121e46e4bcc84fed82b3b',1,'AsyncWorker']]],
   ['_7ecommandprocessorinstance',['~CommandProcessorInstance',['../class_command_processor_instance.html#a1b6c6b43c45d055023de13b5a6812a1d',1,'CommandProcessorInstance']]],
   ['_7einputprocessor',['~InputProcessor',['../class_input_processor.html#a4f9f518b40e94782895a325ab0158b94',1,'InputProcessor']]],

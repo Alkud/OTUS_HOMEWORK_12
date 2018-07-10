@@ -60,7 +60,7 @@ private:
   const char openDelimiter;
   const char closeDelimiter;
 
-  SharedAsyncReader currentReader;
+  //SharedAsyncReader currentReader;
 
   std::atomic<size_t> activeReaderCount;
   std::condition_variable terminationNotifier;

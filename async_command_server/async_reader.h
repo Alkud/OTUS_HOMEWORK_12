@@ -35,6 +35,8 @@ public:
               std::ostream& newErrorStream,
               std::mutex& newOutputLock);
 
+  ~AsyncReader();
+
   void start();
 
   void stop();

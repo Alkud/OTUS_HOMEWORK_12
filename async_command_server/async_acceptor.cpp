@@ -37,7 +37,7 @@ processor{
 
 openDelimiter{newBulkOpenDelimiter}, closeDelimiter{newBulkCloseDelimiter},
 
-currentReader{}, activeReaderCount{},
+/*currentReader{},*/ activeReaderCount{},
 shouldExit{false},
 errorStream{newErrorStream},
 outputLock{processor->getScreenOutputLock()},
@@ -66,7 +66,7 @@ void AsyncAcceptor::stop()
     {
       #ifdef NDEBUG
       #else
-        //std::cout << "\n-- Acceptor waiting. Active readers: " << activeReaderCount.load() << "\n";
+        std::cout << "\n-- Acceptor waiting. Active readers: " << activeReaderCount.load() << "\n";
       #endif
 
       return activeReaderCount.load() == 0;
@@ -126,15 +126,15 @@ void AsyncAcceptor::onAcception(SharedSocket acceptedSocket)
     //std::cout << "-- start onAcception\n";
   #endif
 
-  currentReader.reset( new AsyncReader(
+  auto newReader{ std::make_shared<AsyncReader>(
     acceptedSocket, processor,
     openDelimiter, closeDelimiter,
     acceptor, activeReaderCount,
     terminationNotifier, terminationLock,
     errorStream, outputLock
-  ));
+  )};
 
-  currentReader->start();
+  newReader->start();
 
   if (shouldExit.load() != true)
   {

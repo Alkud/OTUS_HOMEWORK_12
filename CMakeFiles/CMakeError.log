@@ -1,20 +1,20 @@
 Determining if the pthread_create exist failed with the following output:
 Change Dir: /home/travis/build/Alkud/OTUS_HOMEWORK_12/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_f80d8/fast"
-/usr/bin/make -f CMakeFiles/cmTC_f80d8.dir/build.make CMakeFiles/cmTC_f80d8.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_a1495/fast"
+/usr/bin/make -f CMakeFiles/cmTC_a1495.dir/build.make CMakeFiles/cmTC_a1495.dir/build
 make[1]: Entering directory `/home/travis/build/Alkud/OTUS_HOMEWORK_12/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_f80d8.dir/CheckSymbolExists.c.o
-/usr/bin/gcc    -o CMakeFiles/cmTC_f80d8.dir/CheckSymbolExists.c.o   -c /home/travis/build/Alkud/OTUS_HOMEWORK_12/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-Linking C executable cmTC_f80d8
-/usr/local/cmake-3.9.2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f80d8.dir/link.txt --verbose=1
-/usr/bin/gcc      -rdynamic CMakeFiles/cmTC_f80d8.dir/CheckSymbolExists.c.o  -o cmTC_f80d8 
-CMakeFiles/cmTC_f80d8.dir/CheckSymbolExists.c.o: In function `main':
+Building C object CMakeFiles/cmTC_a1495.dir/CheckSymbolExists.c.o
+/usr/bin/gcc    -o CMakeFiles/cmTC_a1495.dir/CheckSymbolExists.c.o   -c /home/travis/build/Alkud/OTUS_HOMEWORK_12/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_a1495
+/usr/local/cmake-3.9.2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a1495.dir/link.txt --verbose=1
+/usr/bin/gcc      -rdynamic CMakeFiles/cmTC_a1495.dir/CheckSymbolExists.c.o  -o cmTC_a1495 
+CMakeFiles/cmTC_a1495.dir/CheckSymbolExists.c.o: In function `main':
 CheckSymbolExists.c:(.text+0x16): undefined reference to `pthread_create'
 collect2: error: ld returned 1 exit status
-make[1]: *** [cmTC_f80d8] Error 1
+make[1]: *** [cmTC_a1495] Error 1
 make[1]: Leaving directory `/home/travis/build/Alkud/OTUS_HOMEWORK_12/CMakeFiles/CMakeTmp'
-make: *** [cmTC_f80d8/fast] Error 2
+make: *** [cmTC_a1495/fast] Error 2
 
 File /home/travis/build/Alkud/OTUS_HOMEWORK_12/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
 /* */
@@ -34,18 +34,18 @@ int main(int argc, char** argv)
 Determining if the function pthread_create exists in the pthreads failed with the following output:
 Change Dir: /home/travis/build/Alkud/OTUS_HOMEWORK_12/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_4d973/fast"
-/usr/bin/make -f CMakeFiles/cmTC_4d973.dir/build.make CMakeFiles/cmTC_4d973.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_761d9/fast"
+/usr/bin/make -f CMakeFiles/cmTC_761d9.dir/build.make CMakeFiles/cmTC_761d9.dir/build
 make[1]: Entering directory `/home/travis/build/Alkud/OTUS_HOMEWORK_12/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_4d973.dir/CheckFunctionExists.c.o
-/usr/bin/gcc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_4d973.dir/CheckFunctionExists.c.o   -c /usr/local/cmake-3.9.2/share/cmake-3.9/Modules/CheckFunctionExists.c
-Linking C executable cmTC_4d973
-/usr/local/cmake-3.9.2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4d973.dir/link.txt --verbose=1
-/usr/bin/gcc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_4d973.dir/CheckFunctionExists.c.o  -o cmTC_4d973 -lpthreads 
+Building C object CMakeFiles/cmTC_761d9.dir/CheckFunctionExists.c.o
+/usr/bin/gcc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_761d9.dir/CheckFunctionExists.c.o   -c /usr/local/cmake-3.9.2/share/cmake-3.9/Modules/CheckFunctionExists.c
+Linking C executable cmTC_761d9
+/usr/local/cmake-3.9.2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_761d9.dir/link.txt --verbose=1
+/usr/bin/gcc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_761d9.dir/CheckFunctionExists.c.o  -o cmTC_761d9 -lpthreads 
 /usr/bin/x86_64-linux-gnu-ld: cannot find -lpthreads
 collect2: error: ld returned 1 exit status
-make[1]: *** [cmTC_4d973] Error 1
+make[1]: *** [cmTC_761d9] Error 1
 make[1]: Leaving directory `/home/travis/build/Alkud/OTUS_HOMEWORK_12/CMakeFiles/CMakeTmp'
-make: *** [cmTC_4d973/fast] Error 2
+make: *** [cmTC_761d9/fast] Error 2
 
 
