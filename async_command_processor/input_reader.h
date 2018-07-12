@@ -7,7 +7,7 @@
 #include <list>
 #include <sstream>
 #include "broadcasters.h"
-#include "smart_buffer_mt.h"
+#include "simple_buffer_mt.h"
 #include "async_worker.h"
 #include "thread_metrics.h"
 
@@ -25,7 +25,7 @@ class InputReader : public MessageBroadcaster,
 public:
 
   using EntryDataType = std::list<char>;
-  using InputBufferType = SmartBuffer<EntryDataType>;
+  using InputBufferType = SimpleBuffer<EntryDataType>;
   using OutputBufferType = StringBuffer;
 
   InputReader(const std::string& newWorkerName,

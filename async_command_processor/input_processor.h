@@ -5,7 +5,7 @@
 #include <memory>
 #include <chrono>
 #include <ctime>
-#include "smart_buffer_mt.h"
+#include "simple_buffer_mt.h"
 #include "thread_metrics.h"
 
 
@@ -24,8 +24,9 @@ public:
                  const size_t newBulkSize,
                  const char newBulkOpenDelimiter,
                  const char newBulkCloseDelimiter,
-                 const SharedStringBuffer& newInputBuffer,
-                 const SharedSizeStringBuffer& newOutputBuffer,
+                 const std::shared_ptr<InputBufferType>& newInputBuffer,
+                 const std::shared_ptr<OutputBufferType>& newPublisherBuffer,
+                 const std::vector<std::shared_ptr<OutputBufferType>>& newLoggerBuffers,
                  std::ostream& newErrorOut, std::mutex& newErrorOutLock);
 
   ~InputProcessor() override;
@@ -53,8 +54,10 @@ private:
   const std::string bulkOpenDelimiter;
   const std::string bulkCloseDelimiter;
 
-  SharedStringBuffer inputBuffer;
-  SharedSizeStringBuffer outputBuffer;
+  const std::shared_ptr<InputBufferType>& inputBuffer;
+  const std::shared_ptr<OutputBufferType>& publisherBuffer;
+  const std::vector<std::shared_ptr<OutputBufferType>>& loggerBuffers;
+  size_t activeLoggerBufferNumber;
 
   std::deque<std::string> tempBuffer;
   bool customBulkStarted;

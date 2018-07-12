@@ -10,7 +10,7 @@
 #include <condition_variable>
 #include "input_reader.h"
 #include "input_processor.h"
-#include "smart_buffer_mt.h"
+#include "simple_buffer_mt.h"
 #include "publisher_mt.h"
 #include "logger_mt.h"
 
@@ -33,39 +33,41 @@ public:
   ) :
     screenOutputLock{newScreenOutputLock},
     /* creating buffers */
-    externalBuffer{std::make_shared<InputReader::InputBufferType>("character buffer", errorStream, screenOutputLock)},
-    inputBuffer{std::make_shared<InputProcessor::InputBufferType>("command buffer", errorStream, screenOutputLock)},
-    outputBuffer{std::make_shared<InputProcessor::OutputBufferType>("bulk buffer", errorStream, screenOutputLock)},
-
+    //externalBuffer{ new InputReader::InputBufferType ("character buffer", errorStream, screenOutputLock)},
+    inputBuffer{ new InputProcessor::InputBufferType ("command buffer", errorStream, screenOutputLock)},
+    publisherBuffer{ new InputProcessor::OutputBufferType ("publisher buffer", errorStream, screenOutputLock)},
+    loggerBuffers{},
     /* creating logger */
     logger{
-      std::make_shared<Logger<loggingThreadCount>>(
-      "logger", outputBuffer, errorStream, screenOutputLock, ""
+      new Logger<loggingThreadCount> (
+      "logger", loggerBuffers, errorStream, screenOutputLock, ""
     )},
 
     /* creating publisher */
     publisher{
-      std::make_shared<Publisher>(
-      "publisher", outputBuffer, outputStream, screenOutputLock,
+      new Publisher (
+      "publisher", publisherBuffer,
+      outputStream, screenOutputLock,
       errorStream, screenOutputLock
     )},
 
     /* creating command processor */
     inputProcessor{
-      std::make_shared<InputProcessor>(
+      new InputProcessor (
       "input processor ", bulkSize,
       bulkOpenDelimiter, bulkCloseDelimiter,
-      inputBuffer, outputBuffer,
+      inputBuffer,
+      publisherBuffer, loggerBuffers,
       errorStream, screenOutputLock
     )},
 
     /* creating command reader */
-    inputReader{
-      std::make_shared<InputReader>(
-      "input reader",
-      externalBuffer, inputBuffer,
-      errorStream, screenOutputLock
-    )},
+//    inputReader{
+//      new InputReader (
+//      "input reader",
+//      externalBuffer, inputBuffer,
+//      errorStream, screenOutputLock
+//    )},
 
     inputStreamLock{},
 
@@ -76,26 +78,44 @@ public:
 
     errorOut{errorStream}, metricsOut{metricsStream}, globalMetrics{}
   {
+    /* create logger buffers */
+    for (size_t idx{0}; idx < loggingThreadCount; ++idx)
+    {
+      loggerBuffers.push_back(
+        std::make_shared<InputProcessor::OutputBufferType>(
+          std::string{"logger buffer#"} + std::to_string(idx),
+          errorStream, screenOutputLock
+        )
+      );
+    }
     /* connect broadcasters and listeners */
-    this->addMessageListener(externalBuffer);
+//    this->addMessageListener(externalBuffer);
+    this->addMessageListener(inputBuffer);
 
-    externalBuffer->addNotificationListener(inputReader);
-    externalBuffer->addMessageListener(inputReader);
+//    externalBuffer->addNotificationListener(inputReader);
+//    externalBuffer->addMessageListener(inputReader);
 
-    inputReader->addMessageListener(inputBuffer);
+//    inputReader->addMessageListener(inputBuffer);
 
     inputBuffer->addMessageListener(inputProcessor);
     inputBuffer->addNotificationListener(inputProcessor);
 
-    inputProcessor->addMessageListener(outputBuffer);
+    inputProcessor->addMessageListener(publisherBuffer);
+    for (const auto& loggerBuffer : loggerBuffers)
+    {
+      inputProcessor->addMessageListener(loggerBuffer);
+    }
 
-    outputBuffer->addNotificationListener(publisher);
-    outputBuffer->addMessageListener(publisher);
-    outputBuffer->addNotificationListener(logger);
-    outputBuffer->addMessageListener(logger);
+    publisherBuffer->addNotificationListener(publisher);
+    publisherBuffer->addMessageListener(publisher);
+    for (const auto& loggerBuffer : loggerBuffers)
+    {
+      loggerBuffer->addNotificationListener(logger);
+      loggerBuffer->addMessageListener(logger);
+    }
 
     /* creating metrics*/
-    globalMetrics["input reader"] = inputReader->getMetrics();
+    //globalMetrics["input reader"] = inputReader->getMetrics();
     globalMetrics["input processor"] = inputProcessor->getMetrics();
     globalMetrics["publisher"] = publisher->getMetrics();
 
@@ -168,21 +188,26 @@ public:
   {
     try
     {
-      inputReader->addMessageListener(shared_from_this());
+      //inputReader->addMessageListener(shared_from_this());
+      inputProcessor->addMessageListener(shared_from_this());
       publisher->addMessageListener(shared_from_this());
       logger->addMessageListener(shared_from_this());
 
 
-      externalBuffer->start();
+      //externalBuffer->start();
       inputBuffer->start();
-      outputBuffer->start();
+      publisherBuffer->start();
+      for (const auto& loggerBuffer : loggerBuffers)
+      {
+        loggerBuffer->start();
+      }
 
       publisher->start();
       logger->start();
 
-      inputProcessor->start();
+      inputProcessor->startAndWait();
 
-      inputReader->startAndWait();
+      //inputReader->startAndWait();
 
       /* wait for data processing termination */
       while (shouldExit.load() != true
@@ -215,12 +240,8 @@ public:
         sendMessage(errorMessage);
       }
 
-      /* waiting for all workers to finish */
-      while(inputReader->getWorkerState() != WorkerState::Finished
-            && inputProcessor->getWorkerState() != WorkerState::Finished
-            && inputBuffer->getWorkerState() != WorkerState::Finished
-            && outputBuffer->getWorkerState() != WorkerState::Finished
-            && logger->getWorkerState() != WorkerState::Finished
+      /* waiting for publisher and logger to finish */
+      while(logger->getWorkerState() != WorkerState::Finished
             && publisher->getWorkerState() != WorkerState::Finished)
       {}
 
@@ -248,9 +269,11 @@ public:
     }
   }
 
-  const std::shared_ptr<InputReader::InputBufferType>&
+//  const std::shared_ptr<InputReader::InputBufferType>&
+const std::shared_ptr<InputProcessor::InputBufferType>&
   getEntryPoint() const
-  { return externalBuffer; }
+//  { return externalBuffer; }
+  { return inputBuffer; }
 
 
   const std::shared_ptr<InputProcessor::InputBufferType>&
@@ -260,7 +283,7 @@ public:
 
   const std::shared_ptr<InputProcessor::OutputBufferType>&
   getOutputBuffer() const
-  { return outputBuffer; }
+  { return publisherBuffer; }
 
   const SharedGlobalMetrics getMetrics()
   { return globalMetrics;}
@@ -272,13 +295,15 @@ public:
 private:
   std::mutex& screenOutputLock;
 
-  std::shared_ptr<InputReader::InputBufferType> externalBuffer;
+  //std::shared_ptr<InputReader::InputBufferType> externalBuffer;
   std::shared_ptr<InputProcessor::InputBufferType> inputBuffer;
-  std::shared_ptr<InputProcessor::OutputBufferType> outputBuffer;
+  std::shared_ptr<InputProcessor::OutputBufferType> publisherBuffer;
+  std::vector<std::shared_ptr<InputProcessor::OutputBufferType>> loggerBuffers;
+
   std::shared_ptr<Logger<loggingThreadCount>> logger;
   std::shared_ptr<Publisher> publisher;
   std::shared_ptr<InputProcessor> inputProcessor;
-  std::shared_ptr<InputReader> inputReader;
+  //std::shared_ptr<InputReader> inputReader;
 
   std::mutex inputStreamLock;
 

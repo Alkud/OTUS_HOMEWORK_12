@@ -41,12 +41,12 @@ void InputReader::reactMessage(MessageBroadcaster* /*sender*/, Message message)
     case Message::NoMoreData :
       noMoreData.store(true);
 
-      #ifdef NDEBUG
-      #else
-        //std::cout << "\n                     " << this->workerName<< " NoMoreData received\n";
-      #endif
+      //#ifdef NDEBUG
+      //#else
+        std::cout << "\n                     " << this->workerName<< " NoMoreData received\n";
+      //#endif
 
-      threadNotifier.notify_all();
+      threadNotifiers[0].notify_one();
       break;
 
     default:
@@ -72,8 +72,8 @@ void InputReader::reactNotification(NotificationBroadcaster* sender)
       //std::cout << this->workerName << " reactNotification\n";
     #endif
 
-    ++notificationCount;
-    threadNotifier.notify_one();
+    ++notificationCounts[0];
+    threadNotifiers[0].notify_one();
   }
 }
 
@@ -90,17 +90,12 @@ bool InputReader::threadProcess(const size_t /*threadIndex*/)
     throw(std::invalid_argument{"Input reader source buffer not defined!"});
   }
 
-  auto bufferReply {inputBuffer->getItem(shared_from_this())};
-
-  if (false == bufferReply.first)
-  {
-    return false;
-  }
+  auto bufferReply {inputBuffer->getItem()};
 
   /* Refresh metrics */
   ++threadMetrics->totalReceptionCount;
 
-  for (const auto& element : bufferReply.second)
+  for (const auto& element : bufferReply)
   {
     /* Refresh metrics */
     ++threadMetrics->totalCharacterCount;
@@ -129,7 +124,7 @@ void InputReader::onThreadException(const std::exception& ex, const size_t threa
 
   threadFinished[threadIndex].store(true);
   shouldExit.store(true);
-  threadNotifier.notify_all();
+  threadNotifiers[0].notify_one();
 
   sendMessage(errorMessage);
 }
@@ -141,7 +136,8 @@ void InputReader::onTermination(const size_t /*threadIndex*/)
     //std::cout << "\n                     " << this->workerName<< " all characters received\n";
   #endif
 
-  if (true == noMoreData.load() && notificationCount.load() == 0)
+  if (true == noMoreData.load() &&
+      notificationCounts[0].load() == 0)
   {
     sendMessage(Message::NoMoreData);
     sendMessage(Message::AllDataReceived);

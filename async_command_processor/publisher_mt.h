@@ -8,7 +8,7 @@
 #include <thread>
 #include <condition_variable>
 #include "listeners.h"
-#include "smart_buffer_mt.h"
+#include "simple_buffer_mt.h"
 #include "thread_metrics.h"
 
 
@@ -41,7 +41,7 @@ private:
 
   void onTermination(const size_t) override;
 
-  SharedSizeStringBuffer buffer;
+  const SharedSizeStringBuffer& buffer;
   std::ostream& output;
   std::mutex& outputLock;
 

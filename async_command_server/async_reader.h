@@ -13,14 +13,14 @@
 
 using namespace boost;
 
-constexpr size_t READ_BUFFER_SIZE = 64;
+constexpr size_t READ_BUFFER_SIZE = 4096;
 
 class AsyncReader : public std::enable_shared_from_this<AsyncReader>
 {
 public:
 
   using SharedSocket = std::shared_ptr<asio::ip::tcp::socket>;
-  using SharedProcessor = std::shared_ptr<AsyncCommandProcessor<2>>;
+  using SharedProcessor = std::shared_ptr<AsyncCommandProcessor<4>>;
 
   AsyncReader() = delete;
 
@@ -33,7 +33,10 @@ public:
               std::condition_variable& newTerminationNotifier,
               std::mutex& newTerminationLock,
               std::ostream& newErrorStream,
-              std::mutex& newOutputLock);
+              std::mutex& newOutputLock,
+              std::atomic<bool>& stopFlag);
+
+  ~AsyncReader();
 
   void start();
 
@@ -70,6 +73,12 @@ private:
   std::mutex& outputLock;
 
   std::shared_ptr<AsyncReader> sharedThis;
+
+  std::atomic<bool>& shouldExit;
+
+  std::atomic<bool> stopped;
+  std::thread controller;
+  std::condition_variable controllerNotifier;
 };
 
 using SharedAsyncReader = std::shared_ptr<AsyncReader>;

@@ -13,23 +13,53 @@ std::atomic<bool> shouldExit{false};
 std::condition_variable terminationNotifier{};
 std::mutex terminationLock{};
 
-extern "C" void terminationHandler(int)
+
+void terminationHandler(int)
 {
+//  struct sigaction terminationAction{};
+//  terminationAction.sa_handler = terminationHandler;
+//  sigset_t  signalSet;
+//  sigemptyset(&signalSet);
+//  sigaddset(&signalSet, SIGINT);
+//  terminationAction.sa_mask = signalSet;
+//  sigaction(SIGINT, &terminationAction, 0);
+
+//  int sig;
+//  sigwait(&signalSet, &sig);
+
+  std::cout << "\nSIGINT cought\n";
+
   shouldExit.store(true);
   terminationNotifier.notify_all();
+
+//  std::this_thread::sleep_for(10s);
 }
 
 int homework(int argc, char* argv[], std::ostream& outputStream,
               std::ostream& errorStream, std::ostream& metricsStream)
 {
+  std::signal(SIGINT, terminationHandler);
+//  sigset_t base_mask;
+//  sigfillset(&base_mask);
+//  /* Block user interrupts while doing other processing. */
+//  sigprocmask (SIG_SETMASK, &base_mask, NULL);
+
+//  struct sigaction terminationAction{};
+//  terminationAction.sa_handler = terminationHandler;
+//  sigset_t  signalSet;
+//  sigemptyset(&signalSet);
+//  sigaddset(&signalSet, SIGINT);
+//  terminationAction.sa_mask = signalSet;
+//  sigaction(SIGINT, &terminationAction, 0);
+//  sigset_t  signalSet;
+//  sigfillset(&signalSet);
+//  pthread_sigmask(SIG_BLOCK, &signalSet, nullptr);
+
   if (argc < 3 || std::stoi(std::string{argv[2]}) < 1)
   {
     errorStream << "usage: bulkserver <port> <bulk size>" << std::endl;
     return 1;
   }
-
-  std::signal(SIGINT, terminationHandler);
-  std::signal(SIGTERM, terminationHandler);
 
   uint16_t portNumber{static_cast<uint16_t>(std::stoull(std::string{argv[1]}))};
   size_t bulkSize{std::stoull(std::string{argv[2]})};
@@ -40,19 +70,67 @@ int homework(int argc, char* argv[], std::ostream& outputStream,
     outputStream, errorStream, metricsStream
   };
 
-  server.start();
+  std::thread mainThread{[&server]()
+   {
+//      sigset_t  signalSet;
+//      sigfillset(&signalSet);
+//      pthread_sigmask(SIG_BLOCK, &signalSet, nullptr);
 
-  while (shouldExit.load() != true)
-  {
-    std::unique_lock<std::mutex> lockTermination{terminationLock};
-    terminationNotifier.wait(lockTermination, []()
-    {
-      return shouldExit.load() == true;
-    });
-    lockTermination.unlock();
-  }
+      server.start();
 
-  server.stop();
+      while (shouldExit.load() != true)
+      {
+        std::unique_lock<std::mutex> lockTermination{terminationLock};
+        terminationNotifier.wait_for(lockTermination, 100ms, []()
+        {
+          return shouldExit.load() == true;
+        });
+        lockTermination.unlock();
+      }
+
+      std::cout << "\nSIGINT STOP\n";
+
+      server.stop();
+   }};
+
+  //std::thread terminationThread{terminationHandler, SIGINT};
+
+
+//  for (;;)
+//  {
+//    /* After a while, check to see whether any signals are pending. */
+//    sigpending (&waiting_mask);
+//    if (shouldExit.load() != true && sigismember (&waiting_mask, SIGINT))
+//    {
+//      //terminationHandler(1);
+//      shouldExit.store(true);
+//      terminationNotifier.notify_all();
+
+//      std::this_thread::sleep_for(12s);
+
+//      //if (mainThread.joinable()) mainThread.join();
+
+//      //break;
+//    }
+//    else
+//    {
+//      std::this_thread::sleep_for(1s);
+//    }
+//  }
+
+//  char userInput{};
+
+//  do
+//  {
+//    std::cin >> userInput;
+//    std::cout << "\n" << userInput << "\n";
+//  }
+//  while (userInput != 3);
+
+//  shouldExit.store(true);
+
+  //terminationThread.join();
+  mainThread.join();
 
   return 0;
 }

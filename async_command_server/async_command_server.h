@@ -5,6 +5,7 @@
 #include <memory>
 #include <mutex>
 #include <thread>
+#include <csignal>
 #include <boost/asio.hpp>
 #include "async_acceptor.h"
 
@@ -31,7 +32,11 @@ public:
   portNumber{newPortNumber},
   service{},
 
-  asyncAcceptor{std::make_unique<AsyncAcceptor>(
+  terminationLock{},
+  terminationNotifier{},
+  acceptorStopped{true},
+
+  asyncAcceptor{ new AsyncAcceptor (
     newAddress,
     newPortNumber,
     service,
@@ -40,8 +45,11 @@ public:
     newBulkCloseDelimiter,
     newOutputStream,
     newErrorStream,
-    newMetricsStream
-  )},
+    newMetricsStream,
+    terminationNotifier,
+    acceptorStopped
+  )},  
+
   errorStream{newErrorStream},
   outputLock{asyncAcceptor->getScreenOutputLock()}
   {}
@@ -52,11 +60,18 @@ public:
     #else
       //std::cout << "-- Server destructor\n";
     #endif
+
+    if (acceptorStopped.load() != true)
+    {
+      stop();
+    }
   }
 
   void start()
   {
     asyncAcceptor->start();
+
+    acceptorStopped.store(false);
 
     for (size_t idx{0}; idx < workingThreadCount; ++idx)
     {
@@ -72,6 +87,27 @@ public:
     #endif
 
     asyncAcceptor->stop();
+
+    #ifdef NDEBUG
+    #else
+      //std::cout << "-- waiting Acceptor termination. Termination flag: "
+      //          << std::boolalpha << acceptorStopped.load() << "\n";
+    #endif
+
+    while (acceptorStopped.load() != true)
+    {
+      #ifdef NDEBUG
+      #else
+        std::cout << "-- waiting Acceptor termination. Termination flag: "
+                 << std::boolalpha << acceptorStopped.load() << "\n";
+      #endif
+
+      std::unique_lock<std::mutex> lockTermination{terminationLock};
+      terminationNotifier.wait_for(lockTermination, 100ms,[this]()
+      {
+        return acceptorStopped.load() == true;
+      });
+    }
 
     for (auto& thread : workingThreads)
     {
@@ -113,9 +149,14 @@ private:
   asio::ip::address_v4 address;
   uint16_t portNumber;
   asio::io_service service;
+
+  std::mutex terminationLock;
+  std::condition_variable terminationNotifier;
+  std::atomic<bool> acceptorStopped;
+
   std::unique_ptr<AsyncAcceptor> asyncAcceptor;
 
-  std::vector<std::thread> workingThreads;
+  std::vector<std::thread> workingThreads;  
 
   std::ostream& errorStream;
   std::mutex& outputLock;
