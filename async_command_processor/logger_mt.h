@@ -38,6 +38,7 @@ public:
     AsyncWorker<threadCount>{newWorkerName},
     buffers{newBuffers},
     destinationDirectory{newDestinationDirectory},
+    outputFiles{},
     previousTimeStamp{}, additionalNameSection{},
     errorOut{newErrorOut}, errorOutLock{newErrorOutLock},
     threadMetrics{}
@@ -55,7 +56,10 @@ public:
       threadMetrics.push_back(std::make_shared<ThreadMetrics>(
           std::string{"logger thread#"} + std::to_string(threadIndex)
       ));
+
       additionalNameSection.push_back(1u);
+
+      outputFiles[threadIndex] = std::make_unique<std::ofstream>();
     }
   }
 
@@ -70,25 +74,35 @@ public:
     {
       if (buffers[threadIndex].get() == sender)
       {
-        #ifdef NDEBUG
-        #else
-          //std::cout << this->workerName << " reactNotification\n";
-        #endif
-
         ++this->notificationCounts[threadIndex];
         this->threadNotifiers[threadIndex].notify_one();
+        break;
       }
     }
+
+    #ifdef NDEBUG
+    #else
+      //std::cout << this->workerName << " reactNotification\n";
+    #endif
+
   }
 
-  void reactMessage(class MessageBroadcaster*, Message message) override
+  void reactMessage(class MessageBroadcaster* sender, Message message) override
   {
     if (messageCode(message) < 1000) // non error message
     {
       switch(message)
       {
         case Message::NoMoreData :
-        this->noMoreData.store(true);
+        for (size_t threadIndex{0}; threadIndex < threadCount; ++threadIndex)
+        {
+          if (buffers[threadIndex].get() == sender)
+          {
+            this->noMoreData[threadIndex].store(true);
+            break;
+          }
+        }
+
 
           #ifdef NDEBUG
           #else
@@ -146,44 +160,59 @@ private:
 //      previousTimeStamp = nextBulkInfo.first;
 //    }
 
-    std::string bulkFileName{
-      destinationDirectory + std::to_string(nextBulkInfo.first)
-    };
+//    std::string bulkFileName{
+//      destinationDirectory+ std::to_string(nextBulkInfo.first)
+//    };
 
     //std::string processID{std::to_string(::getpid())};
     //std::string threadID{std::to_string(std::hash<std::string>(this->stringThreadID[threadIndex]))};
 
 
+//    std::stringstream fileNameSuffix{};
+//    fileNameSuffix << ::getpid()<< "-" << this->stringThreadID[threadIndex]
+//                   << "_" << additionalNameSection[threadIndex];
+
+    //auto suffixHash = std::to_string(this->stringHasher(fileNameSuffix.str()));
+//    std::reverse(suffixHash.begin(), suffixHash.end());
+//    std::random_device rd;
+//    std::mt19937 g(rd());
+    //std::shuffle(suffixHash.begin(), suffixHash.end(), this->idGenerator);
+
+//    auto logFileName {bulkFileName + "_" + fileNameSuffix.str() + ".log"};
+
+    auto logFileName {buildFileName(nextBulkInfo.first, threadIndex)};
+
+    //auto delay{std::hash<std::string>{}(fileNameSuffix.str()) % 9};
+
+    //std::this_thread::sleep_for(std::chrono::microseconds{25});
+
     std::stringstream fileNameSuffix{};
-    fileNameSuffix << ::getpid()<< "-" << this->stringThreadID[threadIndex]
-                   << "_" << additionalNameSection[threadIndex];
-
-    auto suffixHash = std::to_string(std::hash<std::string>{}(fileNameSuffix.str()));
-    std::reverse(suffixHash.begin(), suffixHash.end());
-    std::random_device rd;
-    std::mt19937 g(rd());
-    std::shuffle(suffixHash.begin(), suffixHash.end(), g);
-
-    auto logFileName {bulkFileName + "_" + suffixHash + ".log"};
-
-    auto delay{std::hash<std::string>{}(fileNameSuffix.str()) % 9};
-    std::this_thread::sleep_for(std::chrono::microseconds{25});
+    fileNameSuffix << ::getpid()<< "-" << this->stringThreadID[threadIndex];
 
     auto startTime = std::chrono::high_resolution_clock::now();
 
     //diskAccessLock.lock();
-    std::fstream logFile{};
+    //std::fstream logFile{};
     //diskAccessLock.unlock();
 
-    logFile.open(logFileName, std::ios::out);
+    //logFile.open(logFileName, std::ios::out);
+    //std::ios_base::sync_with_stdio(false);
 
-    if(!logFile)
-    {
-      std::lock_guard<std::mutex> lockErrorOut{errorOutLock};
-      errorOut << "Cannot create log file " <<
-                  logFileName << " !" << std::endl;
-      throw(std::ios_base::failure{"Log file creation error!"});
-    }
+    //auto fp{std::fopen(logFileName.c_str(), "w")};
+    //std::fclose(fp);
+    //std::this_thread::sleep_for(50ms);
+
+
+
+    //outputFiles[threadIndex]->open(logFileName);
+
+//    if(!logFile)
+//    {
+//      std::lock_guard<std::mutex> lockErrorOut{errorOutLock};
+//      errorOut << "Cannot create log file " <<
+//                  logFileName << " !" << std::endl;
+//      throw(std::ios_base::failure{"Log file creation error!"});
+//    }
 
     //std::this_thread::sleep_for(1ms);
 
@@ -195,16 +224,18 @@ private:
 
     //logFile << '\n';
 
-    logFile << nextBulkInfo.second;
+    //logFile << nextBulkInfo.second;
 
+    //outputFiles[threadIndex]->close();
 
+    writeToFile(threadIndex, logFileName/*fileNameSuffix.str()*/, nextBulkInfo.second);
 
     auto endTime = std::chrono::high_resolution_clock::now();
 
     auto waitTime {std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count()};
     if (waitTime > 100)
     {
-      std::cout << "            write time : " << waitTime << "\n";
+      //std::cout << "            write time : " << waitTime << "\n";
     }
 
     ++additionalNameSection[threadIndex];
@@ -247,20 +278,61 @@ private:
       //std::cout << "\n                     " << this->workerName<< " AllDataLogged\n";
     #endif
 
-    if (true == this->noMoreData.load()
-        && std::accumulate(
-             this->notificationCounts.begin(),
-             this->notificationCounts.end(), 0
-           ) == 0)
+    auto totalNotifications {std::accumulate(
+            this->notificationCounts.begin(),
+            this->notificationCounts.end(), 0
+          )};
+
+    auto noDataAnymore{std::accumulate(
+            this->noMoreData.begin(),
+            this->noMoreData.end(), false
+          )};
+
+    if (true == noDataAnymore
+        && totalNotifications == 0)
     {
       sendMessage(Message::AllDataLogged);
     }
+    else
+    {
+      #ifdef NDEBUG
+      #else
+        //std::cout << "\n                     " << this->workerName << " unprocessed notifiacations: " << totalNotifications <<"\n";
+      #endif
+    }
+  }
+
+  std::string buildFileName(const std::size_t& timeStamp, const size_t& threadIndex)
+  {
+    std::string bulkFileName{
+      destinationDirectory + std::to_string(timeStamp)
+    };
+
+    std::stringstream fileNameSuffix{};
+    fileNameSuffix << ::getpid()<< "-" << this->stringThreadID[threadIndex]
+                   << "_" << additionalNameSection[threadIndex];
+
+    return (bulkFileName + "_" + fileNameSuffix.str() + ".log");
+  }
+
+  void writeToFile(const size_t threadIndex, const std::string& fileName, const std::string& fileContent)
+  {
+    diskAccessLock.lock();
+    outputFiles[threadIndex]->open(fileName, std::ios::app);
+    diskAccessLock.unlock();
+    *outputFiles[threadIndex] << fileContent;
+    diskAccessLock.lock();
+    outputFiles[threadIndex]->flush();
+    diskAccessLock.unlock();
+    outputFiles[threadIndex]->close();
   }
 
 
   const std::vector<SharedSizeStringBuffer>& buffers;
 
   std::string destinationDirectory;
+
+  std::array<std::unique_ptr<std::ofstream>, threadCount> outputFiles;
 
   size_t previousTimeStamp;
   std::vector<size_t> additionalNameSection;

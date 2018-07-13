@@ -39,12 +39,12 @@ void InputReader::reactMessage(MessageBroadcaster* /*sender*/, Message message)
     switch(message)
     {
     case Message::NoMoreData :
-      noMoreData.store(true);
+      noMoreData[0].store(true);
 
-      //#ifdef NDEBUG
-      //#else
-        std::cout << "\n                     " << this->workerName<< " NoMoreData received\n";
-      //#endif
+      #ifdef NDEBUG
+      #else
+        //std::cout << "\n                     " << this->workerName<< " NoMoreData received\n";
+      #endif
 
       threadNotifiers[0].notify_one();
       break;
@@ -136,7 +136,7 @@ void InputReader::onTermination(const size_t /*threadIndex*/)
     //std::cout << "\n                     " << this->workerName<< " all characters received\n";
   #endif
 
-  if (true == noMoreData.load() &&
+  if (true == noMoreData[0].load() &&
       notificationCounts[0].load() == 0)
   {
     sendMessage(Message::NoMoreData);

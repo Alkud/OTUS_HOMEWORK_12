@@ -57,7 +57,7 @@ private:
   asio::ip::tcp::endpoint endpoint;  
   asio::ip::tcp::acceptor acceptor;
 
-  std::shared_ptr<AsyncCommandProcessor<4>> processor;
+  std::shared_ptr<AsyncCommandProcessor<2>> processor;
 
   const char openDelimiter;
   const char closeDelimiter;

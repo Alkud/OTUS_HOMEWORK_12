@@ -70,6 +70,7 @@ void AsyncReader::start()
       {
         //socket->shutdown(asio::ip::tcp::socket::shutdown_both);
         stop();
+        //socket->cancel();
       }
 
       #ifdef NDEBUG
@@ -85,7 +86,7 @@ void AsyncReader::stop()
 {
   #ifdef NDEBUG
   #else
-    std::cout << "-- reader stop\n";
+    //std::cout << "-- reader stop\n";
   #endif
 
   stopped.store(true);
@@ -229,7 +230,10 @@ void AsyncReader::processInputString(std::string& inputString)
     {
       bulkBuffer.push_back(closeDelimiter);
       bulkBuffer.push_back('\n');
-      processor->receiveData(bulkBuffer.data(), bulkBuffer.size());
+      std::string tmpString{};
+      std::copy(bulkBuffer.begin(), bulkBuffer.end(), std::back_inserter(tmpString));
+      //processor->receiveData(bulkBuffer.data(), bulkBuffer.size());
+      processor->receiveData(tmpString.c_str(), tmpString.size());
       bulkBuffer.clear();
       bulkOpen = false;
     }

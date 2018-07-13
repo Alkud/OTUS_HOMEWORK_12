@@ -20,7 +20,7 @@ class AsyncReader : public std::enable_shared_from_this<AsyncReader>
 public:
 
   using SharedSocket = std::shared_ptr<asio::ip::tcp::socket>;
-  using SharedProcessor = std::shared_ptr<AsyncCommandProcessor<4>>;
+  using SharedProcessor = std::shared_ptr<AsyncCommandProcessor<2>>;
 
   AsyncReader() = delete;
 

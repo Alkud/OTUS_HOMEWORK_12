@@ -73,7 +73,7 @@ void InputProcessor::reactMessage(MessageBroadcaster* /*sender*/, Message messag
         //std::cout << "\n                     " << this->workerName<< " NoMoreData received\n";
       #endif
 
-      noMoreData.store(true);
+      noMoreData[0].store(true);
       threadNotifiers[0].notify_one();
       break;
 
@@ -237,7 +237,7 @@ void InputProcessor::sendCurrentBulk()
 
   /* send the bulk to the output buffer */
   auto newBulkInfo{std::make_pair(ticksCount, newBulk)};
-  //publisherBuffer->putItem(newBulkInfo);
+  publisherBuffer->putItem(newBulkInfo);
   loggerBuffers[activeLoggerBufferNumber]->putItem(newBulkInfo);
 
   //std::cout << newBulk << "\n";

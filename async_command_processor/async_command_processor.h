@@ -170,9 +170,7 @@ public:
       terminationNotifier.notify_all();
 
       return;
-    }
-
-    lockAccess.unlock();
+    }    
 
     {
        #ifdef NDEBUG
@@ -199,6 +197,8 @@ public:
         entryPoint->putItem(std::move(newData));
       }
     }
+
+    lockAccess.unlock();
 
     {
       #ifdef NDEBUG
@@ -231,17 +231,13 @@ public:
 
     sendMessage(Message::NoMoreData);
 
-    //lockAccess.unlock();
-
     {
       #ifdef NDEBUG
       #else
-//        std::lock_guard<std::mutex> lockScreenOutput{screenOutputLock};
-//        std::cout << "                                disconnect finished\n";
+        //std::lock_guard<std::mutex> lockScreenOutput{screenOutputLock};
+        //std::cout << "                                disconnect finished\n";
       #endif
-    }
-
-    //std::unique_lock<std::mutex> lockTermination{terminationLock};
+    }    
 
     while (activeReceptionCount.load() != 0)
     {

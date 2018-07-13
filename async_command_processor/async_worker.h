@@ -28,7 +28,7 @@ public:
   AsyncWorker() = delete;
 
   AsyncWorker(const std::string& newWorkerName) :
-    shouldExit{false}, noMoreData{false}, isStopped{true}, notificationCounts{},
+    shouldExit{false}, noMoreData{}, isStopped{true}, notificationCounts{},
     threadNotifiers{}, notifierLocks{},
     threadFinished{}, terminationLock{},
     workerName{newWorkerName}, state{WorkerState::NotStarted}
@@ -36,6 +36,11 @@ public:
     for (auto& count : notificationCounts)
     {
       count.store(0);
+    }
+
+    for (auto& flag : noMoreData)
+    {
+      flag.store(false);
     }
 
     futureResults.reserve(workingThreadCount);
@@ -129,6 +134,7 @@ protected:
   static std::mt19937 idGenerator;
 
   std::hash<std::thread::id> threadIdHasher{};
+  std::hash<std::string> stringHasher{};
 
   void startWorkingThreads()
   {
@@ -181,7 +187,7 @@ protected:
 
       /* main data processing loop */
       while(shouldExit.load() != true
-            && (noMoreData.load() != true || notificationCounts[threadIndex].load() > 0))
+            && (noMoreData[threadIndex].load() != true || notificationCounts[threadIndex].load() > 0))
       {
         std::unique_lock<std::mutex> lockNotifier{notifierLocks[threadIndex]};
 
@@ -203,7 +209,7 @@ protected:
         }
         else
         {
-          if (shouldExit.load() != true && noMoreData.load() != true)
+          if (shouldExit.load() != true && noMoreData[threadIndex].load() != true)
           {
             #ifdef NDEBUG
             #else
@@ -215,7 +221,7 @@ protected:
 
             threadNotifiers[threadIndex].wait_for(lockNotifier, std::chrono::milliseconds(10), [this, &threadIndex]()
             {
-              return this->noMoreData.load()
+              return this->noMoreData[threadIndex].load()
                       || this->notificationCounts[threadIndex].load() > 0
                       || this->shouldExit.load();
             });
@@ -286,7 +292,8 @@ protected:
   std::vector<std::thread::id> threadID{};
   std::vector<std::string> stringThreadID{};
   std::atomic<bool> shouldExit;
-  std::atomic<bool> noMoreData;
+
+  std::array<std::atomic<bool>, workingThreadCount> noMoreData;
 
   bool isStopped;
 

@@ -108,6 +108,7 @@ public:
 
     publisherBuffer->addNotificationListener(publisher);
     publisherBuffer->addMessageListener(publisher);
+
     for (const auto& loggerBuffer : loggerBuffers)
     {
       loggerBuffer->addNotificationListener(logger);
@@ -162,7 +163,7 @@ public:
       case Message::AllDataPublsihed :
         #ifdef NDEBUG
         #else
-          //std::cout << "\n                     AllDataReceived received\n";
+          //std::cout << "\n                     AllDataPublished received\n";
         #endif
 
         dataPublished.store(true);

@@ -86,6 +86,13 @@ public:
       //std::cout << "-- called Server::stop()\n";
     #endif
 
+    service.stop();
+
+    while(service.stopped() != true)
+    {}
+
+    std::this_thread::sleep_for(1s);
+
     asyncAcceptor->stop();
 
     #ifdef NDEBUG
@@ -98,8 +105,8 @@ public:
     {
       #ifdef NDEBUG
       #else
-        std::cout << "-- waiting Acceptor termination. Termination flag: "
-                 << std::boolalpha << acceptorStopped.load() << "\n";
+        //std::cout << "-- waiting Acceptor termination. Termination flag: "
+        //          << std::boolalpha << acceptorStopped.load() << "\n";
       #endif
 
       std::unique_lock<std::mutex> lockTermination{terminationLock};
@@ -117,7 +124,12 @@ public:
       }
     }
 
-    service.stop();
+    //service.stop();
+
+    #ifdef NDEBUG
+    #else
+      //std::cout << "-- Server stopped\n";
+    #endif
   }
 
   std::mutex& getScreenOutputLock()

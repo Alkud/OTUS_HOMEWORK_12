@@ -17,7 +17,7 @@
 
 using namespace std::chrono_literals;
 
-const size_t MAX_BUFFER_SIZE = 1000000;
+const size_t MAX_BUFFER_SIZE = 1;
 
 template<class T>
 class SimpleBuffer : public NotificationBroadcaster,
@@ -52,20 +52,17 @@ public:
     std::lock_guard<std::mutex> lockData{dataLock};
 
     /* don't accept data if NoMoreData message received! */
-    if (noMoreData.load() == true)
+    if (noMoreData[0].load() == true)
     {
       return;
     }
 
-//    if (data.size() >= MAX_BUFFER_SIZE)
+//    while (data.size() >= MAX_BUFFER_SIZE)
 //    {
-//      while (data.size() >= MAX_BUFFER_SIZE)
+//      overloadNotifier.wait_for(lockData, 10ms, [this]()
 //      {
-//        overloadNotifier.wait_for(lockData, 100ms, [this]()
-//        {
-//          return data.size() == 0;
-//        });
-//      }
+//        return data.size() == 0;
+//      });
 //    }
 
     data.push_back(newItem);
@@ -86,14 +83,14 @@ public:
 //              << workerName << "data.size()=" << data.size() << "\n";
 
     /* don't accept data if NoMoreData message received! */
-    if (noMoreData.load() == true)
+    if (noMoreData[0].load() == true)
     {
       return;
     }
 
 //    while (data.size() >= MAX_BUFFER_SIZE)
 //    {
-//      overloadNotifier.wait_for(lockData, 100ms, [this]()
+//      overloadNotifier.wait_for(lockData, 10ms, [this]()
 //      {
 //        return data.size() == 0;
 //      });
@@ -111,7 +108,7 @@ public:
     auto waitTime {std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count()};
     if (waitTime > 100)
     {
-      std::cout << "                        putItem time : " << waitTime << "\n";
+      //std::cout << "                        putItem time : " << waitTime << "\n";
     }
   }
 
@@ -152,7 +149,7 @@ public:
       overloadNotifier.notify_all();
     }
 
-    if (true == data.empty() && true == noMoreData.load())
+    if (true == data.empty() && true == noMoreData[0].load())
     {      
       #ifdef NDEBUG
       #else
@@ -170,7 +167,7 @@ public:
     auto waitTime {std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count()};
     if (waitTime > 100)
     {
-      std::cout << "                        getItem time : " << waitTime << "\n";
+      //std::cout << "                        getItem time : " << waitTime << "\n";
     }
 
     return result;
@@ -205,7 +202,7 @@ public:
       case Message::NoMoreData :
       {
         std::lock_guard<std::mutex> lockData{dataLock};
-        noMoreData.store(true);
+        noMoreData[0].store(true);
 
         #ifdef NDEBUG
         #else
@@ -235,6 +232,20 @@ private:
   bool threadProcess(const size_t /*threadIndex*/) override
   {
     notify();
+
+//    std::mutex dummyMutex{};
+//    std::unique_lock<std::mutex> dummyLock{dummyMutex};
+//    if (data.size() >= MAX_BUFFER_SIZE)
+//    {
+//      while (data.size() > 0)
+//      {
+//        overloadNotifier.wait_for(dummyLock, 10ms, [this]()
+//        {
+//          return data.size() == 0;
+//        });
+//      }
+
+//    }
   }
 
   void onThreadException(const std::exception& ex, const size_t threadIndex) override
@@ -258,7 +269,7 @@ private:
 
   void onTermination(const size_t /*threadIndex*/) override
   {
-    if (noMoreData.load() == true
+    if (noMoreData[0].load() == true
         && dataSize() == 0)
     {
       dataReceived.store(true);
@@ -272,6 +283,10 @@ private:
       //          << workerName << " dataReceived=" << dataReceived.load()
       //          << "data.size()=" << data.size()
       //          << "notificationCount=" << notificationCounts[0].load() << "\n";
+      if (workerName.find("logger buffer") != std::string::npos)
+      {
+        std::cout << "\r PLAEASE WAIT! Writing files. Remain: " << data.size() << "                 \r";
+      }
       #endif
 
       std::unique_lock<std::mutex> lockNotifier{notifierLocks[0]};

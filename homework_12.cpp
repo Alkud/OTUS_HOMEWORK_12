@@ -88,7 +88,7 @@ int homework(int argc, char* argv[], std::ostream& outputStream,
         lockTermination.unlock();
       }
 
-      std::cout << "\nSIGINT STOP\n";
+      std::cout << "\nSIGINT STOP\n";      
 
       server.stop();
    }};

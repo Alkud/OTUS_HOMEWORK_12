@@ -27,7 +27,7 @@ address{newAddress}, portNumber{newPortNumber}, service{newService},
 endpoint{address, portNumber}, acceptor{service, endpoint},
 
 processor{
-    new AsyncCommandProcessor<4> (
+    new AsyncCommandProcessor<2> (
     std::string{"Command processor @"} + address.to_string() + ":" + std::to_string(portNumber),
     newBulkSize,
     newBulkOpenDelimiter,
@@ -63,7 +63,7 @@ void AsyncAcceptor::stop()
 {
   #ifdef NDEBUG
   #else
-    std::cout << "-- Acceptor stop\n";
+    //std::cout << "-- Acceptor stop\n";
   #endif
 
   shouldExit.store(true);
@@ -72,7 +72,7 @@ void AsyncAcceptor::stop()
   {
     #ifdef NDEBUG
     #else
-      std::cout << "-- acceptor calls processor::disconnect\n";
+      //std::cout << "-- acceptor calls processor::disconnect\n";
     #endif
 
     processor->disconnect();
@@ -82,7 +82,7 @@ void AsyncAcceptor::stop()
   {
     #ifdef NDEBUG
     #else
-      std::cout << "-- acceptor close\n";
+      //std::cout << "-- acceptor close\n";
     #endif
 
     acceptor.close();

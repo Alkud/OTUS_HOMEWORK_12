@@ -44,7 +44,7 @@ void Publisher::reactMessage(MessageBroadcaster* /*sender*/, Message message)
     switch(message)
     {
     case Message::NoMoreData :
-      noMoreData.store(true);
+      noMoreData[0].store(true);
 
       #ifdef NDEBUG
       #else
@@ -82,10 +82,11 @@ bool Publisher::threadProcess(const size_t /*threadIndex*/)
 
   auto bufferReply{buffer->getItem()};
 
-  auto nextBulkInfo{bufferReply.second};
+  auto nextBulkInfo{bufferReply.second};  
 
   std::lock_guard<std::mutex> lockOutput{outputLock};
-  //output << nextBulkInfo << '\n';
+  std::ios_base::sync_with_stdio(false);
+  output << nextBulkInfo << std::endl;
 
   /* Refresh metrics */
   ++threadMetrics->totalBulkCount;
@@ -122,7 +123,7 @@ void Publisher::onTermination(const size_t /*threadIndex*/)
     //std::cout << "\n                     " << this->workerName<< " AllDataPublished\n";
   #endif
 
-  if (true == noMoreData.load() && notificationCounts[0].load() == 0)
+  if (true == noMoreData[0].load() && notificationCounts[0].load() == 0)
   {
     sendMessage(Message::AllDataPublsihed);
   }
