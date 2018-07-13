@@ -240,11 +240,7 @@ void InputProcessor::sendCurrentBulk()
   publisherBuffer->putItem(newBulkInfo);
   loggerBuffers[activeLoggerBufferNumber]->putItem(newBulkInfo);
 
-  //std::cout << newBulk << "\n";
-
-
   activeLoggerBufferNumber = ++activeLoggerBufferNumber % loggerBuffers.size();
-
 
   /* Refresh metrics */
   threadMetrics->totalCommandCount += tempBuffer.size();

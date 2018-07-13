@@ -17,8 +17,6 @@
 
 using namespace std::chrono_literals;
 
-const size_t MAX_BUFFER_SIZE = 1;
-
 template<class T>
 class SimpleBuffer : public NotificationBroadcaster,
                      public MessageListener,
@@ -57,14 +55,6 @@ public:
       return;
     }
 
-//    while (data.size() >= MAX_BUFFER_SIZE)
-//    {
-//      overloadNotifier.wait_for(lockData, 10ms, [this]()
-//      {
-//        return data.size() == 0;
-//      });
-//    }
-
     data.push_back(newItem);
     dataReceived.store(false);
     ++notificationCounts[0];
@@ -74,13 +64,7 @@ public:
   /// Move new element to the buffer
   void putItem(T&& newItem)
   {
-    auto startTime = std::chrono::high_resolution_clock::now();
-
     std::unique_lock<std::mutex> lockData{dataLock};
-
-
-//    std::cout << "\n                    "
-//              << workerName << "data.size()=" << data.size() << "\n";
 
     /* don't accept data if NoMoreData message received! */
     if (noMoreData[0].load() == true)
@@ -88,28 +72,12 @@ public:
       return;
     }
 
-//    while (data.size() >= MAX_BUFFER_SIZE)
-//    {
-//      overloadNotifier.wait_for(lockData, 10ms, [this]()
-//      {
-//        return data.size() == 0;
-//      });
-//    }
-
     data.push_back(std::move(newItem));
     dataReceived.store(false);
     ++notificationCounts[0];
     threadNotifiers[0].notify_one();
 
     lockData.unlock();
-
-    auto endTime = std::chrono::high_resolution_clock::now();
-
-    auto waitTime {std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count()};
-    if (waitTime > 100)
-    {
-      //std::cout << "                        putItem time : " << waitTime << "\n";
-    }
   }
 
   /// Each recipient starts looking from the first element in the queue.
@@ -118,8 +86,6 @@ public:
   /// for this element.
   T getItem()
   {
-    auto startTime = std::chrono::high_resolution_clock::now();
-
     std::unique_lock<std::mutex> lockData{dataLock};
 
     if (data.empty() == true)
@@ -135,20 +101,6 @@ public:
 
     data.pop_front();
 
-//    ++shrinkCounter;
-
-//    if (shrinkCounter.load() == 1000)
-//    {
-//      data.shrink_to_fit();
-//      shrinkCounter.store(0);
-//    }
-
-    if (data.empty() == true)
-    {
-      //data.shrink_to_fit();
-      overloadNotifier.notify_all();
-    }
-
     if (true == data.empty() && true == noMoreData[0].load())
     {      
       #ifdef NDEBUG
@@ -161,14 +113,6 @@ public:
     }
 
     lockData.unlock();
-
-    auto endTime = std::chrono::high_resolution_clock::now();
-
-    auto waitTime {std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count()};
-    if (waitTime > 100)
-    {
-      //std::cout << "                        getItem time : " << waitTime << "\n";
-    }
 
     return result;
   }
@@ -232,20 +176,6 @@ private:
   bool threadProcess(const size_t /*threadIndex*/) override
   {
     notify();
-
-//    std::mutex dummyMutex{};
-//    std::unique_lock<std::mutex> dummyLock{dummyMutex};
-//    if (data.size() >= MAX_BUFFER_SIZE)
-//    {
-//      while (data.size() > 0)
-//      {
-//        overloadNotifier.wait_for(dummyLock, 10ms, [this]()
-//        {
-//          return data.size() == 0;
-//        });
-//      }
-
-//    }
   }
 
   void onThreadException(const std::exception& ex, const size_t threadIndex) override
@@ -275,17 +205,27 @@ private:
       dataReceived.store(true);
     }
 
+    if (dataReceived.load() != true
+        && workerName.find("logger buffer#0") != std::string::npos)
+    {
+      std::cout << std::endl;
+    }
+
+    bool needClearOutput{false};
+
     while (dataReceived.load() != true)
     {
+      needClearOutput = true;
+
       #ifdef NDEBUG
       #else
       //std::cout << "\n                    "
       //          << workerName << " dataReceived=" << dataReceived.load()
       //          << "data.size()=" << data.size()
       //          << "notificationCount=" << notificationCounts[0].load() << "\n";
-      if (workerName.find("logger buffer") != std::string::npos)
+      if (workerName.find("logger buffer#0") != std::string::npos)
       {
-        std::cout << "\r PLAEASE WAIT! Writing files. Remain: " << data.size() << "                 \r";
+        std::cout << "\r PLEASE WAIT! Writing log files... Remain: " << data.size() << "                 \r";
       }
       #endif
 
@@ -295,6 +235,12 @@ private:
         return dataReceived.load() == true;
       });
       lockNotifier.unlock();
+    }
+
+    if (true == needClearOutput
+        && workerName.find("logger buffer#0") != std::string::npos)
+    {
+      std::cout << '\r' << std::endl;
     }
 
     sendMessage(Message::NoMoreData);
@@ -310,9 +256,6 @@ private:
 
   Message errorMessage{Message::SystemError};
 
-  std::atomic<size_t> shrinkCounter{};
-
-  std::condition_variable overloadNotifier{};
 };
 
 

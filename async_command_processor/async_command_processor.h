@@ -183,18 +183,13 @@ public:
 
     if (entryPoint != nullptr && disconnected.load() != true)
     {
-//      InputReader::EntryDataType newData{};
-//      for (size_t idx{0}; idx < size; ++idx)
-//      {
-//        newData.push_back(data[idx]);
-//      }
-
       std::stringstream characters{data};
 
-      std::string newData{};
-      while (std::getline(characters,newData))
+      std::string newString{};
+
+      while (std::getline(characters, newString))
       {
-        entryPoint->putItem(std::move(newData));
+        entryPoint->putItem(std::move(newString));
       }
     }
 
@@ -311,7 +306,6 @@ private:
 
   std::shared_ptr<CommandProcessorInstance<loggingThreadCount>> processor;
 
-//  std::shared_ptr<InputReader::InputBufferType> entryPoint{nullptr};
   std::shared_ptr<InputProcessor::InputBufferType> entryPoint{nullptr};
   std::shared_ptr<InputProcessor::InputBufferType> commandBuffer;
   std::shared_ptr<InputProcessor::OutputBufferType> bulkBuffer;

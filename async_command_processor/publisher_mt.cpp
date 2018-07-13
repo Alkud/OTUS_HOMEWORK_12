@@ -85,7 +85,7 @@ bool Publisher::threadProcess(const size_t /*threadIndex*/)
   auto nextBulkInfo{bufferReply.second};  
 
   std::lock_guard<std::mutex> lockOutput{outputLock};
-  std::ios_base::sync_with_stdio(false);
+
   output << nextBulkInfo << std::endl;
 
   /* Refresh metrics */

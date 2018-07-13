@@ -32,8 +32,7 @@ public:
     std::mutex& newScreenOutputLock
   ) :
     screenOutputLock{newScreenOutputLock},
-    /* creating buffers */
-    //externalBuffer{ new InputReader::InputBufferType ("character buffer", errorStream, screenOutputLock)},
+    /* creating buffers */    
     inputBuffer{ new InputProcessor::InputBufferType ("command buffer", errorStream, screenOutputLock)},
     publisherBuffer{ new InputProcessor::OutputBufferType ("publisher buffer", errorStream, screenOutputLock)},
     loggerBuffers{},
@@ -61,14 +60,6 @@ public:
       errorStream, screenOutputLock
     )},
 
-    /* creating command reader */
-//    inputReader{
-//      new InputReader (
-//      "input reader",
-//      externalBuffer, inputBuffer,
-//      errorStream, screenOutputLock
-//    )},
-
     inputStreamLock{},
 
     dataReceived{false}, dataPublished{false},
@@ -89,13 +80,7 @@ public:
       );
     }
     /* connect broadcasters and listeners */
-//    this->addMessageListener(externalBuffer);
     this->addMessageListener(inputBuffer);
-
-//    externalBuffer->addNotificationListener(inputReader);
-//    externalBuffer->addMessageListener(inputReader);
-
-//    inputReader->addMessageListener(inputBuffer);
 
     inputBuffer->addMessageListener(inputProcessor);
     inputBuffer->addNotificationListener(inputProcessor);
@@ -115,8 +100,7 @@ public:
       loggerBuffer->addMessageListener(logger);
     }
 
-    /* creating metrics*/
-    //globalMetrics["input reader"] = inputReader->getMetrics();
+    /* creating metrics*/    
     globalMetrics["input processor"] = inputProcessor->getMetrics();
     globalMetrics["publisher"] = publisher->getMetrics();
 
@@ -189,13 +173,11 @@ public:
   {
     try
     {
-      //inputReader->addMessageListener(shared_from_this());
       inputProcessor->addMessageListener(shared_from_this());
       publisher->addMessageListener(shared_from_this());
       logger->addMessageListener(shared_from_this());
 
 
-      //externalBuffer->start();
       inputBuffer->start();
       publisherBuffer->start();
       for (const auto& loggerBuffer : loggerBuffers)
@@ -207,8 +189,6 @@ public:
       logger->start();
 
       inputProcessor->startAndWait();
-
-      //inputReader->startAndWait();
 
       /* wait for data processing termination */
       while (shouldExit.load() != true

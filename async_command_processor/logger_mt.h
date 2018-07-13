@@ -8,6 +8,7 @@
 #include <atomic>
 #include <vector>
 #include <list>
+#include <unordered_set>
 #include <thread>
 #include <fstream>
 #include <sstream>
@@ -18,6 +19,11 @@
 #include "simple_buffer_mt.h"
 #include "thread_metrics.h"
 #include "async_worker.h"
+
+#include "boost/filesystem.hpp"
+#include "boost/filesystem/fstream.hpp"
+
+namespace fs = boost::filesystem;
 
 using namespace std::chrono_literals;
 
@@ -39,7 +45,6 @@ public:
     AsyncWorker<threadCount>{newWorkerName},
     buffers{newBuffers},
     destinationDirectory{newDestinationDirectory},
-    outputFiles{},
     previousTimeStamp{}, additionalNameSection{},
     errorOut{newErrorOut}, errorOutLock{newErrorOutLock},
     threadMetrics{}
@@ -59,8 +64,6 @@ public:
       ));
 
       additionalNameSection.push_back(1u);
-
-      outputFiles[threadIndex] = std::make_unique<std::ofstream>();
     }
   }
 
@@ -155,89 +158,9 @@ private:
 
     auto nextBulkInfo{buffers[threadIndex]->getItem()};
 
-//    if (nextBulkInfo.first != previousTimeStamp)
-//    {
-//      additionalNameSection[threadIndex] = 1u;
-//      previousTimeStamp = nextBulkInfo.first;
-//    }
-
-//    std::string bulkFileName{
-//      destinationDirectory+ std::to_string(nextBulkInfo.first)
-//    };
-
-    //std::string processID{std::to_string(::getpid())};
-    //std::string threadID{std::to_string(std::hash<std::string>(this->stringThreadID[threadIndex]))};
-
-
-//    std::stringstream fileNameSuffix{};
-//    fileNameSuffix << ::getpid()<< "-" << this->stringThreadID[threadIndex]
-//                   << "_" << additionalNameSection[threadIndex];
-
-    //auto suffixHash = std::to_string(this->stringHasher(fileNameSuffix.str()));
-//    std::reverse(suffixHash.begin(), suffixHash.end());
-//    std::random_device rd;
-//    std::mt19937 g(rd());
-    //std::shuffle(suffixHash.begin(), suffixHash.end(), this->idGenerator);
-
-//    auto logFileName {bulkFileName + "_" + fileNameSuffix.str() + ".log"};
-
     auto logFileName {buildFileName(nextBulkInfo.first, threadIndex)};
 
-    //auto delay{std::hash<std::string>{}(fileNameSuffix.str()) % 9};
-
-    //std::this_thread::sleep_for(std::chrono::microseconds{25});
-
-    std::stringstream fileNameSuffix{};
-    fileNameSuffix << ::getpid()<< "-" << this->stringThreadID[threadIndex];
-
-    auto startTime = std::chrono::high_resolution_clock::now();
-
-    //diskAccessLock.lock();
-    //std::fstream logFile{};
-    //diskAccessLock.unlock();
-
-    //logFile.open(logFileName, std::ios::out);
-    //std::ios_base::sync_with_stdio(false);
-
-    //auto fp{std::fopen(logFileName.c_str(), "w")};
-    //std::fclose(fp);
-    //std::this_thread::sleep_for(50ms);
-
-
-
-    //outputFiles[threadIndex]->open(logFileName);
-
-//    if(!logFile)
-//    {
-//      std::lock_guard<std::mutex> lockErrorOut{errorOutLock};
-//      errorOut << "Cannot create log file " <<
-//                  logFileName << " !" << std::endl;
-//      throw(std::ios_base::failure{"Log file creation error!"});
-//    }
-
-    //std::this_thread::sleep_for(1ms);
-
-    //for (const auto& smallDataChunk : nextBulkInfo.second)
-    //{
-    //  logFile << smallDataChunk;
-      //std::this_thread::sleep_for(20ms);
-    //}
-
-    //logFile << '\n';
-
-    //logFile << nextBulkInfo.second;
-
-    //outputFiles[threadIndex]->close();
-
-    writeToFile(threadIndex, logFileName/*fileNameSuffix.str()*/, nextBulkInfo.second);
-
-    auto endTime = std::chrono::high_resolution_clock::now();
-
-    auto waitTime {std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count()};
-    if (waitTime > 100)
-    {
-      //std::cout << "            write time : " << waitTime << "\n";
-    }
+    writeToFile(logFileName, nextBulkInfo.second);
 
     ++additionalNameSection[threadIndex];
 
@@ -277,7 +200,7 @@ private:
     #ifdef NDEBUG
     #else
       //std::cout << "\n                     " << this->workerName<< " AllDataLogged\n";
-    #endif
+    #endif    
 
     auto totalNotifications {std::accumulate(
             this->notificationCounts.begin(),
@@ -316,48 +239,16 @@ private:
     return (bulkFileName + "_" + fileNameSuffix.str() + ".log");
   }
 
-  void writeToFile(const size_t threadIndex, const std::string& fileName, const std::string& fileContent)
+  void writeToFile(const std::string& fileName, const std::string& fileContent)
   {
-
-    auto newFile {std::make_shared<std::ofstream>()};
-    newFile->open(fileName, std::ios::app);
-    *newFile << fileContent;
-    newFile->rdbuf()->sync();
-    usedFiles.insert(newFile);
-
-//    usedLock.lock();
-//    if (usedFiles.size() > 500)
-//    {
-//      while (usedFiles.empty() != true)
-//      {
-//        usedFiles.pop_front();
-//      }
-//      usedFiles.push_back(newFile);
-//    }
-//    usedLock.unlock();
-
-    //outputFiles[threadIndex].reset(new std::ofstream{});
-    //outputFiles[threadIndex]->open(fileName, std::ios::app);
-    //*outputFiles[threadIndex] << fileContent;
-    //outputFiles[threadIndex]->write(fileContent.c_str(), fileContent.size());
-    //outputFiles[threadIndex]->flush();
-    //outputFiles[threadIndex]->close();
-
-    //auto file {std::fopen(fileName.c_str(), "w")};
-    //std::fwrite(fileContent.c_str(), 1, fileContent.size(), file);
-    //std::fflush(file);
-    //std::fclose(file);
+    std::ofstream newFile{fileName};
+    newFile << fileContent;
   }
 
 
   const std::vector<SharedSizeStringBuffer>& buffers;
 
   std::string destinationDirectory;
-
-  std::array<std::unique_ptr<std::ofstream>, threadCount> outputFiles;
-
-  std::set<std::shared_ptr<std::ofstream>> usedFiles;
-  std::mutex usedLock{};
 
   size_t previousTimeStamp;
   std::vector<size_t> additionalNameSection;
@@ -368,6 +259,4 @@ private:
   SharedMultyMetrics threadMetrics;
 
   Message errorMessage{Message::SystemError};
-
-  std::mutex diskAccessLock{};
 };
