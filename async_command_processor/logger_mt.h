@@ -7,6 +7,7 @@
 #include <memory>
 #include <atomic>
 #include <vector>
+#include <list>
 #include <thread>
 #include <fstream>
 #include <sstream>
@@ -317,14 +318,35 @@ private:
 
   void writeToFile(const size_t threadIndex, const std::string& fileName, const std::string& fileContent)
   {
-    diskAccessLock.lock();
-    outputFiles[threadIndex]->open(fileName, std::ios::app);
-    diskAccessLock.unlock();
-    *outputFiles[threadIndex] << fileContent;
-    diskAccessLock.lock();
-    outputFiles[threadIndex]->flush();
-    diskAccessLock.unlock();
-    outputFiles[threadIndex]->close();
+
+    auto newFile {std::make_shared<std::ofstream>()};
+    newFile->open(fileName, std::ios::app);
+    *newFile << fileContent;
+    newFile->rdbuf()->sync();
+    usedFiles.insert(newFile);
+
+//    usedLock.lock();
+//    if (usedFiles.size() > 500)
+//    {
+//      while (usedFiles.empty() != true)
+//      {
+//        usedFiles.pop_front();
+//      }
+//      usedFiles.push_back(newFile);
+//    }
+//    usedLock.unlock();
+
+    //outputFiles[threadIndex].reset(new std::ofstream{});
+    //outputFiles[threadIndex]->open(fileName, std::ios::app);
+    //*outputFiles[threadIndex] << fileContent;
+    //outputFiles[threadIndex]->write(fileContent.c_str(), fileContent.size());
+    //outputFiles[threadIndex]->flush();
+    //outputFiles[threadIndex]->close();
+
+    //auto file {std::fopen(fileName.c_str(), "w")};
+    //std::fwrite(fileContent.c_str(), 1, fileContent.size(), file);
+    //std::fflush(file);
+    //std::fclose(file);
   }
 
 
@@ -333,6 +355,9 @@ private:
   std::string destinationDirectory;
 
   std::array<std::unique_ptr<std::ofstream>, threadCount> outputFiles;
+
+  std::set<std::shared_ptr<std::ofstream>> usedFiles;
+  std::mutex usedLock{};
 
   size_t previousTimeStamp;
   std::vector<size_t> additionalNameSection;

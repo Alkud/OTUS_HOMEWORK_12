@@ -43,9 +43,6 @@ public:
       flag.store(false);
     }
 
-    futureResults.reserve(workingThreadCount);
-    threadID.resize(workingThreadCount, std::thread::id{});
-    stringThreadID.resize(workingThreadCount, std::string{});
     for (auto& item : threadFinished)
     {
       item.store(false);
@@ -71,14 +68,7 @@ public:
   virtual bool startAndWait()
   {
     startWorkingThreads();
-    if (futureResults.empty() != true)
-    {
-      return waitForThreadTermination();
-    }
-    else
-    {
-      return false;
-    }
+    waitForThreadTermination();
   }
 
   void stop()
@@ -94,25 +84,14 @@ public:
     #endif
 
     shouldExit.store(true);
+
     for (auto& notifier : threadNotifiers)
     {
       notifier.notify_one();
     }
 
 
-    for (auto& result : futureResults)
-    {
-      while (result.valid()
-             && result.wait_for(std::chrono::seconds{0}) != std::future_status::ready)
-      {
-        shouldExit.store(true);
-        for (auto& notifier : threadNotifiers)
-        {
-          notifier.notify_one();
-        }
-        result.wait_for(std::chrono::milliseconds(100));
-      }
-    }
+    waitForThreadTermination();
 
     if (state.load() != WorkerState::Finished)
     {
@@ -120,8 +99,6 @@ public:
     }
 
     isStopped = true;
-
-    futureResults.clear();
   }
 
   WorkerState getWorkerState()
@@ -138,36 +115,28 @@ protected:
 
   void startWorkingThreads()
   {
-    if (futureResults.empty() != true)
-    {
-      return;
-    }
-
     /* start working threads */
     for (size_t threadIndex{0}; threadIndex < workingThreadCount; ++threadIndex)
     {
-      futureResults.push_back(
-        std::async(
-          std::launch::async,
+      threads[threadIndex] = std::thread{
           &AsyncWorker<workingThreadCount>::run,
           this, threadIndex
-        )
-      );
+      };
     }
     isStopped = false;
     state.store(WorkerState::Started);
   }
 
-  bool waitForThreadTermination()
+  void waitForThreadTermination()
   {
-    /* wait for working threads results */
-    bool workSuccess{true};
-    for (auto& result : futureResults)
+    /* wait for working threads termination */
+    for (auto& thrd : threads)
     {
-      workSuccess = workSuccess && result.get();
+      if (thrd.joinable())
+      {
+        thrd.join();
+      }
     }
-
-    return workSuccess;
   }
 
   virtual void onThreadStart(const size_t /*threadIndex*/)
@@ -288,9 +257,9 @@ protected:
 
   virtual void onTermination(const size_t threadIndex) = 0;
 
-  std::vector<std::future<bool>> futureResults{};
-  std::vector<std::thread::id> threadID{};
-  std::vector<std::string> stringThreadID{};
+  std::array<std::thread, workingThreadCount> threads{};
+  std::array<std::thread::id, workingThreadCount> threadID{};
+  std::array<std::string, workingThreadCount> stringThreadID{};
   std::atomic<bool> shouldExit;
 
   std::array<std::atomic<bool>, workingThreadCount> noMoreData;
