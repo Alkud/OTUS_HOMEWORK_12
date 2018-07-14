@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <chrono>
+#include <csignal>
 #include <boost/bind.hpp>
 
 using namespace std::chrono_literals;
@@ -18,13 +19,15 @@ AsyncAcceptor::AsyncAcceptor(
   const char newBulkCloseDelimiter,
   std::ostream& newOutputStream,
   std::ostream& newErrorStream,
-  std::ostream& newMetricsStream
-):
+  std::ostream& newMetricsStream,
+  std::condition_variable& newTerminationNotifier,
+  std::atomic<bool>& newTerminationFlag
+) :
 address{newAddress}, portNumber{newPortNumber}, service{newService},
 endpoint{address, portNumber}, acceptor{service, endpoint},
 
 processor{
-  std::make_unique<AsyncCommandProcessor<2>> (
+    new AsyncCommandProcessor<2> (
     std::string{"Command processor @"} + address.to_string() + ":" + std::to_string(portNumber),
     newBulkSize,
     newBulkOpenDelimiter,
@@ -38,6 +41,11 @@ processor{
 openDelimiter{newBulkOpenDelimiter}, closeDelimiter{newBulkCloseDelimiter},
 
 currentReader{}, activeReaderCount{},
+terminationLock{},
+
+terminationNotifier{newTerminationNotifier},
+terminationFlag{newTerminationFlag},
+
 shouldExit{false},
 errorStream{newErrorStream},
 outputLock{processor->getScreenOutputLock()},
@@ -46,7 +54,8 @@ metrics {}
 
 void AsyncAcceptor::start()
 {  
-  processor->connect();
+  terminationFlag.store(false);
+  processor->connect(true);
   doAccept();
 }
 
@@ -58,6 +67,26 @@ void AsyncAcceptor::stop()
   #endif
 
   shouldExit.store(true);
+
+  if (processor != nullptr)
+  {
+    #ifdef NDEBUG
+    #else
+      //std::cout << "-- acceptor calls processor::disconnect\n";
+    #endif
+
+    processor->disconnect();
+  }
+
+  if (acceptor.is_open())
+  {
+    #ifdef NDEBUG
+    #else
+      //std::cout << "-- acceptor close\n";
+    #endif
+
+    acceptor.close();
+  }
 
   while (activeReaderCount.load() != 0)
   {
@@ -74,20 +103,13 @@ void AsyncAcceptor::stop()
     lockTermination.unlock();
   }
 
-  if (acceptor.is_open())
-  {
-    #ifdef NDEBUG
-    #else
-      //std::cout << "-- acceptor close\n";
-    #endif
+  #ifdef NDEBUG
+  #else
+    //std::cout << "-- acceptor sets termination flag\n";
+  #endif
 
-    acceptor.close();
-  }
-
-  if (processor != nullptr)
-  {
-    processor->disconnect();
-  }
+  terminationFlag.store(true);
+  terminationNotifier.notify_all();
 }
 
 void AsyncAcceptor::doAccept()
@@ -131,7 +153,8 @@ void AsyncAcceptor::onAcception(SharedSocket acceptedSocket)
     openDelimiter, closeDelimiter,
     acceptor, activeReaderCount,
     terminationNotifier, terminationLock,
-    errorStream, outputLock
+    errorStream, outputLock,
+    shouldExit
   ));
 
   currentReader->start();

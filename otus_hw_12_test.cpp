@@ -147,11 +147,11 @@ void checkMetrics(const SharedGlobalMetrics& metrics,
   const size_t loggingThreadCount
   )
 {
-  BOOST_CHECK(metrics.size() == 3 + loggingThreadCount);
+  BOOST_CHECK(metrics.size() == 2 + loggingThreadCount);
 
-  BOOST_CHECK(metrics.at("input reader")->totalReceptionCount == receptionCountExpected);
-  BOOST_CHECK(metrics.at("input reader")->totalCharacterCount == characterCountExpected);
-  BOOST_CHECK(metrics.at("input reader")->totalStringCount == stringCountExpected);
+//  BOOST_CHECK(metrics.at("input reader")->totalReceptionCount == receptionCountExpected);
+//  BOOST_CHECK(metrics.at("input reader")->totalCharacterCount == characterCountExpected);
+//  BOOST_CHECK(metrics.at("input reader")->totalStringCount == stringCountExpected);
 
   BOOST_CHECK(metrics.at("input processor")->totalStringCount == stringCountExpected);
   BOOST_CHECK(metrics.at("input processor")->totalCommandCount == commandCountExpected);
@@ -181,7 +181,7 @@ BOOST_AUTO_TEST_CASE(simple_test)
 
     SharedGlobalMetrics metrics;
 
-    auto serverOutput(getServerOutput(testStrings, '{', '}', 4, DebugOutput::debug_off, metrics));
+    auto serverOutput(getServerOutput(testStrings, '{', '}', 4, DebugOutput::debug_on, metrics));
 
     /* make sure server output is correct */
     if (serverOutput[0].size() == 1)
@@ -221,7 +221,7 @@ BOOST_AUTO_TEST_CASE(two_connections_no_mix_test)
 
     SharedGlobalMetrics metrics;
 
-    auto serverOutput(getServerOutput(testStrings, '{', '}', 2, DebugOutput::debug_off, metrics));
+    auto serverOutput(getServerOutput(testStrings, '{', '}', 2, DebugOutput::debug_on, metrics));
 
     /* make sure server output is correct */
     if (serverOutput[0].size() == 2)
@@ -265,7 +265,7 @@ BOOST_AUTO_TEST_CASE(four_connections_mixing_test)
 
     SharedGlobalMetrics metrics;
 
-    auto serverOutput(getServerOutput(testStrings, '{', '}', 1, DebugOutput::debug_off, metrics));
+    auto serverOutput(getServerOutput(testStrings, '{', '}', 1, DebugOutput::debug_on, metrics));
 
     /* make sure server output is correct */
     if (serverOutput[0].size() == 16)
@@ -313,7 +313,7 @@ BOOST_AUTO_TEST_CASE(empty_command_test)
 
     SharedGlobalMetrics metrics;
 
-    auto serverOutput(getServerOutput(testStrings, '<', '>', 19, DebugOutput::debug_off, metrics));
+    auto serverOutput(getServerOutput(testStrings, '<', '>', 19, DebugOutput::debug_on, metrics));
 
     /* make sure server output is correct */
     if (serverOutput[0].size() == 1)
@@ -352,7 +352,7 @@ BOOST_AUTO_TEST_CASE(unterminated_command_test)
 
     SharedGlobalMetrics metrics;
 
-    auto serverOutput(getServerOutput(testStrings, '[', ']', 6, DebugOutput::debug_off, metrics));
+    auto serverOutput(getServerOutput(testStrings, '[', ']', 6, DebugOutput::debug_on, metrics));
 
     /* make sure server output is correct */
     if (serverOutput[0].size() == 1)

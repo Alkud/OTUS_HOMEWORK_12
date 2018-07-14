@@ -2,17 +2,23 @@
 
 #include "input_processor.h"
 
-InputProcessor::InputProcessor(const std::string& newWorkerName, const size_t newBulkSize, const char newBulkOpenDelimiter, const char newBulkCloseDelimiter,
-    const SharedStringBuffer& newInputBuffer,
-    const SharedSizeStringBuffer& newOutputBuffer,
-    std::ostream& newErrorOut
-  , std::mutex& newErrorOutLock) :
+InputProcessor::InputProcessor(
+    const std::string& newWorkerName, const size_t newBulkSize,
+    const char newBulkOpenDelimiter, const char newBulkCloseDelimiter,
+    const std::shared_ptr<InputBufferType>& newInputBuffer,
+    const std::shared_ptr<OutputBufferType>& newPublisherBuffer,
+    const std::vector<std::shared_ptr<OutputBufferType>>& newLoggerBuffers,
+    std::ostream& newErrorOut,
+    std::mutex& newErrorOutLock
+  ) :
   AsyncWorker<1>{newWorkerName},
   bulkSize{newBulkSize},
   bulkOpenDelimiter{newBulkOpenDelimiter},
   bulkCloseDelimiter{newBulkCloseDelimiter},
   inputBuffer{newInputBuffer},
-  outputBuffer{newOutputBuffer},
+  publisherBuffer{newPublisherBuffer},
+  loggerBuffers{newLoggerBuffers},
+  activeLoggerBufferNumber{0},
   customBulkStarted{false},
   nestingDepth{0},
   errorOut{newErrorOut}, errorOutLock{newErrorOutLock},
@@ -23,9 +29,16 @@ InputProcessor::InputProcessor(const std::string& newWorkerName, const size_t ne
     throw(std::invalid_argument{"Input processor source buffer not defined!"});
   }
 
-  if (nullptr == outputBuffer)
+  if (nullptr == publisherBuffer)
   {
-    throw(std::invalid_argument{"Input processor destination buffer not defined!"});
+    throw(std::invalid_argument{"Input processor destination publisher buffer not defined!"});
+  }
+  for (const auto& loggerBuffer : loggerBuffers)
+  {
+    if (nullptr == loggerBuffer)
+    {
+      throw(std::invalid_argument{"Input processor destination logger buffer not defined!"});
+    }
   }
 }
 
@@ -43,8 +56,8 @@ void InputProcessor::reactNotification(NotificationBroadcaster* sender)
       //std::cout << this->workerName << " reactNotification\n";
     #endif
 
-    ++notificationCount;
-    threadNotifier.notify_one();
+    ++notificationCounts[0];
+    threadNotifiers[0].notify_one();
   }
 }
 
@@ -60,8 +73,8 @@ void InputProcessor::reactMessage(MessageBroadcaster* /*sender*/, Message messag
         //std::cout << "\n                     " << this->workerName<< " NoMoreData received\n";
       #endif
 
-      noMoreData.store(true);
-      threadNotifier.notify_all();
+      noMoreData[0].store(true);
+      threadNotifiers[0].notify_one();
       break;
 
     default:
@@ -96,14 +109,7 @@ bool InputProcessor::threadProcess(const size_t /*threadIndex*/)
     throw(std::invalid_argument{"Input processor source buffer not defined!"});
   }
 
-  auto bufferReply {inputBuffer->getItem(shared_from_this())};
-
-  if (false == bufferReply.first)
-   {
-     return false;
-   }
-
-  auto nextCommand{bufferReply.second};
+  auto nextCommand{inputBuffer->getItem()};
 
   /* Refresh metrics */
   ++threadMetrics->totalStringCount;
@@ -174,7 +180,7 @@ void InputProcessor::onThreadException(const std::exception& ex, const size_t th
 
   threadFinished[threadIndex].store(true);
   shouldExit.store(true);
-  threadNotifier.notify_all();
+  threadNotifiers[0].notify_one();
 
   sendMessage(errorMessage);
 }
@@ -187,6 +193,8 @@ void InputProcessor::onTermination(const size_t /*threadIndex*/)
   }
 
   sendMessage(Message::NoMoreData);
+
+  sendMessage(Message::AllDataReceived);
 }
 
 void InputProcessor::sendCurrentBulk()
@@ -196,10 +204,18 @@ void InputProcessor::sendCurrentBulk()
     return;
   }
 
-  if (nullptr == outputBuffer)
+  if (nullptr == publisherBuffer)
   {
     errorMessage = Message::DestinationNullptr;
     throw(std::invalid_argument{"Input reader destination buffer not defined!"});
+  }
+  for (const auto& loggerBuffer : loggerBuffers)
+  {
+    if (nullptr == loggerBuffer)
+    {
+      errorMessage = Message::DestinationNullptr;
+      throw(std::invalid_argument{"Input processor destination logger buffer not defined!"});
+    }
   }
 
   /* concatenate commands to a bulk */
@@ -220,7 +236,11 @@ void InputProcessor::sendCurrentBulk()
   };
 
   /* send the bulk to the output buffer */
-  outputBuffer->putItem(std::make_pair(ticksCount, newBulk));
+  auto newBulkInfo{std::make_pair(ticksCount, newBulk)};
+  publisherBuffer->putItem(newBulkInfo);
+  loggerBuffers[activeLoggerBufferNumber]->putItem(newBulkInfo);
+
+  activeLoggerBufferNumber = ++activeLoggerBufferNumber % loggerBuffers.size();
 
   /* Refresh metrics */
   threadMetrics->totalCommandCount += tempBuffer.size();

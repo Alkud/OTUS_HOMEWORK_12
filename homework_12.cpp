@@ -13,7 +13,8 @@ std::atomic<bool> shouldExit{false};
 std::condition_variable terminationNotifier{};
 std::mutex terminationLock{};
 
-extern "C" void terminationHandler(int)
+
+void terminationHandler(int)
 {
   shouldExit.store(true);
   terminationNotifier.notify_all();
@@ -22,14 +23,13 @@ extern "C" void terminationHandler(int)
 int homework(int argc, char* argv[], std::ostream& outputStream,
               std::ostream& errorStream, std::ostream& metricsStream)
 {
+  std::signal(SIGINT, terminationHandler);
+
   if (argc < 3 || std::stoi(std::string{argv[2]}) < 1)
   {
     errorStream << "usage: bulkserver <port> <bulk size>" << std::endl;
     return 1;
   }
-
-  std::signal(SIGINT, terminationHandler);
-  std::signal(SIGTERM, terminationHandler);
 
   uint16_t portNumber{static_cast<uint16_t>(std::stoull(std::string{argv[1]}))};
   size_t bulkSize{std::stoull(std::string{argv[2]})};
@@ -40,19 +40,25 @@ int homework(int argc, char* argv[], std::ostream& outputStream,
     outputStream, errorStream, metricsStream
   };
 
-  server.start();
+  std::thread mainThread{[&server]()
+   {
+      server.start();
 
-  while (shouldExit.load() != true)
-  {
-    std::unique_lock<std::mutex> lockTermination{terminationLock};
-    terminationNotifier.wait(lockTermination, []()
-    {
-      return shouldExit.load() == true;
-    });
-    lockTermination.unlock();
-  }
+      while (shouldExit.load() != true)
+      {
+        std::unique_lock<std::mutex> lockTermination{terminationLock};
+        terminationNotifier.wait_for(lockTermination, 100ms, []()
+        {
+          return shouldExit.load() == true;
+        });
+        lockTermination.unlock();
+      }
 
-  server.stop();
+      server.stop();
+   }};
+
+
+  mainThread.join();
 
   return 0;
 }

@@ -1,4 +1,4 @@
-// smart_buffer.h in Otus homework#12 project
+// simple_buffer.h in Otus homework#12 project
 
 #pragma once
 
@@ -15,11 +15,13 @@
 #include "broadcasters.h"
 #include "weak_ptr_less.h"
 
+using namespace std::chrono_literals;
+
 template<class T>
-class SmartBuffer : public NotificationBroadcaster,
-                    public MessageListener,
-                    public MessageBroadcaster,
-                    public AsyncWorker<1>
+class SimpleBuffer : public NotificationBroadcaster,
+                     public MessageListener,
+                      public MessageBroadcaster,
+                      public AsyncWorker<1>
 {
 public:
 
@@ -27,9 +29,9 @@ public:
 
   std::mutex dataLock{};
 
-  SmartBuffer() = delete;
+  SimpleBuffer() = delete;
 
-  SmartBuffer(const std::string& newWorkerName, std::ostream& newErrorOut, std::mutex& newErrorOutLock) :
+  SimpleBuffer(const std::string& newWorkerName, std::ostream& newErrorOut, std::mutex& newErrorOutLock) :
     AsyncWorker<1>{newWorkerName},
     errorOut{newErrorOut}, errorOutLock{newErrorOutLock},
     dataReceived{true}
@@ -37,26 +39,10 @@ public:
     data.clear();
   }
 
-  ~SmartBuffer()
+  ~SimpleBuffer()
   {
     stop();
   }
-
-  /// Each element in the buffer has the list of recipients.
-  /// When a recepient gets an element, it is added to this list.
-  /// When all recipients have received this element, we can remove
-  /// it from the buffer.
-  struct Record
-  {
-    Record(T newValue) :
-      value{newValue} {}
-
-    Record(T newValue, const ListenerSet& newRecipients) :
-      value{newValue}, recipients{newRecipients} {}
-
-    T value{};
-    ListenerSet recipients{};
-  };
 
   /// Copy new element to the buffer
   void putItem(const T& newItem)
@@ -64,99 +50,70 @@ public:
     std::lock_guard<std::mutex> lockData{dataLock};
 
     /* don't accept data if NoMoreData message received! */
-    if (noMoreData.load() == true)
+    if (noMoreData[0].load() == true)
     {
       return;
     }
 
-    data.emplace_back(newItem, notificationListeners);
+    data.push_back(newItem);
     dataReceived.store(false);
-    ++notificationCount;
-    threadNotifier.notify_one();
+    ++notificationCounts[0];
+    threadNotifiers[0].notify_one();
   }
 
   /// Move new element to the buffer
   void putItem(T&& newItem)
   {
-    std::lock_guard<std::mutex> lockData{dataLock};
+    std::unique_lock<std::mutex> lockData{dataLock};
 
     /* don't accept data if NoMoreData message received! */
-    if (noMoreData.load() == true)
+    if (noMoreData[0].load() == true)
     {
       return;
     }
 
-    data.emplace_back(std::move(newItem), notificationListeners);
+    data.push_back(std::move(newItem));
     dataReceived.store(false);
-    ++notificationCount;
-    threadNotifier.notify_one();
+    ++notificationCounts[0];
+    threadNotifiers[0].notify_one();
+
+    lockData.unlock();
   }
 
   /// Each recipient starts looking from the first element in the queue.
   /// When an element that wasn't received yet by this recipient is found,
   /// the recipient gets the value of this element and updates pecipient list
   /// for this element.
-  std::pair<bool, T> getItem(const std::shared_ptr<NotificationListener> recipient = nullptr)
+  T getItem()
   {
     std::unique_lock<std::mutex> lockData{dataLock};
-
-    std::weak_ptr<NotificationListener> weakRecipient{recipient};
 
     if (data.empty() == true)
     {
       lockData.unlock();
       shouldExit.store(true);
-      threadNotifier.notify_all();
+      threadNotifiers[0].notify_one();
       errorMessage = Message::BufferEmpty;
       throw std::out_of_range{"Buffer is empty!"};
     }
 
-    if (nullptr == recipient)
-    {
-      lockData.unlock();
-      return std::make_pair(false, data.front().value);
-    }
+    auto result {data.front()};
 
-    auto iter {data.begin()};
-    while(iter != data.end()
-          && (iter->recipients.find(weakRecipient) == iter->recipients.end()))
-    {
-      ++iter;
-    }
+    data.pop_front();
 
-    if (iter == data.end()
-        && (notificationListeners.find(weakRecipient) != notificationListeners.end()))
-    {
-      lockData.unlock();
-      return std::make_pair(false, data.front().value);
-    }
-
-    auto result {std::make_pair(true, iter->value)};
-
-    iter->recipients.erase(weakRecipient);
-
-    if (iter->recipients.empty() == true)
-    {
-      data.erase(iter);
-
+    if (true == data.empty() && true == noMoreData[0].load())
+    {      
       #ifdef NDEBUG
       #else
-        //std::cout << "\n                    " << workerName<< " check if this is the last data item\n";
+        //std::cout << "\n                    " << workerName<< " all data received\n";
       #endif
 
-      if (true == data.empty() && true == noMoreData.load())
-      {
-        #ifdef NDEBUG
-        #else
-          //std::cout << "\n                    " << workerName<< " all data received\n";
-        #endif
-
-        dataReceived.store(true);
-        threadNotifier.notify_all();
-      }
+      dataReceived.store(true);
+      threadNotifiers[0].notify_one();
     }
 
     lockData.unlock();
+
     return result;
   }
 
@@ -177,7 +134,7 @@ public:
     data.clear();
     lockData.unlock();
 
-    notificationCount.store(0);
+    notificationCounts[0].store(0);
   }
 
   void reactMessage(MessageBroadcaster* /*sender*/, Message message) override
@@ -189,14 +146,14 @@ public:
       case Message::NoMoreData :
       {
         std::lock_guard<std::mutex> lockData{dataLock};
-        noMoreData.store(true);
+        noMoreData[0].store(true);
 
         #ifdef NDEBUG
         #else
           //std::cout << "\n                     " << this->workerName<< " NoMoreData received\n";
         #endif
 
-        threadNotifier.notify_all();
+        threadNotifiers[0].notify_one();
       }
         break;
 
@@ -235,35 +192,55 @@ private:
 
     threadFinished[threadIndex].store(true);
     shouldExit.store(true);
-    threadNotifier.notify_all();
+    threadNotifiers[0].notify_one();
 
     sendMessage(errorMessage);
   }
 
   void onTermination(const size_t /*threadIndex*/) override
   {
-    if (noMoreData.load() == true
+    if (noMoreData[0].load() == true
         && dataSize() == 0)
     {
       dataReceived.store(true);
     }
 
+    if (dataReceived.load() != true
+        && workerName.find("logger buffer#0") != std::string::npos)
+    {
+      std::cout << std::endl;
+    }
+
+    bool needClearOutput{false};
+
     while (dataReceived.load() != true)
     {
+      needClearOutput = true;
+
       #ifdef NDEBUG
-        #else
-//      std::cout << "\n                    "
-//                << workerName << " dataReceived=" << dataReceived.load()
-//                << "data.size()=" << data.size()
-//                << "notificationCount=" << notificationCount.load() << "\n";
+      #else
+      //std::cout << "\n                    "
+      //          << workerName << " dataReceived=" << dataReceived.load()
+      //          << "data.size()=" << data.size()
+      //          << "notificationCount=" << notificationCounts[0].load() << "\n";
+      if (workerName.find("logger buffer#0") != std::string::npos)
+      {
+        std::cout << "\r PLEASE WAIT! Writing log files... Remain: " << data.size() << "                 \r";
+      }
       #endif
 
-      std::unique_lock<std::mutex> lockNotifier{notifierLock};
-      threadNotifier.wait_for(lockNotifier, std::chrono::milliseconds{100}, [this]()
-      {        
+      std::unique_lock<std::mutex> lockNotifier{notifierLocks[0]};
+      threadNotifiers[0].wait_for(lockNotifier, std::chrono::milliseconds{100}, [this]()
+      {
         return dataReceived.load() == true;
       });
       lockNotifier.unlock();
+    }
+
+    if (true == needClearOutput
+        && workerName.find("logger buffer#0") != std::string::npos)
+    {
+      std::cout << '\r' << std::endl;
     }
 
     sendMessage(Message::NoMoreData);
@@ -273,15 +250,16 @@ private:
   std::ostream& errorOut;
   std::mutex& errorOutLock;
 
-  std::deque<Record> data;
+  std::deque<T> data;
 
   std::atomic_bool dataReceived;
 
   Message errorMessage{Message::SystemError};
+
 };
 
 
-using StringBuffer = SmartBuffer<std::string>;
+using StringBuffer = SimpleBuffer<std::string>;
 using SharedStringBuffer = std::shared_ptr<StringBuffer>;
-using SizeStringBuffer = SmartBuffer<std::pair<size_t, std::string>>;
+using SizeStringBuffer = SimpleBuffer<std::pair<size_t, std::string>>;
 using SharedSizeStringBuffer = std::shared_ptr<SizeStringBuffer>;

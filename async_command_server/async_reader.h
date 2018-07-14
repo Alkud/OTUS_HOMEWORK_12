@@ -33,7 +33,10 @@ public:
               std::condition_variable& newTerminationNotifier,
               std::mutex& newTerminationLock,
               std::ostream& newErrorStream,
-              std::mutex& newOutputLock);
+              std::mutex& newOutputLock,
+              std::atomic<bool>& stopFlag);
+
+  ~AsyncReader();
 
   void start();
 
@@ -70,6 +73,12 @@ private:
   std::mutex& outputLock;
 
   std::shared_ptr<AsyncReader> sharedThis;
+
+  std::atomic<bool>& shouldExit;
+
+  std::atomic<bool> stopped;
+  std::thread controller;
+  std::condition_variable controllerNotifier;
 };
 
 using SharedAsyncReader = std::shared_ptr<AsyncReader>;
