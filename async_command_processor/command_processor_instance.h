@@ -8,7 +8,6 @@
 #include <thread>
 #include <functional>
 #include <condition_variable>
-#include "input_reader.h"
 #include "input_processor.h"
 #include "simple_buffer_mt.h"
 #include "publisher_mt.h"

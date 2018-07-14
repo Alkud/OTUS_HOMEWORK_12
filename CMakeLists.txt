@@ -21,7 +21,7 @@ add_subdirectory(async_command_server)
 set (BOOST_MIN_VERSION "1.54.0")
 
 #Find Boost library components
-find_package(Boost COMPONENTS system filesystem unit_test_framework REQUIRED)
+find_package(Boost COMPONENTS system unit_test_framework REQUIRED)
 find_package(Threads)
 
 set(BOOST_DEBUG                ON)

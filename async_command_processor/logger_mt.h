@@ -20,10 +20,6 @@
 #include "thread_metrics.h"
 #include "async_worker.h"
 
-#include "boost/filesystem.hpp"
-#include "boost/filesystem/fstream.hpp"
-
-namespace fs = boost::filesystem;
 
 using namespace std::chrono_literals;
 

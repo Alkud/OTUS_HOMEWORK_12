@@ -4,7 +4,6 @@
 
 #include <memory>
 #include <mutex>
-#include <list>
 #include <thread>
 #include <functional>
 #include <cstdlib>

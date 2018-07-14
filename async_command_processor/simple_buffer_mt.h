@@ -205,11 +205,14 @@ private:
       dataReceived.store(true);
     }
 
+    #ifdef NDEBUG
+    #else
     if (dataReceived.load() != true
         && workerName.find("logger buffer#0") != std::string::npos)
     {
       std::cout << std::endl;
     }
+    #endif
 
     bool needClearOutput{false};
 
@@ -237,11 +240,14 @@ private:
       lockNotifier.unlock();
     }
 
+    #ifdef NDEBUG
+    #else
     if (true == needClearOutput
         && workerName.find("logger buffer#0") != std::string::npos)
     {
       std::cout << '\r' << std::endl;
     }
+    #endif
 
     sendMessage(Message::NoMoreData);
   }
