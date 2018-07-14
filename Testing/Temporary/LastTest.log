@@ -1,48 +1,46 @@
-Start testing: Jul 10 11:25 UTC
+Start testing: Jul 14 17:02 UTC
 ----------------------------------------------------------
 1/1 Testing: test_hw_12
 1/1 Test: test_hw_12
 Command: "/home/travis/build/Alkud/OTUS_HOMEWORK_12/otus_hw_12_test"
 Directory: /home/travis/build/Alkud/OTUS_HOMEWORK_12
-"test_hw_12" start time: Jul 10 11:25 UTC
+"test_hw_12" start time: Jul 14 17:02 UTC
 Output:
 ----------------------------------------------------------
 Running 5 test cases...
--- reader constructor
--- reader use count:1
--- reader destructor
--- reader constructor
--- reader constructor
--- reader use count:1
--- reader destructor
--- reader use count:1
--- reader destructor
--- reader constructor
--- reader constructor
--- reader use count:1
--- reader destructor
--- reader use count:1
--- reader destructor
--- reader constructor
--- reader constructor
--- reader use count:1
--- reader destructor
--- reader use count:1
--- reader destructor
--- reader constructor
--- reader use count:1
--- reader destructor
--- reader constructor
--- reader use count:1
--- reader destructor
+bulk: 1, 2, 3, 4
+bulk: 1, 2, 3, 4
+bulk: 11, 12, 13, 14
+bulk: 21
+bulk: 22
+bulk: 23
+bulk: 24
+bulk: 31
+bulk: 32
+bulk: 33
+bulk: 34
+bulk: 41
+bulk: 42
+bulk: 43
+bulk: 44
+bulk: 11
+bulk: 12
+bulk: 13
+bulk: 14
+
+ PLEASE WAIT! Writing log files... Remain: 1                 
+bulk: 
+
+ PLEASE WAIT! Writing log files... Remain: 1                 
+bulk: aSde, 1, 18
 
 *** No errors detected
 <end of output>
-Test time =   2.01 sec
+Test time =   7.01 sec
 ----------------------------------------------------------
 Test Passed.
-"test_hw_12" end time: Jul 10 11:25 UTC
-"test_hw_12" time elapsed: 00:00:02
+"test_hw_12" end time: Jul 14 17:02 UTC
+"test_hw_12" time elapsed: 00:00:07
 ----------------------------------------------------------
 
-End testing: Jul 10 11:25 UTC
+End testing: Jul 14 17:02 UTC

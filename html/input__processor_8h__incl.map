@@ -1,5 +1,5 @@
 <map id="async_command_processor/input_processor.h" name="async_command_processor/input_processor.h">
-<area shape="rect" id="node5" href="$smart__buffer__mt_8h.html" title="smart_buffer_mt.h" alt="" coords="845,96,973,123"/>
+<area shape="rect" id="node5" href="$simple__buffer__mt_8h.html" title="simple_buffer_mt.h" alt="" coords="842,96,976,123"/>
 <area shape="rect" id="node28" href="$thread__metrics_8h.html" title="thread_metrics.h" alt="" coords="119,171,237,197"/>
 <area shape="rect" id="node14" href="$async__worker_8h.html" title="async_worker.h" alt="" coords="549,171,664,197"/>
 <area shape="rect" id="node22" href="$broadcasters_8h.html" title="broadcasters.h" alt="" coords="1426,171,1533,197"/>

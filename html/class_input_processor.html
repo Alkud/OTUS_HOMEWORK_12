@@ -112,15 +112,15 @@ Collaboration diagram for InputProcessor:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a372a0ff551f8c41930b4ecb342f22283"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_processor.html#a372a0ff551f8c41930b4ecb342f22283">InputBufferType</a> = <a class="el" href="smart__buffer__mt_8h.html#a9166a8e78fd6f09969cd64d77289298d">StringBuffer</a></td></tr>
+<tr class="memitem:a372a0ff551f8c41930b4ecb342f22283"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_processor.html#a372a0ff551f8c41930b4ecb342f22283">InputBufferType</a> = <a class="el" href="simple__buffer__mt_8h.html#a950a771e570978ec48efc8350f1d9044">StringBuffer</a></td></tr>
 <tr class="separator:a372a0ff551f8c41930b4ecb342f22283"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80ed4b5c0fcfd1297bea56a9bc6fb2ca"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_processor.html#a80ed4b5c0fcfd1297bea56a9bc6fb2ca">OutputBufferType</a> = <a class="el" href="smart__buffer__mt_8h.html#a5361e213eca45e3808a2b9a17da84cf9">SizeStringBuffer</a></td></tr>
+<tr class="memitem:a80ed4b5c0fcfd1297bea56a9bc6fb2ca"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_processor.html#a80ed4b5c0fcfd1297bea56a9bc6fb2ca">OutputBufferType</a> = <a class="el" href="simple__buffer__mt_8h.html#a52acac20bc96eda9b2300debdbbb8d31">SizeStringBuffer</a></td></tr>
 <tr class="separator:a80ed4b5c0fcfd1297bea56a9bc6fb2ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a857e3b4db92c194692837684ea7fc72f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_processor.html#a857e3b4db92c194692837684ea7fc72f">InputProcessor</a> (const std::string &amp;newWorkerName, const size_t newBulkSize, const char newBulkOpenDelimiter, const char newBulkCloseDelimiter, const <a class="el" href="smart__buffer__mt_8h.html#ac3089a6c099deb305c66a331430bafc6">SharedStringBuffer</a> &amp;newInputBuffer, const <a class="el" href="smart__buffer__mt_8h.html#a74179bee4f33e3fb26e7adbcfa2e17d4">SharedSizeStringBuffer</a> &amp;newOutputBuffer, std::ostream &amp;newErrorOut, std::mutex &amp;newErrorOutLock)</td></tr>
-<tr class="separator:a857e3b4db92c194692837684ea7fc72f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9d8a33cd39b78ae175becd04b1c8a36"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_processor.html#ad9d8a33cd39b78ae175becd04b1c8a36">InputProcessor</a> (const std::string &amp;newWorkerName, const size_t newBulkSize, const char newBulkOpenDelimiter, const char newBulkCloseDelimiter, const std::shared_ptr&lt; <a class="el" href="class_input_processor.html#a372a0ff551f8c41930b4ecb342f22283">InputBufferType</a> &gt; &amp;newInputBuffer, const std::shared_ptr&lt; <a class="el" href="class_input_processor.html#a80ed4b5c0fcfd1297bea56a9bc6fb2ca">OutputBufferType</a> &gt; &amp;newPublisherBuffer, const std::vector&lt; std::shared_ptr&lt; <a class="el" href="class_input_processor.html#a80ed4b5c0fcfd1297bea56a9bc6fb2ca">OutputBufferType</a> &gt;&gt; &amp;newLoggerBuffers, std::ostream &amp;newErrorOut, std::mutex &amp;newErrorOutLock)</td></tr>
+<tr class="separator:ad9d8a33cd39b78ae175becd04b1c8a36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f9f518b40e94782895a325ab0158b94"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_processor.html#a4f9f518b40e94782895a325ab0158b94">~InputProcessor</a> () override</td></tr>
 <tr class="separator:a4f9f518b40e94782895a325ab0158b94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5336fbaf63c7f9ba821f188003e537ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_processor.html#a5336fbaf63c7f9ba821f188003e537ac">reactNotification</a> (<a class="el" href="class_notification_broadcaster.html">NotificationBroadcaster</a> *sender) override</td></tr>
@@ -195,10 +195,18 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a701febfbf59e874d93a6275eb3a98e85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07eccaffd21ea1f5862315d78bfd252f"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_processor.html#a07eccaffd21ea1f5862315d78bfd252f">bulkCloseDelimiter</a></td></tr>
 <tr class="separator:a07eccaffd21ea1f5862315d78bfd252f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa54ab1c7866eda31835849eeff85ee0e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="smart__buffer__mt_8h.html#ac3089a6c099deb305c66a331430bafc6">SharedStringBuffer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_processor.html#aa54ab1c7866eda31835849eeff85ee0e">inputBuffer</a></td></tr>
-<tr class="separator:aa54ab1c7866eda31835849eeff85ee0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e03eb71e6f5b0d507bdf6e66fc7cb44"><td class="memItemLeft" align="right" valign="top"><a class="el" href="smart__buffer__mt_8h.html#a74179bee4f33e3fb26e7adbcfa2e17d4">SharedSizeStringBuffer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_processor.html#a0e03eb71e6f5b0d507bdf6e66fc7cb44">outputBuffer</a></td></tr>
-<tr class="separator:a0e03eb71e6f5b0d507bdf6e66fc7cb44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9ce6db711ecc221d40f06f273116ae8"><td class="memItemLeft" align="right" valign="top">const std::shared_ptr<br class="typebreak"/>
+&lt; <a class="el" href="class_input_processor.html#a372a0ff551f8c41930b4ecb342f22283">InputBufferType</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_processor.html#af9ce6db711ecc221d40f06f273116ae8">inputBuffer</a></td></tr>
+<tr class="separator:af9ce6db711ecc221d40f06f273116ae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92ffca91a2ae9fd7ff15002a87e58843"><td class="memItemLeft" align="right" valign="top">const std::shared_ptr<br class="typebreak"/>
+&lt; <a class="el" href="class_input_processor.html#a80ed4b5c0fcfd1297bea56a9bc6fb2ca">OutputBufferType</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_processor.html#a92ffca91a2ae9fd7ff15002a87e58843">publisherBuffer</a></td></tr>
+<tr class="separator:a92ffca91a2ae9fd7ff15002a87e58843"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9524f4c12f0721fc583386c0bb54036"><td class="memItemLeft" align="right" valign="top">const std::vector<br class="typebreak"/>
+&lt; std::shared_ptr<br class="typebreak"/>
+&lt; <a class="el" href="class_input_processor.html#a80ed4b5c0fcfd1297bea56a9bc6fb2ca">OutputBufferType</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_processor.html#ae9524f4c12f0721fc583386c0bb54036">loggerBuffers</a></td></tr>
+<tr class="separator:ae9524f4c12f0721fc583386c0bb54036"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3bdc92c3190e89c43e6585c5ea0fc7e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_processor.html#af3bdc92c3190e89c43e6585c5ea0fc7e">activeLoggerBufferNumber</a></td></tr>
+<tr class="separator:af3bdc92c3190e89c43e6585c5ea0fc7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2658dc0872c430bf0f19d4e91a037154"><td class="memItemLeft" align="right" valign="top">std::deque&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_processor.html#a2658dc0872c430bf0f19d4e91a037154">tempBuffer</a></td></tr>
 <tr class="separator:a2658dc0872c430bf0f19d4e91a037154"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1951525008d9b89032e327993809b4e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_processor.html#ae1951525008d9b89032e327993809b4e">customBulkStarted</a></td></tr>
@@ -222,8 +230,8 @@ Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_class_async_worker"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_async_worker')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_async_worker.html">AsyncWorker&lt; 1 &gt;</a></td></tr>
 <tr class="memitem:a0fd39ec8089b6da51e2a29bab8b13a97 inherit pro_methods_class_async_worker"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#a0fd39ec8089b6da51e2a29bab8b13a97">startWorkingThreads</a> ()</td></tr>
 <tr class="separator:a0fd39ec8089b6da51e2a29bab8b13a97 inherit pro_methods_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e410b9516796d11452fe0e107543bf4 inherit pro_methods_class_async_worker"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#a4e410b9516796d11452fe0e107543bf4">waitForThreadTermination</a> ()</td></tr>
-<tr class="separator:a4e410b9516796d11452fe0e107543bf4 inherit pro_methods_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3cc502694fa1e7bc1521a6c05469b04 inherit pro_methods_class_async_worker"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#ab3cc502694fa1e7bc1521a6c05469b04">waitForThreadTermination</a> ()</td></tr>
+<tr class="separator:ab3cc502694fa1e7bc1521a6c05469b04 inherit pro_methods_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afccb59ca79ffc05878151cdf9e906f20 inherit pro_methods_class_async_worker"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#afccb59ca79ffc05878151cdf9e906f20">onThreadStart</a> (const size_t)</td></tr>
 <tr class="separator:afccb59ca79ffc05878151cdf9e906f20 inherit pro_methods_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0eb4d633cb4ca3fec72440942f0048f9 inherit pro_methods_class_async_worker"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#a0eb4d633cb4ca3fec72440942f0048f9">run</a> (const size_t threadIndex)</td></tr>
@@ -236,27 +244,37 @@ Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_attribs_class_async_worker"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_async_worker')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_async_worker.html">AsyncWorker&lt; 1 &gt;</a></td></tr>
 <tr class="memitem:a26a5f3dcba6042a1eafe7d0d0f3c7a42 inherit pro_attribs_class_async_worker"><td class="memItemLeft" align="right" valign="top">std::hash&lt; std::thread::id &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#a26a5f3dcba6042a1eafe7d0d0f3c7a42">threadIdHasher</a></td></tr>
 <tr class="separator:a26a5f3dcba6042a1eafe7d0d0f3c7a42 inherit pro_attribs_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82fcf15762c8d9e3f4606272bd431578 inherit pro_attribs_class_async_worker"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::future&lt; bool &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#a82fcf15762c8d9e3f4606272bd431578">futureResults</a></td></tr>
-<tr class="separator:a82fcf15762c8d9e3f4606272bd431578 inherit pro_attribs_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3a8315b2b4b26bfa7f0d7e01797f5cc inherit pro_attribs_class_async_worker"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::thread::id &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#ac3a8315b2b4b26bfa7f0d7e01797f5cc">threadID</a></td></tr>
-<tr class="separator:ac3a8315b2b4b26bfa7f0d7e01797f5cc inherit pro_attribs_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf71e715aa6ef33a914b29479198fe0e inherit pro_attribs_class_async_worker"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#aaf71e715aa6ef33a914b29479198fe0e">stringThreadID</a></td></tr>
-<tr class="separator:aaf71e715aa6ef33a914b29479198fe0e inherit pro_attribs_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5136e7227ac808ba0da91468b374fadf inherit pro_attribs_class_async_worker"><td class="memItemLeft" align="right" valign="top">std::hash&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#a5136e7227ac808ba0da91468b374fadf">stringHasher</a></td></tr>
+<tr class="separator:a5136e7227ac808ba0da91468b374fadf inherit pro_attribs_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab15862a22bc0064896adc72b58ebad9 inherit pro_attribs_class_async_worker"><td class="memItemLeft" align="right" valign="top">std::array&lt; std::thread, <br class="typebreak"/>
+workingThreadCount &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#aab15862a22bc0064896adc72b58ebad9">threads</a></td></tr>
+<tr class="separator:aab15862a22bc0064896adc72b58ebad9 inherit pro_attribs_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52b6454294eed99a8a91105c8e62013d inherit pro_attribs_class_async_worker"><td class="memItemLeft" align="right" valign="top">std::array&lt; std::thread::id, <br class="typebreak"/>
+workingThreadCount &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#a52b6454294eed99a8a91105c8e62013d">threadID</a></td></tr>
+<tr class="separator:a52b6454294eed99a8a91105c8e62013d inherit pro_attribs_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ff5701917acff3ba7159267f1aed10c inherit pro_attribs_class_async_worker"><td class="memItemLeft" align="right" valign="top">std::array&lt; std::string, <br class="typebreak"/>
+workingThreadCount &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#a5ff5701917acff3ba7159267f1aed10c">stringThreadID</a></td></tr>
+<tr class="separator:a5ff5701917acff3ba7159267f1aed10c inherit pro_attribs_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9ddf369aab8745b691ba4f24676c88f inherit pro_attribs_class_async_worker"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#ad9ddf369aab8745b691ba4f24676c88f">shouldExit</a></td></tr>
 <tr class="separator:ad9ddf369aab8745b691ba4f24676c88f inherit pro_attribs_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aada84414491e4b995f2d95c0136ca265 inherit pro_attribs_class_async_worker"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#aada84414491e4b995f2d95c0136ca265">noMoreData</a></td></tr>
-<tr class="separator:aada84414491e4b995f2d95c0136ca265 inherit pro_attribs_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a348938103e880f76f12c24a565dd081e inherit pro_attribs_class_async_worker"><td class="memItemLeft" align="right" valign="top">std::array&lt; std::atomic&lt; bool &gt;<br class="typebreak"/>
+, workingThreadCount &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#a348938103e880f76f12c24a565dd081e">noMoreData</a></td></tr>
+<tr class="separator:a348938103e880f76f12c24a565dd081e inherit pro_attribs_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad74ffc43c34fb72d091592dcff26ded2 inherit pro_attribs_class_async_worker"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#ad74ffc43c34fb72d091592dcff26ded2">isStopped</a></td></tr>
 <tr class="separator:ad74ffc43c34fb72d091592dcff26ded2 inherit pro_attribs_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f1eaf097abba38a681a83c22da5e6d2 inherit pro_attribs_class_async_worker"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#a9f1eaf097abba38a681a83c22da5e6d2">notificationCount</a></td></tr>
-<tr class="separator:a9f1eaf097abba38a681a83c22da5e6d2 inherit pro_attribs_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e2f251afbb0ac6c4c294a2e8c40d20b inherit pro_attribs_class_async_worker"><td class="memItemLeft" align="right" valign="top">std::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#a6e2f251afbb0ac6c4c294a2e8c40d20b">threadNotifier</a></td></tr>
-<tr class="separator:a6e2f251afbb0ac6c4c294a2e8c40d20b inherit pro_attribs_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84909224522bcb8752f26b814cdbab20 inherit pro_attribs_class_async_worker"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#a84909224522bcb8752f26b814cdbab20">notifierLock</a></td></tr>
-<tr class="separator:a84909224522bcb8752f26b814cdbab20 inherit pro_attribs_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27fb8708b6ab9a4180f3e92bb8222435 inherit pro_attribs_class_async_worker"><td class="memItemLeft" align="right" valign="top">std::array&lt; std::atomic_bool, <br class="typebreak"/>
-workingThreadCount &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#a27fb8708b6ab9a4180f3e92bb8222435">threadFinished</a></td></tr>
-<tr class="separator:a27fb8708b6ab9a4180f3e92bb8222435 inherit pro_attribs_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa8134d08b5e0c4593989b2021c5a073 inherit pro_attribs_class_async_worker"><td class="memItemLeft" align="right" valign="top">std::array&lt; std::atomic<br class="typebreak"/>
+&lt; size_t &gt;, workingThreadCount &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#aaa8134d08b5e0c4593989b2021c5a073">notificationCounts</a></td></tr>
+<tr class="separator:aaa8134d08b5e0c4593989b2021c5a073 inherit pro_attribs_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa6aa6806117f02b378ce66441736c73 inherit pro_attribs_class_async_worker"><td class="memItemLeft" align="right" valign="top">std::array<br class="typebreak"/>
+&lt; std::condition_variable, <br class="typebreak"/>
+workingThreadCount &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#afa6aa6806117f02b378ce66441736c73">threadNotifiers</a></td></tr>
+<tr class="separator:afa6aa6806117f02b378ce66441736c73 inherit pro_attribs_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a873ae51a96bfc1b551e38ddce5a3f9c5 inherit pro_attribs_class_async_worker"><td class="memItemLeft" align="right" valign="top">std::array&lt; std::mutex, <br class="typebreak"/>
+workingThreadCount &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#a873ae51a96bfc1b551e38ddce5a3f9c5">notifierLocks</a></td></tr>
+<tr class="separator:a873ae51a96bfc1b551e38ddce5a3f9c5 inherit pro_attribs_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad61388f0acd1ee5c182762b8f014f9a inherit pro_attribs_class_async_worker"><td class="memItemLeft" align="right" valign="top">std::array&lt; std::atomic&lt; bool &gt;<br class="typebreak"/>
+, workingThreadCount &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#aad61388f0acd1ee5c182762b8f014f9a">threadFinished</a></td></tr>
+<tr class="separator:aad61388f0acd1ee5c182762b8f014f9a inherit pro_attribs_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa730d06827fe13e6e82d0398f18966f inherit pro_attribs_class_async_worker"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#aaa730d06827fe13e6e82d0398f18966f">terminationLock</a></td></tr>
 <tr class="separator:aaa730d06827fe13e6e82d0398f18966f inherit pro_attribs_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af71a3c3ed83afcc6ac38623973016801 inherit pro_attribs_class_async_worker"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_worker.html#af71a3c3ed83afcc6ac38623973016801">workerName</a></td></tr>
@@ -273,7 +291,7 @@ workingThreadCount &gt;&#160;</td><td class="memItemRight" valign="bottom"><a cl
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="class_input_processor.html#a372a0ff551f8c41930b4ecb342f22283">InputProcessor::InputBufferType</a> =  <a class="el" href="smart__buffer__mt_8h.html#a9166a8e78fd6f09969cd64d77289298d">StringBuffer</a></td>
+          <td class="memname">using <a class="el" href="class_input_processor.html#a372a0ff551f8c41930b4ecb342f22283">InputProcessor::InputBufferType</a> =  <a class="el" href="simple__buffer__mt_8h.html#a950a771e570978ec48efc8350f1d9044">StringBuffer</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -285,7 +303,7 @@ workingThreadCount &gt;&#160;</td><td class="memItemRight" valign="bottom"><a cl
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="class_input_processor.html#a80ed4b5c0fcfd1297bea56a9bc6fb2ca">InputProcessor::OutputBufferType</a> =  <a class="el" href="smart__buffer__mt_8h.html#a5361e213eca45e3808a2b9a17da84cf9">SizeStringBuffer</a></td>
+          <td class="memname">using <a class="el" href="class_input_processor.html#a80ed4b5c0fcfd1297bea56a9bc6fb2ca">InputProcessor::OutputBufferType</a> =  <a class="el" href="simple__buffer__mt_8h.html#a52acac20bc96eda9b2300debdbbb8d31">SizeStringBuffer</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -293,7 +311,7 @@ workingThreadCount &gt;&#160;</td><td class="memItemRight" valign="bottom"><a cl
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a857e3b4db92c194692837684ea7fc72f"></a>
+<a class="anchor" id="ad9d8a33cd39b78ae175becd04b1c8a36"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -324,14 +342,20 @@ workingThreadCount &gt;&#160;</td><td class="memItemRight" valign="bottom"><a cl
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="smart__buffer__mt_8h.html#ac3089a6c099deb305c66a331430bafc6">SharedStringBuffer</a> &amp;&#160;</td>
+          <td class="paramtype">const std::shared_ptr&lt; <a class="el" href="class_input_processor.html#a372a0ff551f8c41930b4ecb342f22283">InputBufferType</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>newInputBuffer</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="smart__buffer__mt_8h.html#a74179bee4f33e3fb26e7adbcfa2e17d4">SharedSizeStringBuffer</a> &amp;&#160;</td>
-          <td class="paramname"><em>newOutputBuffer</em>, </td>
+          <td class="paramtype">const std::shared_ptr&lt; <a class="el" href="class_input_processor.html#a80ed4b5c0fcfd1297bea56a9bc6fb2ca">OutputBufferType</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>newPublisherBuffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::shared_ptr&lt; <a class="el" href="class_input_processor.html#a80ed4b5c0fcfd1297bea56a9bc6fb2ca">OutputBufferType</a> &gt;&gt; &amp;&#160;</td>
+          <td class="paramname"><em>newLoggerBuffers</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -657,6 +681,26 @@ workingThreadCount &gt;&#160;</td><td class="memItemRight" valign="bottom"><a cl
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="af3bdc92c3190e89c43e6585c5ea0fc7e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t InputProcessor::activeLoggerBufferNumber</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a07eccaffd21ea1f5862315d78bfd252f"></a>
 <div class="memitem">
 <div class="memproto">
@@ -817,7 +861,7 @@ workingThreadCount &gt;&#160;</td><td class="memItemRight" valign="bottom"><a cl
 
 </div>
 </div>
-<a class="anchor" id="aa54ab1c7866eda31835849eeff85ee0e"></a>
+<a class="anchor" id="af9ce6db711ecc221d40f06f273116ae8"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -825,7 +869,27 @@ workingThreadCount &gt;&#160;</td><td class="memItemRight" valign="bottom"><a cl
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="smart__buffer__mt_8h.html#ac3089a6c099deb305c66a331430bafc6">SharedStringBuffer</a> InputProcessor::inputBuffer</td>
+          <td class="memname">const std::shared_ptr&lt;<a class="el" href="class_input_processor.html#a372a0ff551f8c41930b4ecb342f22283">InputBufferType</a>&gt;&amp; InputProcessor::inputBuffer</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae9524f4c12f0721fc583386c0bb54036"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt;std::shared_ptr&lt;<a class="el" href="class_input_processor.html#a80ed4b5c0fcfd1297bea56a9bc6fb2ca">OutputBufferType</a>&gt; &gt;&amp; InputProcessor::loggerBuffers</td>
         </tr>
       </table>
   </td>
@@ -857,7 +921,7 @@ workingThreadCount &gt;&#160;</td><td class="memItemRight" valign="bottom"><a cl
 
 </div>
 </div>
-<a class="anchor" id="a0e03eb71e6f5b0d507bdf6e66fc7cb44"></a>
+<a class="anchor" id="a92ffca91a2ae9fd7ff15002a87e58843"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -865,7 +929,7 @@ workingThreadCount &gt;&#160;</td><td class="memItemRight" valign="bottom"><a cl
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="smart__buffer__mt_8h.html#a74179bee4f33e3fb26e7adbcfa2e17d4">SharedSizeStringBuffer</a> InputProcessor::outputBuffer</td>
+          <td class="memname">const std::shared_ptr&lt;<a class="el" href="class_input_processor.html#a80ed4b5c0fcfd1297bea56a9bc6fb2ca">OutputBufferType</a>&gt;&amp; InputProcessor::publisherBuffer</td>
         </tr>
       </table>
   </td>

@@ -28,14 +28,21 @@ public:
   AsyncWorker() = delete;
 
   AsyncWorker(const std::string& newWorkerName) :
-    shouldExit{false}, noMoreData{false}, isStopped{true}, notificationCount{0},
-    threadNotifier{}, notifierLock{},
+    shouldExit{false}, noMoreData{}, isStopped{true}, notificationCounts{},
+    threadNotifiers{}, notifierLocks{},
     threadFinished{}, terminationLock{},
     workerName{newWorkerName}, state{WorkerState::NotStarted}
-  {
-    futureResults.reserve(workingThreadCount);
-    threadID.resize(workingThreadCount, std::thread::id{});
-    stringThreadID.resize(workingThreadCount, std::string{});
+  {    
+    for (auto& count : notificationCounts)
+    {
+      count.store(0);
+    }
+
+    for (auto& flag : noMoreData)
+    {
+      flag.store(false);
+    }
+
     for (auto& item : threadFinished)
     {
       item.store(false);
@@ -61,14 +68,7 @@ public:
   virtual bool startAndWait()
   {
     startWorkingThreads();
-    if (futureResults.empty() != true)
-    {
-      return waitForThreadTermination();
-    }
-    else
-    {
-      return false;
-    }
+    waitForThreadTermination();
   }
 
   void stop()
@@ -84,18 +84,14 @@ public:
     #endif
 
     shouldExit.store(true);
-    threadNotifier.notify_all();
 
-    for (auto& result : futureResults)
+    for (auto& notifier : threadNotifiers)
     {
-      while (result.valid()
-             && result.wait_for(std::chrono::seconds{0}) != std::future_status::ready)
-      {
-        shouldExit.store(true);
-        threadNotifier.notify_all();
-        result.wait_for(std::chrono::milliseconds(100));
-      }
+      notifier.notify_one();
     }
+
+
+    waitForThreadTermination();
 
     if (state.load() != WorkerState::Finished)
     {
@@ -103,8 +99,6 @@ public:
     }
 
     isStopped = true;
-
-    futureResults.clear();
   }
 
   WorkerState getWorkerState()
@@ -117,39 +111,32 @@ protected:
   static std::mt19937 idGenerator;
 
   std::hash<std::thread::id> threadIdHasher{};
+  std::hash<std::string> stringHasher{};
 
   void startWorkingThreads()
   {
-    if (futureResults.empty() != true)
-    {
-      return;
-    }
-
     /* start working threads */
     for (size_t threadIndex{0}; threadIndex < workingThreadCount; ++threadIndex)
     {
-      futureResults.push_back(
-        std::async(
-          std::launch::async,
+      threads[threadIndex] = std::thread{
           &AsyncWorker<workingThreadCount>::run,
           this, threadIndex
-        )
-      );
+      };
     }
     isStopped = false;
     state.store(WorkerState::Started);
   }
 
-  bool waitForThreadTermination()
+  void waitForThreadTermination()
   {
-    /* wait for working threads results */
-    bool workSuccess{true};
-    for (auto& result : futureResults)
+    /* wait for working threads termination */
+    for (auto& thrd : threads)
     {
-      workSuccess = workSuccess && result.get();
+      if (thrd.joinable())
+      {
+        thrd.join();
+      }
     }
-
-    return workSuccess;
   }
 
   virtual void onThreadStart(const size_t /*threadIndex*/)
@@ -169,18 +156,18 @@ protected:
 
       /* main data processing loop */
       while(shouldExit.load() != true
-            && (noMoreData.load() != true || notificationCount.load() > 0))
+            && (noMoreData[threadIndex].load() != true || notificationCounts[threadIndex].load() > 0))
       {
-        std::unique_lock<std::mutex> lockNotifier{notifierLock};
+        std::unique_lock<std::mutex> lockNotifier{notifierLocks[threadIndex]};
 
-        if (notificationCount.load() > 0)
+        if (notificationCounts[threadIndex].load() > 0)
         {
           #ifdef NDEBUG
           #else
             //std::cout << this->workerName << " decrement notificationCount\n";
           #endif
 
-          --notificationCount;
+          --notificationCounts[threadIndex];
           lockNotifier.unlock();
           threadProcess(threadIndex);
 
@@ -191,7 +178,7 @@ protected:
         }
         else
         {
-          if (shouldExit.load() != true && noMoreData.load() != true)
+          if (shouldExit.load() != true && noMoreData[threadIndex].load() != true)
           {
             #ifdef NDEBUG
             #else
@@ -201,9 +188,11 @@ protected:
 //                        << "notificationCount=" << notificationCount.load() << "\n";
             #endif
 
-            threadNotifier.wait_for(lockNotifier, std::chrono::milliseconds(100), [this]()
+            threadNotifiers[threadIndex].wait_for(lockNotifier, std::chrono::milliseconds(10), [this, &threadIndex]()
             {
-              return this->noMoreData.load() || this->notificationCount.load() > 0 || this->shouldExit.load();
+              return this->noMoreData[threadIndex].load()
+                      || this->notificationCounts[threadIndex].load() > 0
+                      || this->shouldExit.load();
             });
 
             lockNotifier.unlock();
@@ -268,19 +257,20 @@ protected:
 
   virtual void onTermination(const size_t threadIndex) = 0;
 
-  std::vector<std::future<bool>> futureResults{};
-  std::vector<std::thread::id> threadID{};
-  std::vector<std::string> stringThreadID{};
+  std::array<std::thread, workingThreadCount> threads{};
+  std::array<std::thread::id, workingThreadCount> threadID{};
+  std::array<std::string, workingThreadCount> stringThreadID{};
   std::atomic<bool> shouldExit;
-  std::atomic<bool> noMoreData;
+
+  std::array<std::atomic<bool>, workingThreadCount> noMoreData;
 
   bool isStopped;
 
-  std::atomic<size_t> notificationCount;
-  std::condition_variable threadNotifier;
-  std::mutex notifierLock;
+  std::array<std::atomic<size_t> , workingThreadCount> notificationCounts;
+  std::array<std::condition_variable, workingThreadCount> threadNotifiers;
+  std::array<std::mutex, workingThreadCount> notifierLocks;
 
-  std::array<std::atomic_bool, workingThreadCount> threadFinished;
+  std::array<std::atomic<bool>, workingThreadCount> threadFinished;
   std::mutex terminationLock;
 
   const std::string workerName;

@@ -25,12 +25,14 @@ public:
   AsyncAcceptor(const asio::ip::address_v4 newAddress,
                 const uint16_t newPortNumber,
                 asio::io_service& newService,
-                const size_t newBulkSize,
-                const char newBulkOpenDelimiter = '{',
-                const char newBulkCloseDelimiter = '}',
-                std::ostream& newOutputStream = std::cout,
-                std::ostream& newErrorStream = std::cerr,
-                std::ostream& newMetricsStream = std::cout);
+                const size_t newBulkSize,                
+                const char newBulkOpenDelimiter,
+                const char newBulkCloseDelimiter,
+                std::ostream& newOutputStream,
+                std::ostream& newErrorStream,
+                std::ostream& newMetricsStream,
+                std::condition_variable& newTerminationNotifier,
+                std::atomic<bool>& newTerminationFlag);
 
   void start();
 
@@ -60,11 +62,13 @@ private:
   const char openDelimiter;
   const char closeDelimiter;
 
-  //SharedAsyncReader currentReader;
+  SharedAsyncReader currentReader;
 
   std::atomic<size_t> activeReaderCount;
-  std::condition_variable terminationNotifier;
   std::mutex terminationLock;
+
+  std::condition_variable& terminationNotifier;
+  std::atomic<bool>& terminationFlag;
 
   std::atomic_bool shouldExit;
 

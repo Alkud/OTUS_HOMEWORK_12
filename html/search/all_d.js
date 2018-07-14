@@ -8,6 +8,5 @@ var searchData=
   ['publisher',['Publisher',['../class_publisher.html',1,'Publisher'],['../class_publisher.html#a6e79843a351620b0d3bbefb25505fbec',1,'Publisher::Publisher()'],['../class_command_processor_instance.html#adc28df20741dfc86c8fb7c34a8cd7d76',1,'CommandProcessorInstance::publisher()']]],
   ['publisher_5fmt_2ecpp',['publisher_mt.cpp',['../publisher__mt_8cpp.html',1,'']]],
   ['publisher_5fmt_2eh',['publisher_mt.h',['../publisher__mt_8h.html',1,'']]],
-  ['putitem',['putItem',['../class_smart_buffer.html#a709bf5649fa2645d9eb5490539857d79',1,'SmartBuffer::putItem(const T &amp;newItem)'],['../class_smart_buffer.html#a7cae829c76ab3c25f64de412f615feb5',1,'SmartBuffer::putItem(T &amp;&amp;newItem)']]],
-  ['putnextline',['putNextLine',['../class_input_reader.html#a7c0d2121dc5f679edb5f56748b5ebb90',1,'InputReader']]]
+  ['publisherbuffer',['publisherBuffer',['../class_command_processor_instance.html#af7b0db649ef621c36e840655f88d05a8',1,'CommandProcessorInstance::publisherBuffer()'],['../class_input_processor.html#a92ffca91a2ae9fd7ff15002a87e58843',1,'InputProcessor::publisherBuffer()'],['../input__processor_8cpp.html#a8146d537c9c5653007510d5b86eb5351',1,'publisherBuffer():&#160;input_processor.cpp']]]
 ];

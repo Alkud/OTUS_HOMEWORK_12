@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['message',['Message',['../broadcasters_8h.html#aff97733e4706e994965da50c70605422',1,'broadcasters.h']]]
+  ['workerstate',['WorkerState',['../async__worker_8h.html#a0cc9396b0d49842062b68234bac0b526',1,'async_worker.h']]]
 ];

@@ -6,11 +6,10 @@ async_command_server/CMakeFiles/server.dir/async_acceptor.cpp.o: async_command_p
 async_command_server/CMakeFiles/server.dir/async_acceptor.cpp.o: async_command_processor/broadcasters.h
 async_command_server/CMakeFiles/server.dir/async_acceptor.cpp.o: async_command_processor/command_processor_instance.h
 async_command_server/CMakeFiles/server.dir/async_acceptor.cpp.o: async_command_processor/input_processor.h
-async_command_server/CMakeFiles/server.dir/async_acceptor.cpp.o: async_command_processor/input_reader.h
 async_command_server/CMakeFiles/server.dir/async_acceptor.cpp.o: async_command_processor/listeners.h
 async_command_server/CMakeFiles/server.dir/async_acceptor.cpp.o: async_command_processor/logger_mt.h
 async_command_server/CMakeFiles/server.dir/async_acceptor.cpp.o: async_command_processor/publisher_mt.h
-async_command_server/CMakeFiles/server.dir/async_acceptor.cpp.o: async_command_processor/smart_buffer_mt.h
+async_command_server/CMakeFiles/server.dir/async_acceptor.cpp.o: async_command_processor/simple_buffer_mt.h
 async_command_server/CMakeFiles/server.dir/async_acceptor.cpp.o: async_command_processor/thread_metrics.h
 async_command_server/CMakeFiles/server.dir/async_acceptor.cpp.o: async_command_processor/weak_ptr_less.h
 async_command_server/CMakeFiles/server.dir/async_acceptor.cpp.o: async_command_server/async_acceptor.cpp
@@ -22,11 +21,10 @@ async_command_server/CMakeFiles/server.dir/async_reader.cpp.o: async_command_pro
 async_command_server/CMakeFiles/server.dir/async_reader.cpp.o: async_command_processor/broadcasters.h
 async_command_server/CMakeFiles/server.dir/async_reader.cpp.o: async_command_processor/command_processor_instance.h
 async_command_server/CMakeFiles/server.dir/async_reader.cpp.o: async_command_processor/input_processor.h
-async_command_server/CMakeFiles/server.dir/async_reader.cpp.o: async_command_processor/input_reader.h
 async_command_server/CMakeFiles/server.dir/async_reader.cpp.o: async_command_processor/listeners.h
 async_command_server/CMakeFiles/server.dir/async_reader.cpp.o: async_command_processor/logger_mt.h
 async_command_server/CMakeFiles/server.dir/async_reader.cpp.o: async_command_processor/publisher_mt.h
-async_command_server/CMakeFiles/server.dir/async_reader.cpp.o: async_command_processor/smart_buffer_mt.h
+async_command_server/CMakeFiles/server.dir/async_reader.cpp.o: async_command_processor/simple_buffer_mt.h
 async_command_server/CMakeFiles/server.dir/async_reader.cpp.o: async_command_processor/thread_metrics.h
 async_command_server/CMakeFiles/server.dir/async_reader.cpp.o: async_command_processor/weak_ptr_less.h
 async_command_server/CMakeFiles/server.dir/async_reader.cpp.o: async_command_server/async_reader.cpp

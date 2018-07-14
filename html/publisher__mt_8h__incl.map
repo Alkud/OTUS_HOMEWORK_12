@@ -1,6 +1,6 @@
 <map id="async_command_processor/publisher_mt.h" name="async_command_processor/publisher_mt.h">
 <area shape="rect" id="node7" href="$listeners_8h.html" title="listeners.h" alt="" coords="1331,245,1412,272"/>
-<area shape="rect" id="node9" href="$smart__buffer__mt_8h.html" title="smart_buffer_mt.h" alt="" coords="939,96,1067,123"/>
+<area shape="rect" id="node9" href="$simple__buffer__mt_8h.html" title="simple_buffer_mt.h" alt="" coords="936,96,1069,123"/>
 <area shape="rect" id="node27" href="$thread__metrics_8h.html" title="thread_metrics.h" alt="" coords="199,171,317,197"/>
 <area shape="rect" id="node15" href="$async__worker_8h.html" title="async_worker.h" alt="" coords="879,171,993,197"/>
 <area shape="rect" id="node23" href="$broadcasters_8h.html" title="broadcasters.h" alt="" coords="1403,171,1511,197"/>

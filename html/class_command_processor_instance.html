@@ -119,9 +119,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5ca31b8b19f99f0b785b7d47c92de983"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1b143062c9638ad27f15844b77fe1f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="thread__metrics_8h.html#ac1589e063b43543469fafabc05566bcc">SharedGlobalMetrics</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#af1b143062c9638ad27f15844b77fe1f3">run</a> () noexcept</td></tr>
 <tr class="separator:af1b143062c9638ad27f15844b77fe1f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada10def8e0a39c4dc9df20e5dbbfcb5f"><td class="memItemLeft" align="right" valign="top">const std::shared_ptr<br class="typebreak"/>
-&lt; <a class="el" href="class_input_reader.html#a5ca0cd5bcedd1edac47b2df5f07d01d6">InputReader::InputBufferType</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#ada10def8e0a39c4dc9df20e5dbbfcb5f">getEntryPoint</a> () const </td></tr>
-<tr class="separator:ada10def8e0a39c4dc9df20e5dbbfcb5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0872484e4d8540e6b7002b34a9df6cba"><td class="memItemLeft" align="right" valign="top">const std::shared_ptr<br class="typebreak"/>
+&lt; <a class="el" href="class_input_processor.html#a372a0ff551f8c41930b4ecb342f22283">InputProcessor::InputBufferType</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a0872484e4d8540e6b7002b34a9df6cba">getEntryPoint</a> () const </td></tr>
+<tr class="separator:a0872484e4d8540e6b7002b34a9df6cba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a218f01f109e55472222e4a9a9afc8145"><td class="memItemLeft" align="right" valign="top">const std::shared_ptr<br class="typebreak"/>
 &lt; <a class="el" href="class_input_processor.html#a372a0ff551f8c41930b4ecb342f22283">InputProcessor::InputBufferType</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a218f01f109e55472222e4a9a9afc8145">getInputBuffer</a> () const </td></tr>
 <tr class="separator:a218f01f109e55472222e4a9a9afc8145"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,15 +155,15 @@ Public Member Functions</h2></td></tr>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a823a525f6c3149f0dd089eb35bf4e77b"><td class="memItemLeft" align="right" valign="top">std::mutex &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a823a525f6c3149f0dd089eb35bf4e77b">screenOutputLock</a></td></tr>
 <tr class="separator:a823a525f6c3149f0dd089eb35bf4e77b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa712102af841ba242644d547a8f01081"><td class="memItemLeft" align="right" valign="top">std::shared_ptr<br class="typebreak"/>
-&lt; <a class="el" href="class_input_reader.html#a5ca0cd5bcedd1edac47b2df5f07d01d6">InputReader::InputBufferType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#aa712102af841ba242644d547a8f01081">externalBuffer</a></td></tr>
-<tr class="separator:aa712102af841ba242644d547a8f01081"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94f31538dd0c2854f0150db7307215b9"><td class="memItemLeft" align="right" valign="top">std::shared_ptr<br class="typebreak"/>
 &lt; <a class="el" href="class_input_processor.html#a372a0ff551f8c41930b4ecb342f22283">InputProcessor::InputBufferType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a94f31538dd0c2854f0150db7307215b9">inputBuffer</a></td></tr>
 <tr class="separator:a94f31538dd0c2854f0150db7307215b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e0b819411867ceed7f58bfef5ab9516"><td class="memItemLeft" align="right" valign="top">std::shared_ptr<br class="typebreak"/>
-&lt; <a class="el" href="class_input_processor.html#a80ed4b5c0fcfd1297bea56a9bc6fb2ca">InputProcessor::OutputBufferType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a1e0b819411867ceed7f58bfef5ab9516">outputBuffer</a></td></tr>
-<tr class="separator:a1e0b819411867ceed7f58bfef5ab9516"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7b0db649ef621c36e840655f88d05a8"><td class="memItemLeft" align="right" valign="top">std::shared_ptr<br class="typebreak"/>
+&lt; <a class="el" href="class_input_processor.html#a80ed4b5c0fcfd1297bea56a9bc6fb2ca">InputProcessor::OutputBufferType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#af7b0db649ef621c36e840655f88d05a8">publisherBuffer</a></td></tr>
+<tr class="separator:af7b0db649ef621c36e840655f88d05a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a628538345bff451d3df31af3879ff40e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr<br class="typebreak"/>
+&lt; <a class="el" href="class_input_processor.html#a80ed4b5c0fcfd1297bea56a9bc6fb2ca">InputProcessor::OutputBufferType</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a628538345bff451d3df31af3879ff40e">loggerBuffers</a></td></tr>
+<tr class="separator:a628538345bff451d3df31af3879ff40e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38f19e2c1a7ba209adc75d3c4f32e6ca"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_logger.html">Logger</a><br class="typebreak"/>
 &lt; loggingThreadCount &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a38f19e2c1a7ba209adc75d3c4f32e6ca">logger</a></td></tr>
 <tr class="separator:a38f19e2c1a7ba209adc75d3c4f32e6ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -171,8 +171,6 @@ Private Attributes</h2></td></tr>
 <tr class="separator:adc28df20741dfc86c8fb7c34a8cd7d76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a041f8c26e033a60636db4bcba7c34a55"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_input_processor.html">InputProcessor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a041f8c26e033a60636db4bcba7c34a55">inputProcessor</a></td></tr>
 <tr class="separator:a041f8c26e033a60636db4bcba7c34a55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a36e2841c4b31037473ee83fa248901"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_input_reader.html">InputReader</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a1a36e2841c4b31037473ee83fa248901">inputReader</a></td></tr>
-<tr class="separator:a1a36e2841c4b31037473ee83fa248901"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a315179d34844d5687b4f29a1c9a44524"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a315179d34844d5687b4f29a1c9a44524">inputStreamLock</a></td></tr>
 <tr class="separator:a315179d34844d5687b4f29a1c9a44524"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94263e4c1e0aa62f311348e10a7264d7"><td class="memItemLeft" align="right" valign="top">std::atomic_bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a94263e4c1e0aa62f311348e10a7264d7">dataReceived</a></td></tr>
@@ -297,7 +295,7 @@ template&lt;size_t loggingThreadCount = 2u&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ada10def8e0a39c4dc9df20e5dbbfcb5f"></a>
+<a class="anchor" id="a0872484e4d8540e6b7002b34a9df6cba"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -307,7 +305,7 @@ template&lt;size_t loggingThreadCount = 2u&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const std::shared_ptr&lt;<a class="el" href="class_input_reader.html#a5ca0cd5bcedd1edac47b2df5f07d01d6">InputReader::InputBufferType</a>&gt;&amp; <a class="el" href="class_command_processor_instance.html">CommandProcessorInstance</a>&lt; loggingThreadCount &gt;::getEntryPoint </td>
+          <td class="memname">const std::shared_ptr&lt;<a class="el" href="class_input_processor.html#a372a0ff551f8c41930b4ecb342f22283">InputProcessor::InputBufferType</a>&gt;&amp; <a class="el" href="class_command_processor_instance.html">CommandProcessorInstance</a>&lt; loggingThreadCount &gt;::getEntryPoint </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -598,28 +596,6 @@ template&lt;size_t loggingThreadCount = 2u&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="aa712102af841ba242644d547a8f01081"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;size_t loggingThreadCount = 2u&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="class_input_reader.html#a5ca0cd5bcedd1edac47b2df5f07d01d6">InputReader::InputBufferType</a>&gt; <a class="el" href="class_command_processor_instance.html">CommandProcessorInstance</a>&lt; loggingThreadCount &gt;::externalBuffer</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a0703365979feee6f491b8e1c9cf6b7f5"></a>
 <div class="memitem">
 <div class="memproto">
@@ -686,28 +662,6 @@ template&lt;size_t loggingThreadCount = 2u&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a1a36e2841c4b31037473ee83fa248901"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;size_t loggingThreadCount = 2u&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="class_input_reader.html">InputReader</a>&gt; <a class="el" href="class_command_processor_instance.html">CommandProcessorInstance</a>&lt; loggingThreadCount &gt;::inputReader</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a315179d34844d5687b4f29a1c9a44524"></a>
 <div class="memitem">
 <div class="memproto">
@@ -741,6 +695,28 @@ template&lt;size_t loggingThreadCount = 2u&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">std::shared_ptr&lt;<a class="el" href="class_logger.html">Logger</a>&lt;loggingThreadCount&gt; &gt; <a class="el" href="class_command_processor_instance.html">CommandProcessorInstance</a>&lt; loggingThreadCount &gt;::logger</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a628538345bff451d3df31af3879ff40e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t loggingThreadCount = 2u&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::shared_ptr&lt;<a class="el" href="class_input_processor.html#a80ed4b5c0fcfd1297bea56a9bc6fb2ca">InputProcessor::OutputBufferType</a>&gt; &gt; <a class="el" href="class_command_processor_instance.html">CommandProcessorInstance</a>&lt; loggingThreadCount &gt;::loggerBuffers</td>
         </tr>
       </table>
   </td>
@@ -796,28 +772,6 @@ template&lt;size_t loggingThreadCount = 2u&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a1e0b819411867ceed7f58bfef5ab9516"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;size_t loggingThreadCount = 2u&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="class_input_processor.html#a80ed4b5c0fcfd1297bea56a9bc6fb2ca">InputProcessor::OutputBufferType</a>&gt; <a class="el" href="class_command_processor_instance.html">CommandProcessorInstance</a>&lt; loggingThreadCount &gt;::outputBuffer</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="adc28df20741dfc86c8fb7c34a8cd7d76"></a>
 <div class="memitem">
 <div class="memproto">
@@ -829,6 +783,28 @@ template&lt;size_t loggingThreadCount = 2u&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">std::shared_ptr&lt;<a class="el" href="class_publisher.html">Publisher</a>&gt; <a class="el" href="class_command_processor_instance.html">CommandProcessorInstance</a>&lt; loggingThreadCount &gt;::publisher</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="af7b0db649ef621c36e840655f88d05a8"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t loggingThreadCount = 2u&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="class_input_processor.html#a80ed4b5c0fcfd1297bea56a9bc6fb2ca">InputProcessor::OutputBufferType</a>&gt; <a class="el" href="class_command_processor_instance.html">CommandProcessorInstance</a>&lt; loggingThreadCount &gt;::publisherBuffer</td>
         </tr>
       </table>
   </td>

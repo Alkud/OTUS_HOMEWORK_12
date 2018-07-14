@@ -1,19 +1,17 @@
 <map id="async_command_processor/broadcasters.h" name="async_command_processor/broadcasters.h">
-<area shape="rect" id="node2" href="$input__reader_8h.html" title="async_command_processor\l/input_reader.h" alt="" coords="5,187,189,229"/>
-<area shape="rect" id="node13" href="$smart__buffer__mt_8h.html" title="async_command_processor\l/smart_buffer_mt.h" alt="" coords="233,97,417,138"/>
-<area shape="rect" id="node3" href="$command__processor__instance_8h.html" title="async_command_processor\l/command_processor_instance.h" alt="" coords="237,278,451,319"/>
-<area shape="rect" id="node12" href="$input__reader_8cpp.html" title="async_command_processor\l/input_reader.cpp" alt="" coords="5,278,189,319"/>
-<area shape="rect" id="node4" href="$async__command__processor_8h.html" title="async_command_processor\l/async_command_processor.h" alt="" coords="244,369,443,410"/>
-<area shape="rect" id="node5" href="$async__reader_8h.html" title="async_command_server\l/async_reader.h" alt="" coords="322,459,485,501"/>
-<area shape="rect" id="node6" href="$async__acceptor_8h.html" title="async_command_server\l/async_acceptor.h" alt="" coords="202,550,365,591"/>
-<area shape="rect" id="node11" href="$async__reader_8cpp.html" title="async_command_server\l/async_reader.cpp" alt="" coords="390,550,553,591"/>
-<area shape="rect" id="node7" href="$async__command__server_8h.html" title="async_command_server\l/async_command_server.h" alt="" coords="97,641,276,682"/>
-<area shape="rect" id="node10" href="$async__acceptor_8cpp.html" title="async_command_server\l/async_acceptor.cpp" alt="" coords="301,641,464,682"/>
-<area shape="rect" id="node8" href="$homework__12_8cpp.html" title="homework_12.cpp" alt="" coords="43,731,171,757"/>
-<area shape="rect" id="node9" href="$otus__hw__12__test_8cpp.html" title="otus_hw_12_test.cpp" alt="" coords="195,731,341,757"/>
-<area shape="rect" id="node14" href="$input__processor_8h.html" title="async_command_processor\l/input_processor.h" alt="" coords="475,187,660,229"/>
-<area shape="rect" id="node16" href="$publisher__mt_8h.html" title="async_command_processor\l/publisher_mt.h" alt="" coords="685,187,869,229"/>
-<area shape="rect" id="node18" href="$logger__mt_8h.html" title="async_command_processor\l/logger_mt.h" alt="" coords="266,187,451,229"/>
-<area shape="rect" id="node15" href="$input__processor_8cpp.html" title="async_command_processor\l/input_processor.cpp" alt="" coords="475,278,660,319"/>
-<area shape="rect" id="node17" href="$publisher__mt_8cpp.html" title="async_command_processor\l/publisher_mt.cpp" alt="" coords="685,278,869,319"/>
+<area shape="rect" id="node2" href="$simple__buffer__mt_8h.html" title="async_command_processor\l/simple_buffer_mt.h" alt="" coords="201,97,385,138"/>
+<area shape="rect" id="node3" href="$input__processor_8h.html" title="async_command_processor\l/input_processor.h" alt="" coords="5,187,189,229"/>
+<area shape="rect" id="node4" href="$command__processor__instance_8h.html" title="async_command_processor\l/command_processor_instance.h" alt="" coords="225,278,439,319"/>
+<area shape="rect" id="node14" href="$publisher__mt_8h.html" title="async_command_processor\l/publisher_mt.h" alt="" coords="475,187,660,229"/>
+<area shape="rect" id="node16" href="$logger__mt_8h.html" title="async_command_processor\l/logger_mt.h" alt="" coords="266,187,451,229"/>
+<area shape="rect" id="node13" href="$input__processor_8cpp.html" title="async_command_processor\l/input_processor.cpp" alt="" coords="5,278,189,319"/>
+<area shape="rect" id="node5" href="$async__command__processor_8h.html" title="async_command_processor\l/async_command_processor.h" alt="" coords="232,369,431,410"/>
+<area shape="rect" id="node6" href="$async__reader_8h.html" title="async_command_server\l/async_reader.h" alt="" coords="310,459,473,501"/>
+<area shape="rect" id="node7" href="$async__acceptor_8h.html" title="async_command_server\l/async_acceptor.h" alt="" coords="190,550,353,591"/>
+<area shape="rect" id="node12" href="$async__reader_8cpp.html" title="async_command_server\l/async_reader.cpp" alt="" coords="378,550,541,591"/>
+<area shape="rect" id="node8" href="$async__command__server_8h.html" title="async_command_server\l/async_command_server.h" alt="" coords="85,641,264,682"/>
+<area shape="rect" id="node11" href="$async__acceptor_8cpp.html" title="async_command_server\l/async_acceptor.cpp" alt="" coords="289,641,452,682"/>
+<area shape="rect" id="node9" href="$homework__12_8cpp.html" title="homework_12.cpp" alt="" coords="31,731,159,757"/>
+<area shape="rect" id="node10" href="$otus__hw__12__test_8cpp.html" title="otus_hw_12_test.cpp" alt="" coords="183,731,329,757"/>
+<area shape="rect" id="node15" href="$publisher__mt_8cpp.html" title="async_command_processor\l/publisher_mt.cpp" alt="" coords="475,278,660,319"/>
 </map>

@@ -95,234 +95,234 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;mutex&gt;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;list&gt;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;thread&gt;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;functional&gt;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;condition_variable&gt;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="command__processor__instance_8h.html">command_processor_instance.h</a>&quot;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">using namespace </span>std::chrono_literals;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">size_t</span> loggingThreadCount = 2u&gt;</div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="class_async_command_processor.html">   17</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_async_command_processor.html">AsyncCommandProcessor</a> : <span class="keyword">public</span> std::enable_shared_from_this&lt;AsyncCommandProcessor&lt;loggingThreadCount&gt;&gt;,</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;                              <span class="keyword">public</span> <a class="code" href="class_message_broadcaster.html">MessageBroadcaster</a></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;{</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="class_async_command_processor.html#a6bc59857b5644bccec36563c437295af">   22</a></span>&#160;  <a class="code" href="class_async_command_processor.html#a6bc59857b5644bccec36563c437295af">AsyncCommandProcessor</a>(</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;      <span class="keyword">const</span> std::string&amp; newProcessorName,</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">size_t</span> newBulkSize = 3,</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">char</span> newBulkOpenDelimiter = <span class="charliteral">&#39;{&#39;</span>,</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">char</span> newBulkCloseDelimiter = <span class="charliteral">&#39;}&#39;</span>,</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;      std::ostream&amp; newOutputStream = std::cout,</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;      std::ostream&amp; newErrorStream = std::cerr,</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;      std::ostream&amp; newMetricsStream = std::cout</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  ) :</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    processorName{newProcessorName},</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    accessLock{},</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    disconnected{<span class="keyword">false</span>}, receiving{<span class="keyword">false</span>},</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <a class="code" href="homework__12_8cpp.html#a2af8fb9d5b5bf1935665c085771bb282">terminationLock</a>{},</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="homework__12_8cpp.html#af78e15e6a7f37af31e137cc9327660fa">terminationNotifier</a>{}, activeReceptionCount{},</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="input__processor_8cpp.html#a642fd46fcccb815659284cd725d4a845">bulkSize</a>{newBulkSize},</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <a class="code" href="input__processor_8cpp.html#aa6b56f8d7904bd4053b7bf3bf147bc7a">bulkOpenDelimiter</a>{newBulkOpenDelimiter},</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="input__processor_8cpp.html#a6a95dd894d8941411f54627aab6660cd">bulkCloseDelimiter</a>{newBulkCloseDelimiter},</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    outputStream{newOutputStream},</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    errorStream{newErrorStream},</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    metricsStream{newMetricsStream},</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    processor{</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      std::make_shared&lt;CommandProcessorInstance&lt;loggingThreadCount&gt;&gt;(</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <a class="code" href="input__processor_8cpp.html#a642fd46fcccb815659284cd725d4a845">bulkSize</a>,</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <a class="code" href="input__processor_8cpp.html#aa6b56f8d7904bd4053b7bf3bf147bc7a">bulkOpenDelimiter</a>,</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <a class="code" href="input__processor_8cpp.html#a6a95dd894d8941411f54627aab6660cd">bulkCloseDelimiter</a>,</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        outputStream,</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        errorStream,</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        metricsStream,</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        screenOutputLock</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      )</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    },</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    entryPoint{processor-&gt;getEntryPoint()},</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    commandBuffer{processor-&gt;getInputBuffer()},</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    bulkBuffer{processor-&gt;getOutputBuffer()},</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    metrics{processor-&gt;getMetrics()},</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    selfDestroy{}</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">    #ifdef NDEBUG</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor"></span><span class="preprocessor">    #else</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor"></span>        <span class="comment">//std::cout &lt;&lt; &quot;\n                            AsyncCP constructor\n&quot;;</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    this-&gt;addMessageListener(entryPoint);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  }</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="class_async_command_processor.html#a8cf94a4106c01afae0a96ef507da99b1">   70</a></span>&#160;  <a class="code" href="class_async_command_processor.html#a8cf94a4106c01afae0a96ef507da99b1">~AsyncCommandProcessor</a>()</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">    #ifdef NDEBUG</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor"></span><span class="preprocessor">    #else</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor"></span>        <span class="comment">//std::cout &lt;&lt; &quot;\n                            AsyncCP destructor\n&quot;;</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor"></span>  }</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="class_async_command_processor.html#a62c70309627d2b3bdb2f202c86bd39b8">   78</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="class_async_command_processor.html#a62c70309627d2b3bdb2f202c86bd39b8">connect</a>(<span class="keyword">const</span> <span class="keywordtype">bool</span> outputMetrics = <span class="keyword">false</span>) noexcept</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  {</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordflow">try</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      <span class="comment">/* ignore repetitive connection attempts*/</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      <span class="keywordflow">if</span> (workingThread.joinable() == <span class="keyword">true</span>)</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;      {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      }</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">      #ifdef NDEBUG</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #else</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor"></span>        <span class="comment">//std::cout &lt;&lt; &quot;\n                    AsyncCP working thread start\n&quot;;</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">      #endif</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      workingThread = std::thread{</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;          &amp;<a class="code" href="class_async_command_processor.html">AsyncCommandProcessor&lt;loggingThreadCount&gt;::run</a>, <span class="keyword">this</span>, outputMetrics</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;      };</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">      #ifdef NDEBUG</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #else</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor"></span>        <span class="comment">//std::cout &lt;&lt; &quot;\n                    AsyncCP connected\n&quot;;</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">      #endif</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    }</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; ex)</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    {</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      std::lock_guard&lt;std::mutex&gt; lockOutput{screenOutputLock};</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      errorStream &lt;&lt; <span class="stringliteral">&quot;Connection failed. Reason: &quot;</span> &lt;&lt; ex.what() &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    }</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  }</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="class_async_command_processor.html#ab2f496c99fce3c38cc3ea24894405e4c">  112</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_async_command_processor.html#ab2f496c99fce3c38cc3ea24894405e4c">run</a>(<span class="keyword">const</span> <span class="keywordtype">bool</span> outputMetrics = <span class="keyword">false</span>)</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  {</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;     processor-&gt;run();</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;     <span class="keywordflow">if</span> (outputMetrics != <span class="keyword">true</span>)</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;     {</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;       <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;     }</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;     <span class="comment">/* Output metrics */</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;     std::lock_guard&lt;std::mutex&gt; lockOutput{screenOutputLock};</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;thread&gt;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;functional&gt;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;condition_variable&gt;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="command__processor__instance_8h.html">command_processor_instance.h</a>&quot;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">using namespace </span>std::chrono_literals;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">size_t</span> loggingThreadCount = 2u&gt;</div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="class_async_command_processor.html">   16</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_async_command_processor.html">AsyncCommandProcessor</a> : <span class="keyword">public</span> std::enable_shared_from_this&lt;AsyncCommandProcessor&lt;loggingThreadCount&gt;&gt;,</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;                              <span class="keyword">public</span> <a class="code" href="class_message_broadcaster.html">MessageBroadcaster</a></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;{</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="class_async_command_processor.html#a6bc59857b5644bccec36563c437295af">   21</a></span>&#160;  <a class="code" href="class_async_command_processor.html#a6bc59857b5644bccec36563c437295af">AsyncCommandProcessor</a>(</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;      <span class="keyword">const</span> std::string&amp; newProcessorName,</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">size_t</span> newBulkSize = 3,</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">char</span> newBulkOpenDelimiter = <span class="charliteral">&#39;{&#39;</span>,</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">char</span> newBulkCloseDelimiter = <span class="charliteral">&#39;}&#39;</span>,</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;      std::ostream&amp; newOutputStream = std::cout,</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;      std::ostream&amp; newErrorStream = std::cerr,</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;      std::ostream&amp; newMetricsStream = std::cout</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  ) :</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    processorName{newProcessorName},</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    accessLock{},</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    disconnected{<span class="keyword">false</span>}, receiving{<span class="keyword">false</span>},</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <a class="code" href="homework__12_8cpp.html#a2af8fb9d5b5bf1935665c085771bb282">terminationLock</a>{},</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <a class="code" href="homework__12_8cpp.html#af78e15e6a7f37af31e137cc9327660fa">terminationNotifier</a>{}, activeReceptionCount{},</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <a class="code" href="input__processor_8cpp.html#a642fd46fcccb815659284cd725d4a845">bulkSize</a>{newBulkSize},</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="input__processor_8cpp.html#aa6b56f8d7904bd4053b7bf3bf147bc7a">bulkOpenDelimiter</a>{newBulkOpenDelimiter},</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <a class="code" href="input__processor_8cpp.html#a6a95dd894d8941411f54627aab6660cd">bulkCloseDelimiter</a>{newBulkCloseDelimiter},</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    outputStream{newOutputStream},</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    errorStream{newErrorStream},</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    metricsStream{newMetricsStream},</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    processor{</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keyword">new</span> <a class="code" href="class_command_processor_instance.html">CommandProcessorInstance&lt;loggingThreadCount&gt;</a>(</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <a class="code" href="input__processor_8cpp.html#a642fd46fcccb815659284cd725d4a845">bulkSize</a>,</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <a class="code" href="input__processor_8cpp.html#aa6b56f8d7904bd4053b7bf3bf147bc7a">bulkOpenDelimiter</a>,</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <a class="code" href="input__processor_8cpp.html#a6a95dd894d8941411f54627aab6660cd">bulkCloseDelimiter</a>,</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        outputStream,</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        errorStream,</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        metricsStream,</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        screenOutputLock</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      )</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    },</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    entryPoint{processor-&gt;<a class="code" href="class_command_processor_instance.html#a0872484e4d8540e6b7002b34a9df6cba">getEntryPoint</a>()},</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    commandBuffer{processor-&gt;getInputBuffer()},</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    bulkBuffer{processor-&gt;getOutputBuffer()},</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    metrics{processor-&gt;getMetrics()},</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    selfDestroy{}</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">    #ifdef NDEBUG</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor"></span><span class="preprocessor">    #else</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor"></span>        <span class="comment">//std::cout &lt;&lt; &quot;\n                            AsyncCP constructor\n&quot;;</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    this-&gt;addMessageListener(entryPoint);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="class_async_command_processor.html#a8cf94a4106c01afae0a96ef507da99b1">   69</a></span>&#160;  <a class="code" href="class_async_command_processor.html#a8cf94a4106c01afae0a96ef507da99b1">~AsyncCommandProcessor</a>()</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  {</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">    #ifdef NDEBUG</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor"></span><span class="preprocessor">    #else</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor"></span>        <span class="comment">//std::cout &lt;&lt; &quot;\n                            AsyncCP destructor\n&quot;;</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor"></span>    <span class="keywordflow">if</span> (workingThread.joinable())</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    {</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      workingThread.join();</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    }</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="class_async_command_processor.html#ac057b32f4faa0cd644af2c64aafb4a50">   81</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="class_async_command_processor.html#ac057b32f4faa0cd644af2c64aafb4a50">connect</a>(<span class="keyword">const</span> <span class="keywordtype">bool</span> outputMetrics = <span class="keyword">true</span>) noexcept</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  {</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordflow">try</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    {</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      <span class="comment">/* ignore repetitive connection attempts*/</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      <span class="keywordflow">if</span> (workingThread.joinable() == <span class="keyword">true</span>)</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      }</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">      #ifdef NDEBUG</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #else</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor"></span>        <span class="comment">//std::cout &lt;&lt; &quot;\n                    AsyncCP working thread start\n&quot;;</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor">      #endif</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      workingThread = std::thread{</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;          &amp;<a class="code" href="class_async_command_processor.html">AsyncCommandProcessor&lt;loggingThreadCount&gt;::run</a>, <span class="keyword">this</span>, outputMetrics</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      };</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">      #ifdef NDEBUG</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #else</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor"></span>        <span class="comment">//std::cout &lt;&lt; &quot;\n                    AsyncCP connected\n&quot;;</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor">      #endif</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    }</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; ex)</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    {</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;      std::lock_guard&lt;std::mutex&gt; lockOutput{screenOutputLock};</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;      errorStream &lt;&lt; <span class="stringliteral">&quot;Connection failed. Reason: &quot;</span> &lt;&lt; ex.what() &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    }</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  }</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
+<div class="line"><a name="l00115"></a><span class="lineno"><a class="line" href="class_async_command_processor.html#a4de8f5dcca5e3b1a8fbc08017b6e1a22">  115</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_async_command_processor.html#a4de8f5dcca5e3b1a8fbc08017b6e1a22">run</a>(<span class="keyword">const</span> <span class="keywordtype">bool</span> outputMetrics = <span class="keyword">true</span>)</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  {</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;     processor-&gt;run();</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;     <span class="keywordflow">if</span> (outputMetrics != <span class="keyword">true</span>)</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;     {</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;       <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;     }</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;     metricsStream &lt;&lt; <span class="charliteral">&#39;\n&#39;</span> &lt;&lt; processorName &lt;&lt; <span class="stringliteral">&quot; metrics:\n&quot;</span>;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;     metricsStream &lt;&lt; <span class="stringliteral">&quot;total received - &quot;</span></div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                   &lt;&lt; metrics[<span class="stringliteral">&quot;input reader&quot;</span>]-&gt;totalReceptionCount &lt;&lt; <span class="stringliteral">&quot; data chunk(s), &quot;</span></div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;                   &lt;&lt; metrics[<span class="stringliteral">&quot;input reader&quot;</span>]-&gt;totalCharacterCount &lt;&lt; <span class="stringliteral">&quot; character(s), &quot;</span></div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                   &lt;&lt; metrics[<span class="stringliteral">&quot;input reader&quot;</span>]-&gt;totalStringCount &lt;&lt; <span class="stringliteral">&quot; string(s)&quot;</span> &lt;&lt; std::endl</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;                   &lt;&lt; <span class="stringliteral">&quot;total processed - &quot;</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                   &lt;&lt; metrics[<span class="stringliteral">&quot;input processor&quot;</span>]-&gt;totalStringCount &lt;&lt; <span class="stringliteral">&quot; string(s), &quot;</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                   &lt;&lt; metrics[<span class="stringliteral">&quot;input processor&quot;</span>]-&gt;totalCommandCount &lt;&lt; <span class="stringliteral">&quot; command(s), &quot;</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                   &lt;&lt; metrics[<span class="stringliteral">&quot;input processor&quot;</span>]-&gt;totalBulkCount &lt;&lt; <span class="stringliteral">&quot; bulk(s)&quot;</span> &lt;&lt; std::endl</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                   &lt;&lt; <span class="stringliteral">&quot;total displayed - &quot;</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;                   &lt;&lt; metrics[<span class="stringliteral">&quot;publisher&quot;</span>]-&gt;totalBulkCount &lt;&lt; <span class="stringliteral">&quot; bulk(s), &quot;</span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                   &lt;&lt; metrics[<span class="stringliteral">&quot;publisher&quot;</span>]-&gt;totalCommandCount &lt;&lt; <span class="stringliteral">&quot; command(s)&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;     <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> threadIndex{}; threadIndex &lt; loggingThreadCount; ++threadIndex)</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;     {</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;       <span class="keyword">auto</span> threadName = std::string{<span class="stringliteral">&quot;logger thread#&quot;</span>} + std::to_string(threadIndex);</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;       metricsStream &lt;&lt; <span class="stringliteral">&quot;total saved by thread #&quot;</span> &lt;&lt; threadIndex &lt;&lt; <span class="stringliteral">&quot; - &quot;</span></div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;                     &lt;&lt; metrics[threadName]-&gt;totalBulkCount &lt;&lt; <span class="stringliteral">&quot; bulk(s), &quot;</span></div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                     &lt;&lt; metrics[threadName]-&gt;totalCommandCount &lt;&lt; <span class="stringliteral">&quot; command(s)&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;     }</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;     metricsStream &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  }</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
-<div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="class_async_command_processor.html#a358adca8990f56573154c42e095a0675">  148</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_async_command_processor.html#a358adca8990f56573154c42e095a0675">receiveData</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *data, std::size_t size)</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  {</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    ++activeReceptionCount;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    std::unique_lock&lt;std::mutex&gt; lockAccess{accessLock};</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">nullptr</span> == data || size == 0 || disconnected.load() == <span class="keyword">true</span>)</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    {</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="preprocessor">      #ifdef NDEBUG</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #else</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="preprocessor"></span><span class="comment">//        std::lock_guard&lt;std::mutex&gt; lockScreenOutput{screenOutputLock};</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">//        std::cout &lt;&lt; &quot;                                stop receiving\n&quot;;</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="preprocessor">      #endif</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;      lockAccess.unlock();</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;      --activeReceptionCount;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;      <a class="code" href="homework__12_8cpp.html#af78e15e6a7f37af31e137cc9327660fa">terminationNotifier</a>.notify_all();</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;      <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    }</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;     <span class="comment">/* Output metrics */</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;     std::lock_guard&lt;std::mutex&gt; lockOutput{screenOutputLock};</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;     metricsStream &lt;&lt; <span class="charliteral">&#39;\n&#39;</span> &lt;&lt; processorName &lt;&lt; <span class="stringliteral">&quot; metrics:\n&quot;</span>;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;     metricsStream <span class="comment">//&lt;&lt; &quot;total received - &quot;</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;                   <span class="comment">//&lt;&lt; metrics[&quot;input reader&quot;]-&gt;totalReceptionCount &lt;&lt; &quot; data chunk(s), &quot;</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                   <span class="comment">//&lt;&lt; metrics[&quot;input reader&quot;]-&gt;totalCharacterCount &lt;&lt; &quot; character(s), &quot;</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                   <span class="comment">//&lt;&lt; metrics[&quot;input reader&quot;]-&gt;totalStringCount &lt;&lt; &quot; string(s)&quot; &lt;&lt; std::endl</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                   &lt;&lt; <span class="stringliteral">&quot;total processed - &quot;</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                   &lt;&lt; metrics[<span class="stringliteral">&quot;input processor&quot;</span>]-&gt;totalStringCount &lt;&lt; <span class="stringliteral">&quot; string(s), &quot;</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;                   &lt;&lt; metrics[<span class="stringliteral">&quot;input processor&quot;</span>]-&gt;totalCommandCount &lt;&lt; <span class="stringliteral">&quot; command(s), &quot;</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                   &lt;&lt; metrics[<span class="stringliteral">&quot;input processor&quot;</span>]-&gt;totalBulkCount &lt;&lt; <span class="stringliteral">&quot; bulk(s)&quot;</span> &lt;&lt; std::endl</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;                   &lt;&lt; <span class="stringliteral">&quot;total displayed - &quot;</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;                   &lt;&lt; metrics[<span class="stringliteral">&quot;publisher&quot;</span>]-&gt;totalBulkCount &lt;&lt; <span class="stringliteral">&quot; bulk(s), &quot;</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                   &lt;&lt; metrics[<span class="stringliteral">&quot;publisher&quot;</span>]-&gt;totalCommandCount &lt;&lt; <span class="stringliteral">&quot; command(s)&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;     <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> threadIndex{}; threadIndex &lt; loggingThreadCount; ++threadIndex)</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;     {</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;       <span class="keyword">auto</span> threadName = std::string{<span class="stringliteral">&quot;logger thread#&quot;</span>} + std::to_string(threadIndex);</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;       metricsStream &lt;&lt; <span class="stringliteral">&quot;total saved by thread #&quot;</span> &lt;&lt; threadIndex &lt;&lt; <span class="stringliteral">&quot; - &quot;</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                     &lt;&lt; metrics[threadName]-&gt;totalBulkCount &lt;&lt; <span class="stringliteral">&quot; bulk(s), &quot;</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                     &lt;&lt; metrics[threadName]-&gt;totalCommandCount &lt;&lt; <span class="stringliteral">&quot; command(s)&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;     }</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;     metricsStream &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  }</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;</div>
+<div class="line"><a name="l00151"></a><span class="lineno"><a class="line" href="class_async_command_processor.html#a358adca8990f56573154c42e095a0675">  151</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_async_command_processor.html#a358adca8990f56573154c42e095a0675">receiveData</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *data, std::size_t size)</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  {</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    ++activeReceptionCount;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    std::unique_lock&lt;std::mutex&gt; lockAccess{accessLock};</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">nullptr</span> == data || size == 0 || disconnected.load() == <span class="keyword">true</span>)</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    {</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="preprocessor">      #ifdef NDEBUG</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #else</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="preprocessor"></span><span class="comment">//        std::lock_guard&lt;std::mutex&gt; lockScreenOutput{screenOutputLock};</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">//        std::cout &lt;&lt; &quot;                                stop receiving\n&quot;;</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="preprocessor">      #endif</span></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;      lockAccess.unlock();</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;      --activeReceptionCount;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;      <a class="code" href="homework__12_8cpp.html#af78e15e6a7f37af31e137cc9327660fa">terminationNotifier</a>.notify_all();</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    lockAccess.unlock();</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    {</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="preprocessor">       #ifdef NDEBUG</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="preprocessor"></span><span class="preprocessor">       #else</span></div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="preprocessor"></span><span class="comment">//         std::lock_guard&lt;std::mutex&gt; lockScreenOutput{screenOutputLock};</span></div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="comment">//         std::cout &lt;&lt; &quot;                                receiving started\n&quot;;</span></div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="preprocessor">       #endif</span></div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="preprocessor"></span>    }</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;      <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    }    </div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    {</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="preprocessor">       #ifdef NDEBUG</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="preprocessor"></span><span class="preprocessor">       #else</span></div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="preprocessor"></span><span class="comment">//         std::lock_guard&lt;std::mutex&gt; lockScreenOutput{screenOutputLock};</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="comment">//         std::cout &lt;&lt; &quot;                                receiving started\n&quot;;</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="preprocessor">       #endif</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="preprocessor"></span>    }</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="keywordflow">if</span> (entryPoint != <span class="keyword">nullptr</span> &amp;&amp; disconnected.load() != <span class="keyword">true</span>)</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    {</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;      <a class="code" href="class_input_reader.html#a81279ee55f14aafc322f531fe41e7953">InputReader::EntryDataType</a> newData{};</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> idx{0}; idx &lt; size; ++idx)</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;      {</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        newData.push_back(data[idx]);</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;      }</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;      entryPoint-&gt;putItem(std::move(newData));</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    }</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    {</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="preprocessor">      #ifdef NDEBUG</span></div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #else</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="preprocessor"></span><span class="comment">//        std::lock_guard&lt;std::mutex&gt; lockScreenOutput{screenOutputLock};</span></div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="comment">//        std::cout &lt;&lt; &quot;                                receiving finished\n&quot;;</span></div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="preprocessor">      #endif</span></div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="preprocessor"></span>    }</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;   --activeReceptionCount;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;   <a class="code" href="homework__12_8cpp.html#af78e15e6a7f37af31e137cc9327660fa">terminationNotifier</a>.notify_all();</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keywordflow">if</span> (entryPoint != <span class="keyword">nullptr</span> &amp;&amp; disconnected.load() != <span class="keyword">true</span>)</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    {</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;      std::stringstream characters{data};</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;      std::string newString{};</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;      <span class="keywordflow">while</span> (std::getline(characters, newString))</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;      {</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        entryPoint-&gt;putItem(std::move(newString));</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;      }</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    }</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    lockAccess.unlock();</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    {</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="preprocessor">      #ifdef NDEBUG</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #else</span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="preprocessor"></span><span class="comment">//        std::lock_guard&lt;std::mutex&gt; lockScreenOutput{screenOutputLock};</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="comment">//        std::cout &lt;&lt; &quot;                                receiving finished\n&quot;;</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="preprocessor">      #endif</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="preprocessor"></span>    }</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;   <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  }</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;</div>
-<div class="line"><a name="l00208"></a><span class="lineno"><a class="line" href="class_async_command_processor.html#a1757bd870687e5babd9f744b361ebab6">  208</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_async_command_processor.html#a1757bd870687e5babd9f744b361ebab6">disconnect</a>()</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;  {</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    std::unique_lock&lt;std::mutex&gt; lockAccess{accessLock};</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;   --activeReceptionCount;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;   <a class="code" href="homework__12_8cpp.html#af78e15e6a7f37af31e137cc9327660fa">terminationNotifier</a>.notify_all();</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;   <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;  }</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    disconnected.store(<span class="keyword">true</span>);</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    {</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;<span class="preprocessor">      #ifdef NDEBUG</span></div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #else</span></div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;<span class="preprocessor"></span><span class="comment">//        std::lock_guard&lt;std::mutex&gt; lockScreenOutput{screenOutputLock};</span></div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="comment">//        std::cout &lt;&lt; &quot;                                disconnect started\n&quot;;</span></div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="preprocessor">      #endif</span></div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="preprocessor"></span>    }</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <a class="code" href="otus__hw__12__test_8cpp.html#abe937a39c0f8832b8829ad2d9d04ebfe">sendMessage</a>(<a class="code" href="broadcasters_8h.html#aff97733e4706e994965da50c70605422a72c846e189c7a9cb5ecedde873e4e203">Message::NoMoreData</a>);</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="comment">//lockAccess.unlock();</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno"><a class="line" href="class_async_command_processor.html#a1757bd870687e5babd9f744b361ebab6">  212</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_async_command_processor.html#a1757bd870687e5babd9f744b361ebab6">disconnect</a>()</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;  {</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    std::unique_lock&lt;std::mutex&gt; lockAccess{accessLock};</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    disconnected.store(<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    {</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="preprocessor">      #ifdef NDEBUG</span></div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #else</span></div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="preprocessor"></span>        <span class="comment">//std::lock_guard&lt;std::mutex&gt; lockScreenOutput{screenOutputLock};</span></div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        <span class="comment">//std::cout &lt;&lt; &quot;                                disconnect started\n&quot;;</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;<span class="preprocessor">      #endif</span></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;<span class="preprocessor"></span>    }</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    {</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;<span class="preprocessor">      #ifdef NDEBUG</span></div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #else</span></div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;<span class="preprocessor"></span><span class="comment">//        std::lock_guard&lt;std::mutex&gt; lockScreenOutput{screenOutputLock};</span></div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;<span class="comment">//        std::cout &lt;&lt; &quot;                                disconnect finished\n&quot;;</span></div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;<span class="preprocessor">      #endif</span></div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="preprocessor"></span>    }</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="comment">//std::unique_lock&lt;std::mutex&gt; lockTermination{terminationLock};</span></div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <a class="code" href="otus__hw__12__test_8cpp.html#abe937a39c0f8832b8829ad2d9d04ebfe">sendMessage</a>(<a class="code" href="broadcasters_8h.html#aff97733e4706e994965da50c70605422a72c846e189c7a9cb5ecedde873e4e203">Message::NoMoreData</a>);</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    {</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;<span class="preprocessor">      #ifdef NDEBUG</span></div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;<span class="preprocessor"></span><span class="preprocessor">      #else</span></div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;<span class="preprocessor"></span>        <span class="comment">//std::lock_guard&lt;std::mutex&gt; lockScreenOutput{screenOutputLock};</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        <span class="comment">//std::cout &lt;&lt; &quot;                                disconnect finished\n&quot;;</span></div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="preprocessor">      #endif</span></div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;<span class="preprocessor"></span>    }    </div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;</div>
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="keywordflow">while</span> (activeReceptionCount.load() != 0)</div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    {</div>
@@ -396,7 +396,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;</div>
 <div class="line"><a name="l00306"></a><span class="lineno"><a class="line" href="class_async_command_processor.html#aa1962d8e53d69171af8cc2cb9fedd560">  306</a></span>&#160;  std::shared_ptr&lt;CommandProcessorInstance&lt;loggingThreadCount&gt;&gt; <a class="code" href="class_async_command_processor.html#aa1962d8e53d69171af8cc2cb9fedd560">processor</a>;</div>
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;</div>
-<div class="line"><a name="l00308"></a><span class="lineno"><a class="line" href="class_async_command_processor.html#a444eb1d16edc769e737ece323aec7bc6">  308</a></span>&#160;  std::shared_ptr&lt;InputReader::InputBufferType&gt; entryPoint{<span class="keyword">nullptr</span>};</div>
+<div class="line"><a name="l00308"></a><span class="lineno"><a class="line" href="class_async_command_processor.html#af33267d2c9895cb1035bb06f522e3d57">  308</a></span>&#160;  std::shared_ptr&lt;InputProcessor::InputBufferType&gt; entryPoint{<span class="keyword">nullptr</span>};</div>
 <div class="line"><a name="l00309"></a><span class="lineno"><a class="line" href="class_async_command_processor.html#afdc1fd9a47482391f8fda410cce27456">  309</a></span>&#160;  std::shared_ptr&lt;InputProcessor::InputBufferType&gt; <a class="code" href="class_async_command_processor.html#afdc1fd9a47482391f8fda410cce27456">commandBuffer</a>;</div>
 <div class="line"><a name="l00310"></a><span class="lineno"><a class="line" href="class_async_command_processor.html#abb83fe991b6a3059f4966f4228d3b732">  310</a></span>&#160;  std::shared_ptr&lt;InputProcessor::OutputBufferType&gt; <a class="code" href="class_async_command_processor.html#abb83fe991b6a3059f4966f4228d3b732">bulkBuffer</a>;</div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;</div>
@@ -412,49 +412,50 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">size_t</span> loggingThreadCount&gt;</div>
 <div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;std::mutex <a class="code" href="class_async_command_processor.html">AsyncCommandProcessor&lt;loggingThreadCount&gt;::screenOutputLock</a>{};</div>
 <div class="ttc" id="class_async_command_processor_html_a2a9b09cba6fd49b3d104dbb4dba43184"><div class="ttname"><a href="class_async_command_processor.html#a2a9b09cba6fd49b3d104dbb4dba43184">AsyncCommandProcessor::bulkSize</a></div><div class="ttdeci">const size_t bulkSize</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:299</div></div>
-<div class="ttc" id="class_message_broadcaster_html"><div class="ttname"><a href="class_message_broadcaster.html">MessageBroadcaster</a></div><div class="ttdef"><b>Definition:</b> broadcasters.h:53</div></div>
+<div class="ttc" id="class_message_broadcaster_html"><div class="ttname"><a href="class_message_broadcaster.html">MessageBroadcaster</a></div><div class="ttdef"><b>Definition:</b> broadcasters.h:52</div></div>
 <div class="ttc" id="class_async_command_processor_html_a199d2be134a247e247c1d9c5438aa38c"><div class="ttname"><a href="class_async_command_processor.html#a199d2be134a247e247c1d9c5438aa38c">AsyncCommandProcessor::bulkOpenDelimiter</a></div><div class="ttdeci">const char bulkOpenDelimiter</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:300</div></div>
 <div class="ttc" id="class_async_command_processor_html_a2f518ac2aa8542f0f58bfc1206519f44"><div class="ttname"><a href="class_async_command_processor.html#a2f518ac2aa8542f0f58bfc1206519f44">AsyncCommandProcessor::getCommandBuffer</a></div><div class="ttdeci">const std::shared_ptr&lt; InputProcessor::InputBufferType &gt; &amp; getCommandBuffer() const </div><div class="ttdef"><b>Definition:</b> async_command_processor.h:268</div></div>
-<div class="ttc" id="class_async_command_processor_html_a8cf94a4106c01afae0a96ef507da99b1"><div class="ttname"><a href="class_async_command_processor.html#a8cf94a4106c01afae0a96ef507da99b1">AsyncCommandProcessor::~AsyncCommandProcessor</a></div><div class="ttdeci">~AsyncCommandProcessor()</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:70</div></div>
+<div class="ttc" id="class_async_command_processor_html_a8cf94a4106c01afae0a96ef507da99b1"><div class="ttname"><a href="class_async_command_processor.html#a8cf94a4106c01afae0a96ef507da99b1">AsyncCommandProcessor::~AsyncCommandProcessor</a></div><div class="ttdeci">~AsyncCommandProcessor()</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:69</div></div>
 <div class="ttc" id="thread__metrics_8h_html_ac1589e063b43543469fafabc05566bcc"><div class="ttname"><a href="thread__metrics_8h.html#ac1589e063b43543469fafabc05566bcc">SharedGlobalMetrics</a></div><div class="ttdeci">std::unordered_map&lt; std::string, std::shared_ptr&lt; ThreadMetrics &gt;&gt; SharedGlobalMetrics</div><div class="ttdef"><b>Definition:</b> thread_metrics.h:104</div></div>
 <div class="ttc" id="class_async_command_processor_html_a4151919abb9ccf86e52b79970bb604e3"><div class="ttname"><a href="class_async_command_processor.html#a4151919abb9ccf86e52b79970bb604e3">AsyncCommandProcessor::activeReceptionCount</a></div><div class="ttdeci">std::atomic&lt; size_t &gt; activeReceptionCount</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:295</div></div>
 <div class="ttc" id="class_async_command_processor_html_afa2ccfe573847d57bb5cddbdec60b403"><div class="ttname"><a href="class_async_command_processor.html#afa2ccfe573847d57bb5cddbdec60b403">AsyncCommandProcessor::isDisconnected</a></div><div class="ttdeci">bool isDisconnected()</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:262</div></div>
 <div class="ttc" id="class_async_command_processor_html_aa1962d8e53d69171af8cc2cb9fedd560"><div class="ttname"><a href="class_async_command_processor.html#aa1962d8e53d69171af8cc2cb9fedd560">AsyncCommandProcessor::processor</a></div><div class="ttdeci">std::shared_ptr&lt; CommandProcessorInstance&lt; loggingThreadCount &gt; &gt; processor</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:306</div></div>
-<div class="ttc" id="class_async_command_processor_html_ab2f496c99fce3c38cc3ea24894405e4c"><div class="ttname"><a href="class_async_command_processor.html#ab2f496c99fce3c38cc3ea24894405e4c">AsyncCommandProcessor::run</a></div><div class="ttdeci">void run(const bool outputMetrics=false)</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:112</div></div>
-<div class="ttc" id="input__processor_8cpp_html_a6a95dd894d8941411f54627aab6660cd"><div class="ttname"><a href="input__processor_8cpp.html#a6a95dd894d8941411f54627aab6660cd">bulkCloseDelimiter</a></div><div class="ttdeci">bulkCloseDelimiter</div><div class="ttdef"><b>Definition:</b> input_processor.cpp:13</div></div>
+<div class="ttc" id="input__processor_8cpp_html_a6a95dd894d8941411f54627aab6660cd"><div class="ttname"><a href="input__processor_8cpp.html#a6a95dd894d8941411f54627aab6660cd">bulkCloseDelimiter</a></div><div class="ttdeci">bulkCloseDelimiter</div><div class="ttdef"><b>Definition:</b> input_processor.cpp:17</div></div>
 <div class="ttc" id="class_async_command_processor_html_ae72345064cd0935d70ed97c66200c9ba"><div class="ttname"><a href="class_async_command_processor.html#ae72345064cd0935d70ed97c66200c9ba">AsyncCommandProcessor::screenOutputLock</a></div><div class="ttdeci">static std::mutex screenOutputLock</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:286</div></div>
 <div class="ttc" id="otus__hw__12__test_8cpp_html_abe937a39c0f8832b8829ad2d9d04ebfe"><div class="ttname"><a href="otus__hw__12__test_8cpp.html#abe937a39c0f8832b8829ad2d9d04ebfe">sendMessage</a></div><div class="ttdeci">void sendMessage(const asio::ip::address_v4 address, const uint16_t portNumber, std::string &amp;message)</div><div class="ttdef"><b>Definition:</b> otus_hw_12_test.cpp:33</div></div>
 <div class="ttc" id="class_async_command_processor_html_a87d0c15e13d669c066cde3d7e0d9c745"><div class="ttname"><a href="class_async_command_processor.html#a87d0c15e13d669c066cde3d7e0d9c745">AsyncCommandProcessor::disconnected</a></div><div class="ttdeci">std::atomic&lt; bool &gt; disconnected</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:291</div></div>
-<div class="ttc" id="class_async_command_processor_html_a358adca8990f56573154c42e095a0675"><div class="ttname"><a href="class_async_command_processor.html#a358adca8990f56573154c42e095a0675">AsyncCommandProcessor::receiveData</a></div><div class="ttdeci">void receiveData(const char *data, std::size_t size)</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:148</div></div>
+<div class="ttc" id="class_async_command_processor_html_a358adca8990f56573154c42e095a0675"><div class="ttname"><a href="class_async_command_processor.html#a358adca8990f56573154c42e095a0675">AsyncCommandProcessor::receiveData</a></div><div class="ttdeci">void receiveData(const char *data, std::size_t size)</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:151</div></div>
 <div class="ttc" id="class_async_command_processor_html_a09b89dc8aaf6a0005e30cb8c8904bbae"><div class="ttname"><a href="class_async_command_processor.html#a09b89dc8aaf6a0005e30cb8c8904bbae">AsyncCommandProcessor::metrics</a></div><div class="ttdeci">SharedGlobalMetrics metrics</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:314</div></div>
+<div class="ttc" id="class_command_processor_instance_html"><div class="ttname"><a href="class_command_processor_instance.html">CommandProcessorInstance</a></div><div class="ttdef"><b>Definition:</b> command_processor_instance.h:17</div></div>
 <div class="ttc" id="broadcasters_8h_html_aff97733e4706e994965da50c70605422a72c846e189c7a9cb5ecedde873e4e203"><div class="ttname"><a href="broadcasters_8h.html#aff97733e4706e994965da50c70605422a72c846e189c7a9cb5ecedde873e4e203">Message::NoMoreData</a></div><div class="ttdoc">Data flow messages: </div></div>
 <div class="ttc" id="class_async_command_processor_html_ad90a8305ff0a3e4bd63329d45ead3c1f"><div class="ttname"><a href="class_async_command_processor.html#ad90a8305ff0a3e4bd63329d45ead3c1f">AsyncCommandProcessor::outputStream</a></div><div class="ttdeci">std::ostream &amp; outputStream</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:302</div></div>
 <div class="ttc" id="homework__12_8cpp_html_af78e15e6a7f37af31e137cc9327660fa"><div class="ttname"><a href="homework__12_8cpp.html#af78e15e6a7f37af31e137cc9327660fa">terminationNotifier</a></div><div class="ttdeci">std::condition_variable terminationNotifier</div><div class="ttdef"><b>Definition:</b> homework_12.cpp:13</div></div>
 <div class="ttc" id="class_async_command_processor_html_a3911bd561b08aa8430cd6c6707e6e942"><div class="ttname"><a href="class_async_command_processor.html#a3911bd561b08aa8430cd6c6707e6e942">AsyncCommandProcessor::getScreenOutputLock</a></div><div class="ttdeci">std::mutex &amp; getScreenOutputLock()</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:281</div></div>
 <div class="ttc" id="class_async_command_processor_html_ab0eac12c1e7d154e94a958c5a231fcc5"><div class="ttname"><a href="class_async_command_processor.html#ab0eac12c1e7d154e94a958c5a231fcc5">AsyncCommandProcessor::accessLock</a></div><div class="ttdeci">std::mutex accessLock</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:290</div></div>
-<div class="ttc" id="input__processor_8cpp_html_aa6b56f8d7904bd4053b7bf3bf147bc7a"><div class="ttname"><a href="input__processor_8cpp.html#aa6b56f8d7904bd4053b7bf3bf147bc7a">bulkOpenDelimiter</a></div><div class="ttdeci">bulkOpenDelimiter</div><div class="ttdef"><b>Definition:</b> input_processor.cpp:12</div></div>
+<div class="ttc" id="input__processor_8cpp_html_aa6b56f8d7904bd4053b7bf3bf147bc7a"><div class="ttname"><a href="input__processor_8cpp.html#aa6b56f8d7904bd4053b7bf3bf147bc7a">bulkOpenDelimiter</a></div><div class="ttdeci">bulkOpenDelimiter</div><div class="ttdef"><b>Definition:</b> input_processor.cpp:16</div></div>
 <div class="ttc" id="class_async_command_processor_html_af6a7454c336b80b0dc626b901169a21b"><div class="ttname"><a href="class_async_command_processor.html#af6a7454c336b80b0dc626b901169a21b">AsyncCommandProcessor::errorStream</a></div><div class="ttdeci">std::ostream &amp; errorStream</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:303</div></div>
 <div class="ttc" id="class_async_command_processor_html_a18563a702bc857c727a6c6ce5e3e2593"><div class="ttname"><a href="class_async_command_processor.html#a18563a702bc857c727a6c6ce5e3e2593">AsyncCommandProcessor::bulkCloseDelimiter</a></div><div class="ttdeci">const char bulkCloseDelimiter</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:301</div></div>
 <div class="ttc" id="class_async_command_processor_html_aef501d3c5ee6751fdac8342c44f4d7eb"><div class="ttname"><a href="class_async_command_processor.html#aef501d3c5ee6751fdac8342c44f4d7eb">AsyncCommandProcessor::receiving</a></div><div class="ttdeci">std::atomic&lt; bool &gt; receiving</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:292</div></div>
 <div class="ttc" id="class_async_command_processor_html_aed1d6e5ad297908bf6f29595154bca67"><div class="ttname"><a href="class_async_command_processor.html#aed1d6e5ad297908bf6f29595154bca67">AsyncCommandProcessor::timeStampID</a></div><div class="ttdeci">std::size_t timeStampID</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:316</div></div>
+<div class="ttc" id="class_async_command_processor_html_a4de8f5dcca5e3b1a8fbc08017b6e1a22"><div class="ttname"><a href="class_async_command_processor.html#a4de8f5dcca5e3b1a8fbc08017b6e1a22">AsyncCommandProcessor::run</a></div><div class="ttdeci">void run(const bool outputMetrics=true)</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:115</div></div>
 <div class="ttc" id="class_async_command_processor_html_a62fc0bcfd35882e9eccd50a23fd5e27a"><div class="ttname"><a href="class_async_command_processor.html#a62fc0bcfd35882e9eccd50a23fd5e27a">AsyncCommandProcessor::terminationNotifier</a></div><div class="ttdeci">std::condition_variable terminationNotifier</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:296</div></div>
 <div class="ttc" id="class_async_command_processor_html_abb83fe991b6a3059f4966f4228d3b732"><div class="ttname"><a href="class_async_command_processor.html#abb83fe991b6a3059f4966f4228d3b732">AsyncCommandProcessor::bulkBuffer</a></div><div class="ttdeci">std::shared_ptr&lt; InputProcessor::OutputBufferType &gt; bulkBuffer</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:310</div></div>
 <div class="ttc" id="class_async_command_processor_html_a2eb43e08bdf62430e6dcead786793835"><div class="ttname"><a href="class_async_command_processor.html#a2eb43e08bdf62430e6dcead786793835">AsyncCommandProcessor::processorName</a></div><div class="ttdeci">const std::string processorName</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:288</div></div>
 <div class="ttc" id="class_async_command_processor_html_ab85bdc657292dbc17e9915408a685c66"><div class="ttname"><a href="class_async_command_processor.html#ab85bdc657292dbc17e9915408a685c66">AsyncCommandProcessor::getMetrics</a></div><div class="ttdeci">const SharedGlobalMetrics getMetrics()</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:276</div></div>
+<div class="ttc" id="class_command_processor_instance_html_a0872484e4d8540e6b7002b34a9df6cba"><div class="ttname"><a href="class_command_processor_instance.html#a0872484e4d8540e6b7002b34a9df6cba">CommandProcessorInstance::getEntryPoint</a></div><div class="ttdeci">const std::shared_ptr&lt; InputProcessor::InputBufferType &gt; &amp; getEntryPoint() const </div><div class="ttdef"><b>Definition:</b> command_processor_instance.h:254</div></div>
 <div class="ttc" id="class_async_command_processor_html_afdc1fd9a47482391f8fda410cce27456"><div class="ttname"><a href="class_async_command_processor.html#afdc1fd9a47482391f8fda410cce27456">AsyncCommandProcessor::commandBuffer</a></div><div class="ttdeci">std::shared_ptr&lt; InputProcessor::InputBufferType &gt; commandBuffer</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:309</div></div>
 <div class="ttc" id="class_async_command_processor_html_a961eb744e665b2c64e149f9e467ecaa2"><div class="ttname"><a href="class_async_command_processor.html#a961eb744e665b2c64e149f9e467ecaa2">AsyncCommandProcessor::metricsStream</a></div><div class="ttdeci">std::ostream &amp; metricsStream</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:304</div></div>
-<div class="ttc" id="class_async_command_processor_html_a6bc59857b5644bccec36563c437295af"><div class="ttname"><a href="class_async_command_processor.html#a6bc59857b5644bccec36563c437295af">AsyncCommandProcessor::AsyncCommandProcessor</a></div><div class="ttdeci">AsyncCommandProcessor(const std::string &amp;newProcessorName, const size_t newBulkSize=3, const char newBulkOpenDelimiter= '{', const char newBulkCloseDelimiter= '}', std::ostream &amp;newOutputStream=std::cout, std::ostream &amp;newErrorStream=std::cerr, std::ostream &amp;newMetricsStream=std::cout)</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:22</div></div>
-<div class="ttc" id="class_async_command_processor_html_a62c70309627d2b3bdb2f202c86bd39b8"><div class="ttname"><a href="class_async_command_processor.html#a62c70309627d2b3bdb2f202c86bd39b8">AsyncCommandProcessor::connect</a></div><div class="ttdeci">bool connect(const bool outputMetrics=false) noexcept</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:78</div></div>
-<div class="ttc" id="class_input_reader_html_a81279ee55f14aafc322f531fe41e7953"><div class="ttname"><a href="class_input_reader.html#a81279ee55f14aafc322f531fe41e7953">InputReader::EntryDataType</a></div><div class="ttdeci">std::list&lt; char &gt; EntryDataType</div><div class="ttdef"><b>Definition:</b> input_reader.h:27</div></div>
-<div class="ttc" id="class_async_command_processor_html_a1757bd870687e5babd9f744b361ebab6"><div class="ttname"><a href="class_async_command_processor.html#a1757bd870687e5babd9f744b361ebab6">AsyncCommandProcessor::disconnect</a></div><div class="ttdeci">void disconnect()</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:208</div></div>
+<div class="ttc" id="class_async_command_processor_html_a6bc59857b5644bccec36563c437295af"><div class="ttname"><a href="class_async_command_processor.html#a6bc59857b5644bccec36563c437295af">AsyncCommandProcessor::AsyncCommandProcessor</a></div><div class="ttdeci">AsyncCommandProcessor(const std::string &amp;newProcessorName, const size_t newBulkSize=3, const char newBulkOpenDelimiter= '{', const char newBulkCloseDelimiter= '}', std::ostream &amp;newOutputStream=std::cout, std::ostream &amp;newErrorStream=std::cerr, std::ostream &amp;newMetricsStream=std::cout)</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:21</div></div>
+<div class="ttc" id="class_async_command_processor_html_a1757bd870687e5babd9f744b361ebab6"><div class="ttname"><a href="class_async_command_processor.html#a1757bd870687e5babd9f744b361ebab6">AsyncCommandProcessor::disconnect</a></div><div class="ttdeci">void disconnect()</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:212</div></div>
 <div class="ttc" id="homework__12_8cpp_html_a2af8fb9d5b5bf1935665c085771bb282"><div class="ttname"><a href="homework__12_8cpp.html#a2af8fb9d5b5bf1935665c085771bb282">terminationLock</a></div><div class="ttdeci">std::mutex terminationLock</div><div class="ttdef"><b>Definition:</b> homework_12.cpp:14</div></div>
-<div class="ttc" id="class_async_command_processor_html"><div class="ttname"><a href="class_async_command_processor.html">AsyncCommandProcessor</a></div><div class="ttdef"><b>Definition:</b> async_command_processor.h:17</div></div>
-<div class="ttc" id="input__processor_8cpp_html_a642fd46fcccb815659284cd725d4a845"><div class="ttname"><a href="input__processor_8cpp.html#a642fd46fcccb815659284cd725d4a845">bulkSize</a></div><div class="ttdeci">bulkSize</div><div class="ttdef"><b>Definition:</b> input_processor.cpp:11</div></div>
+<div class="ttc" id="class_async_command_processor_html"><div class="ttname"><a href="class_async_command_processor.html">AsyncCommandProcessor</a></div><div class="ttdef"><b>Definition:</b> async_command_processor.h:16</div></div>
+<div class="ttc" id="input__processor_8cpp_html_a642fd46fcccb815659284cd725d4a845"><div class="ttname"><a href="input__processor_8cpp.html#a642fd46fcccb815659284cd725d4a845">bulkSize</a></div><div class="ttdeci">bulkSize</div><div class="ttdef"><b>Definition:</b> input_processor.cpp:15</div></div>
 <div class="ttc" id="command__processor__instance_8h_html"><div class="ttname"><a href="command__processor__instance_8h.html">command_processor_instance.h</a></div></div>
 <div class="ttc" id="class_async_command_processor_html_adcd6b6d47f9da5b0e96c6d736d1fe5f8"><div class="ttname"><a href="class_async_command_processor.html#adcd6b6d47f9da5b0e96c6d736d1fe5f8">AsyncCommandProcessor::getBulkBuffer</a></div><div class="ttdeci">const std::shared_ptr&lt; InputProcessor::OutputBufferType &gt; &amp; getBulkBuffer() const </div><div class="ttdef"><b>Definition:</b> async_command_processor.h:273</div></div>
 <div class="ttc" id="class_async_command_processor_html_a233c3cd65e826a1da61b7ee77f14fdbe"><div class="ttname"><a href="class_async_command_processor.html#a233c3cd65e826a1da61b7ee77f14fdbe">AsyncCommandProcessor::selfDestroy</a></div><div class="ttdeci">std::thread selfDestroy</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:318</div></div>
 <div class="ttc" id="class_async_command_processor_html_ab36f5b2fdc41e1e8552889087c755ba9"><div class="ttname"><a href="class_async_command_processor.html#ab36f5b2fdc41e1e8552889087c755ba9">AsyncCommandProcessor::workingThread</a></div><div class="ttdeci">std::thread workingThread</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:312</div></div>
 <div class="ttc" id="class_async_command_processor_html_afe109c9ff17ddabfbfd87f69d36d02f6"><div class="ttname"><a href="class_async_command_processor.html#afe109c9ff17ddabfbfd87f69d36d02f6">AsyncCommandProcessor::terminationLock</a></div><div class="ttdeci">std::mutex terminationLock</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:294</div></div>
+<div class="ttc" id="class_async_command_processor_html_ac057b32f4faa0cd644af2c64aafb4a50"><div class="ttname"><a href="class_async_command_processor.html#ac057b32f4faa0cd644af2c64aafb4a50">AsyncCommandProcessor::connect</a></div><div class="ttdeci">bool connect(const bool outputMetrics=true) noexcept</div><div class="ttdef"><b>Definition:</b> async_command_processor.h:81</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

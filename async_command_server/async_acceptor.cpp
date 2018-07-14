@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <chrono>
+#include <csignal>
 #include <boost/bind.hpp>
 
 using namespace std::chrono_literals;
@@ -18,13 +19,15 @@ AsyncAcceptor::AsyncAcceptor(
   const char newBulkCloseDelimiter,
   std::ostream& newOutputStream,
   std::ostream& newErrorStream,
-  std::ostream& newMetricsStream
-):
+  std::ostream& newMetricsStream,
+  std::condition_variable& newTerminationNotifier,
+  std::atomic<bool>& newTerminationFlag
+) :
 address{newAddress}, portNumber{newPortNumber}, service{newService},
 endpoint{address, portNumber}, acceptor{service, endpoint},
 
 processor{
-  std::make_unique<AsyncCommandProcessor<2>> (
+    new AsyncCommandProcessor<2> (
     std::string{"Command processor @"} + address.to_string() + ":" + std::to_string(portNumber),
     newBulkSize,
     newBulkOpenDelimiter,
@@ -37,7 +40,12 @@ processor{
 
 openDelimiter{newBulkOpenDelimiter}, closeDelimiter{newBulkCloseDelimiter},
 
-/*currentReader{},*/ activeReaderCount{},
+currentReader{}, activeReaderCount{},
+terminationLock{},
+
+terminationNotifier{newTerminationNotifier},
+terminationFlag{newTerminationFlag},
+
 shouldExit{false},
 errorStream{newErrorStream},
 outputLock{processor->getScreenOutputLock()},
@@ -46,7 +54,8 @@ metrics {}
 
 void AsyncAcceptor::start()
 {  
-  processor->connect();
+  terminationFlag.store(false);
+  processor->connect(true);
   doAccept();
 }
 
@@ -59,19 +68,14 @@ void AsyncAcceptor::stop()
 
   shouldExit.store(true);
 
-  while (activeReaderCount.load() != 0)
+  if (processor != nullptr)
   {
-    std::unique_lock<std::mutex> lockTermination{terminationLock};
-    terminationNotifier.wait_for(lockTermination, 100ms, [this]()
-    {
-      #ifdef NDEBUG
-      #else
-        std::cout << "\n-- Acceptor waiting. Active readers: " << activeReaderCount.load() << "\n";
-      #endif
+    #ifdef NDEBUG
+    #else
+      //std::cout << "-- acceptor calls processor::disconnect\n";
+    #endif
 
-      return activeReaderCount.load() == 0;
-    });
-    lockTermination.unlock();
+    processor->disconnect();
   }
 
   if (acceptor.is_open())
@@ -84,10 +88,28 @@ void AsyncAcceptor::stop()
     acceptor.close();
   }
 
-  if (processor != nullptr)
+  while (activeReaderCount.load() != 0)
   {
-    processor->disconnect();
+    std::unique_lock<std::mutex> lockTermination{terminationLock};
+    terminationNotifier.wait_for(lockTermination, 100ms, [this]()
+    {
+      #ifdef NDEBUG
+      #else
+        //std::cout << "\n-- Acceptor waiting. Active readers: " << activeReaderCount.load() << "\n";
+      #endif
+
+      return activeReaderCount.load() == 0;
+    });
+    lockTermination.unlock();
   }
+
+  #ifdef NDEBUG
+  #else
+    //std::cout << "-- acceptor sets termination flag\n";
+  #endif
+
+  terminationFlag.store(true);
+  terminationNotifier.notify_all();
 }
 
 void AsyncAcceptor::doAccept()
@@ -126,15 +148,16 @@ void AsyncAcceptor::onAcception(SharedSocket acceptedSocket)
     //std::cout << "-- start onAcception\n";
   #endif
 
-  auto newReader{ std::make_shared<AsyncReader>(
+  currentReader.reset( new AsyncReader(
     acceptedSocket, processor,
     openDelimiter, closeDelimiter,
     acceptor, activeReaderCount,
     terminationNotifier, terminationLock,
-    errorStream, outputLock
-  )};
+    errorStream, outputLock,
+    shouldExit
+  ));
 
-  newReader->start();
+  currentReader->start();
 
   if (shouldExit.load() != true)
   {

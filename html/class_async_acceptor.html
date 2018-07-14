@@ -105,8 +105,8 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ae7669ef046d5a402ba71df736974cba8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_acceptor.html#ae7669ef046d5a402ba71df736974cba8">AsyncAcceptor</a> ()=delete</td></tr>
 <tr class="separator:ae7669ef046d5a402ba71df736974cba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3dfb32f6408d216f600458d5ec95e521"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_acceptor.html#a3dfb32f6408d216f600458d5ec95e521">AsyncAcceptor</a> (const asio::ip::address_v4 newAddress, const uint16_t newPortNumber, asio::io_service &amp;newService, const size_t newBulkSize, const char newBulkOpenDelimiter= '{', const char newBulkCloseDelimiter= '}', std::ostream &amp;newOutputStream=std::cout, std::ostream &amp;newErrorStream=std::cerr, std::ostream &amp;newMetricsStream=std::cout)</td></tr>
-<tr class="separator:a3dfb32f6408d216f600458d5ec95e521"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7eefee4ee022cf85f1585044c2c63c53"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_acceptor.html#a7eefee4ee022cf85f1585044c2c63c53">AsyncAcceptor</a> (const asio::ip::address_v4 newAddress, const uint16_t newPortNumber, asio::io_service &amp;newService, const size_t newBulkSize, const char newBulkOpenDelimiter, const char newBulkCloseDelimiter, std::ostream &amp;newOutputStream, std::ostream &amp;newErrorStream, std::ostream &amp;newMetricsStream, std::condition_variable &amp;newTerminationNotifier, std::atomic&lt; bool &gt; &amp;newTerminationFlag)</td></tr>
+<tr class="separator:a7eefee4ee022cf85f1585044c2c63c53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a509ee8f7c52a2ad0b31fd293ee0580ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_acceptor.html#a509ee8f7c52a2ad0b31fd293ee0580ad">start</a> ()</td></tr>
 <tr class="separator:a509ee8f7c52a2ad0b31fd293ee0580ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99935da949236f09505dead2aa3bd9f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_acceptor.html#a99935da949236f09505dead2aa3bd9f6">stop</a> ()</td></tr>
@@ -142,12 +142,16 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a579dd92839937011215b0a5ffce08294"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3169fbf1f561b70b94336626b7dbb927"><td class="memItemLeft" align="right" valign="top">const char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_acceptor.html#a3169fbf1f561b70b94336626b7dbb927">closeDelimiter</a></td></tr>
 <tr class="separator:a3169fbf1f561b70b94336626b7dbb927"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a343ca63ee0a836d78b820a7cc2bdb12f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="async__reader_8h.html#a9fcb6536c9031bcb7a1b8ccd6ad703e4">SharedAsyncReader</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_acceptor.html#a343ca63ee0a836d78b820a7cc2bdb12f">currentReader</a></td></tr>
+<tr class="separator:a343ca63ee0a836d78b820a7cc2bdb12f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aceeb1b385ef65d2202d8a7f94f59868f"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_acceptor.html#aceeb1b385ef65d2202d8a7f94f59868f">activeReaderCount</a></td></tr>
 <tr class="separator:aceeb1b385ef65d2202d8a7f94f59868f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67395a648789d63fc537b9cc8ef7d152"><td class="memItemLeft" align="right" valign="top">std::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_acceptor.html#a67395a648789d63fc537b9cc8ef7d152">terminationNotifier</a></td></tr>
-<tr class="separator:a67395a648789d63fc537b9cc8ef7d152"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a257c29465b712150d2b69fcf8c2e9e73"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_acceptor.html#a257c29465b712150d2b69fcf8c2e9e73">terminationLock</a></td></tr>
 <tr class="separator:a257c29465b712150d2b69fcf8c2e9e73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6013a37688b7879d4eb42266e4528c8c"><td class="memItemLeft" align="right" valign="top">std::condition_variable &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_acceptor.html#a6013a37688b7879d4eb42266e4528c8c">terminationNotifier</a></td></tr>
+<tr class="separator:a6013a37688b7879d4eb42266e4528c8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a21e2eeff7b6f1c8b94d9491ed9aea2"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; bool &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_acceptor.html#a5a21e2eeff7b6f1c8b94d9491ed9aea2">terminationFlag</a></td></tr>
+<tr class="separator:a5a21e2eeff7b6f1c8b94d9491ed9aea2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7dc92416426765ae0a1d366a56bb93ba"><td class="memItemLeft" align="right" valign="top">std::atomic_bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_acceptor.html#a7dc92416426765ae0a1d366a56bb93ba">shouldExit</a></td></tr>
 <tr class="separator:a7dc92416426765ae0a1d366a56bb93ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a217fea0f03018b08c47b4e1f11939d"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_acceptor.html#a4a217fea0f03018b08c47b4e1f11939d">errorStream</a></td></tr>
@@ -194,7 +198,7 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a3dfb32f6408d216f600458d5ec95e521"></a>
+<a class="anchor" id="a7eefee4ee022cf85f1585044c2c63c53"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -226,31 +230,43 @@ Private Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const char&#160;</td>
-          <td class="paramname"><em>newBulkOpenDelimiter</em> = <code>'{'</code>, </td>
+          <td class="paramname"><em>newBulkOpenDelimiter</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const char&#160;</td>
-          <td class="paramname"><em>newBulkCloseDelimiter</em> = <code>'}'</code>, </td>
+          <td class="paramname"><em>newBulkCloseDelimiter</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>newOutputStream</em> = <code>std::cout</code>, </td>
+          <td class="paramname"><em>newOutputStream</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>newErrorStream</em> = <code>std::cerr</code>, </td>
+          <td class="paramname"><em>newErrorStream</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>newMetricsStream</em> = <code>std::cout</code>&#160;</td>
+          <td class="paramname"><em>newMetricsStream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::condition_variable &amp;&#160;</td>
+          <td class="paramname"><em>newTerminationNotifier</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::atomic&lt; bool &gt; &amp;&#160;</td>
+          <td class="paramname"><em>newTerminationFlag</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -467,6 +483,26 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a343ca63ee0a836d78b820a7cc2bdb12f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="async__reader_8h.html#a9fcb6536c9031bcb7a1b8ccd6ad703e4">SharedAsyncReader</a> AsyncAcceptor::currentReader</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="acfcb063d5c3faf0efb029b191433f28b"></a>
 <div class="memitem">
 <div class="memproto">
@@ -647,6 +683,26 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a5a21e2eeff7b6f1c8b94d9491ed9aea2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::atomic&lt;bool&gt;&amp; AsyncAcceptor::terminationFlag</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a257c29465b712150d2b69fcf8c2e9e73"></a>
 <div class="memitem">
 <div class="memproto">
@@ -667,7 +723,7 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a67395a648789d63fc537b9cc8ef7d152"></a>
+<a class="anchor" id="a6013a37688b7879d4eb42266e4528c8c"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -675,7 +731,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::condition_variable AsyncAcceptor::terminationNotifier</td>
+          <td class="memname">std::condition_variable&amp; AsyncAcceptor::terminationNotifier</td>
         </tr>
       </table>
   </td>

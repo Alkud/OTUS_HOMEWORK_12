@@ -2,7 +2,6 @@ var searchData=
 [
   ['main',['main',['../bulkserver_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'bulkserver.cpp']]],
   ['max_5ftest_5fmessage_5fsize',['MAX_TEST_MESSAGE_SIZE',['../otus__hw__12__test_8cpp.html#ac0dc497fb6ec3a8d3aa78cb4c0ab2547',1,'otus_hw_12_test.cpp']]],
-  ['maxinputstringsize',['MaxInputStringSize',['../input__reader_8h.html#a450d7b71e116ba2b6ed6528309e76ab1af77dee9304d83bc8155051b427f9505e',1,'input_reader.h']]],
   ['message',['Message',['../broadcasters_8h.html#aff97733e4706e994965da50c70605422',1,'broadcasters.h']]],
   ['messagebroadcaster',['MessageBroadcaster',['../class_message_broadcaster.html',1,'']]],
   ['messagecode',['messageCode',['../broadcasters_8h.html#aed1d20d3dbc85e3d55156ac530e49442',1,'broadcasters.h']]],

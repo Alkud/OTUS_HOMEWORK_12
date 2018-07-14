@@ -5,7 +5,6 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/travis/build/Alkud/OTUS_HOMEWORK_12/async_command_processor/input_processor.cpp" "/home/travis/build/Alkud/OTUS_HOMEWORK_12/async_command_processor/CMakeFiles/processor.dir/input_processor.cpp.o"
-  "/home/travis/build/Alkud/OTUS_HOMEWORK_12/async_command_processor/input_reader.cpp" "/home/travis/build/Alkud/OTUS_HOMEWORK_12/async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.o"
   "/home/travis/build/Alkud/OTUS_HOMEWORK_12/async_command_processor/publisher_mt.cpp" "/home/travis/build/Alkud/OTUS_HOMEWORK_12/async_command_processor/CMakeFiles/processor.dir/publisher_mt.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

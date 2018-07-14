@@ -9,11 +9,10 @@ CMakeFiles/bulkserver.dir/homework_12.cpp.o: ./async_command_processor/async_wor
 CMakeFiles/bulkserver.dir/homework_12.cpp.o: ./async_command_processor/broadcasters.h
 CMakeFiles/bulkserver.dir/homework_12.cpp.o: ./async_command_processor/command_processor_instance.h
 CMakeFiles/bulkserver.dir/homework_12.cpp.o: ./async_command_processor/input_processor.h
-CMakeFiles/bulkserver.dir/homework_12.cpp.o: ./async_command_processor/input_reader.h
 CMakeFiles/bulkserver.dir/homework_12.cpp.o: ./async_command_processor/listeners.h
 CMakeFiles/bulkserver.dir/homework_12.cpp.o: ./async_command_processor/logger_mt.h
 CMakeFiles/bulkserver.dir/homework_12.cpp.o: ./async_command_processor/publisher_mt.h
-CMakeFiles/bulkserver.dir/homework_12.cpp.o: ./async_command_processor/smart_buffer_mt.h
+CMakeFiles/bulkserver.dir/homework_12.cpp.o: ./async_command_processor/simple_buffer_mt.h
 CMakeFiles/bulkserver.dir/homework_12.cpp.o: ./async_command_processor/thread_metrics.h
 CMakeFiles/bulkserver.dir/homework_12.cpp.o: ./async_command_processor/weak_ptr_less.h
 CMakeFiles/bulkserver.dir/homework_12.cpp.o: ./async_command_server/async_acceptor.h

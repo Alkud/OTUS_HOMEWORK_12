@@ -82,7 +82,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="#index_c"><span>c</span></a></li>
       <li><a href="#index_d"><span>d</span></a></li>
       <li><a href="#index_e"><span>e</span></a></li>
-      <li><a href="#index_f"><span>f</span></a></li>
       <li><a href="#index_g"><span>g</span></a></li>
       <li><a href="#index_i"><span>i</span></a></li>
       <li><a href="#index_l"><span>l</span></a></li>
@@ -119,8 +118,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="class_async_acceptor.html#ab4e39fdc446ad743956edf19e1dbd112">AsyncAcceptor</a>
 , <a class="el" href="class_async_reader.html#a2ba13225c852752f2f449568d41950c5">AsyncReader</a>
 </li>
+<li>acceptorStopped
+: <a class="el" href="class_async_command_server.html#a629001f45aed96956784cf784e204324">AsyncCommandServer&lt; workingThreadCount &gt;</a>
+</li>
 <li>accessLock
 : <a class="el" href="class_async_command_processor.html#ab0eac12c1e7d154e94a958c5a231fcc5">AsyncCommandProcessor&lt; loggingThreadCount &gt;</a>
+</li>
+<li>activeLoggerBufferNumber
+: <a class="el" href="class_input_processor.html#af3bdc92c3190e89c43e6585c5ea0fc7e">InputProcessor</a>
 </li>
 <li>activeReaderCount
 : <a class="el" href="class_async_acceptor.html#aceeb1b385ef65d2202d8a7f94f59868f">AsyncAcceptor</a>
@@ -129,7 +134,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="class_async_command_processor.html#a4151919abb9ccf86e52b79970bb604e3">AsyncCommandProcessor&lt; loggingThreadCount &gt;</a>
 </li>
 <li>additionalNameSection
-: <a class="el" href="class_logger.html#aed5365702e805b6453c631d079d08a06">Logger&lt; threadCount &gt;</a>
+: <a class="el" href="class_logger.html#a4021e7a8a9ed768e84c79d463942aa2f">Logger&lt; threadCount &gt;</a>
 </li>
 <li>address
 : <a class="el" href="class_async_acceptor.html#abc9041a8777d9b5c7151e14720d87a24">AsyncAcceptor</a>
@@ -143,8 +148,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <h3><a class="anchor" id="index_b"></a>- b -</h3><ul>
 <li>buffer
-: <a class="el" href="class_logger.html#a770283bf894f169f7246ef3612167917">Logger&lt; threadCount &gt;</a>
-, <a class="el" href="class_publisher.html#a2b6a7b215d6e6e7ad0c9f4548df380d2">Publisher</a>
+: <a class="el" href="class_publisher.html#a4f90d7726a91f442b15567fef9c7b9a9">Publisher</a>
+</li>
+<li>buffers
+: <a class="el" href="class_logger.html#a57dbbf71cceee2affd5163728be7b712">Logger&lt; threadCount &gt;</a>
 </li>
 <li>bulkBuffer
 : <a class="el" href="class_async_command_processor.html#abb83fe991b6a3059f4966f4228d3b732">AsyncCommandProcessor&lt; loggingThreadCount &gt;</a>
@@ -182,6 +189,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>commandBuffer
 : <a class="el" href="class_async_command_processor.html#afdc1fd9a47482391f8fda410cce27456">AsyncCommandProcessor&lt; loggingThreadCount &gt;</a>
 </li>
+<li>controller
+: <a class="el" href="class_async_reader.html#aa2eece9d074ab6d3e632b7ecd27876dd">AsyncReader</a>
+</li>
+<li>controllerNotifier
+: <a class="el" href="class_async_reader.html#ad299961e194a274214320284fa9ae974">AsyncReader</a>
+</li>
+<li>currentReader
+: <a class="el" href="class_async_acceptor.html#a343ca63ee0a836d78b820a7cc2bdb12f">AsyncAcceptor</a>
+</li>
 <li>customBulkStarted
 : <a class="el" href="class_input_processor.html#ae1951525008d9b89032e327993809b4e">InputProcessor</a>
 </li>
@@ -190,10 +206,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <h3><a class="anchor" id="index_d"></a>- d -</h3><ul>
 <li>data
-: <a class="el" href="class_smart_buffer.html#ab8421f064b3e75d2ab00eebca5b6a74d">SmartBuffer&lt; T &gt;</a>
+: <a class="el" href="class_simple_buffer.html#a0f5ba5f96fbd785101c649a6676070ba">SimpleBuffer&lt; T &gt;</a>
 </li>
 <li>dataLock
-: <a class="el" href="class_smart_buffer.html#adc13a7725b1f892d641289edece2161e">SmartBuffer&lt; T &gt;</a>
+: <a class="el" href="class_simple_buffer.html#aac5264f857b6242d6b0803af74eb7889">SimpleBuffer&lt; T &gt;</a>
 </li>
 <li>dataLogged
 : <a class="el" href="class_command_processor_instance.html#ab2f9c48f2ba0defe35420dead7b80d9e">CommandProcessorInstance&lt; loggingThreadCount &gt;</a>
@@ -203,7 +219,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>dataReceived
 : <a class="el" href="class_command_processor_instance.html#a94263e4c1e0aa62f311348e10a7264d7">CommandProcessorInstance&lt; loggingThreadCount &gt;</a>
-, <a class="el" href="class_smart_buffer.html#a9cda89a26d95ed74f8722d40c403a75b">SmartBuffer&lt; T &gt;</a>
+, <a class="el" href="class_simple_buffer.html#abcb26ecf82c1dff2d536e8c74aa82d5a">SimpleBuffer&lt; T &gt;</a>
 </li>
 <li>destinationDirectory
 : <a class="el" href="class_logger.html#ae708053a3f3818a168a82e745647bd9b">Logger&lt; threadCount &gt;</a>
@@ -219,46 +235,33 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="class_async_acceptor.html#acfcb063d5c3faf0efb029b191433f28b">AsyncAcceptor</a>
 </li>
 <li>entryPoint
-: <a class="el" href="class_async_command_processor.html#a444eb1d16edc769e737ece323aec7bc6">AsyncCommandProcessor&lt; loggingThreadCount &gt;</a>
+: <a class="el" href="class_async_command_processor.html#af33267d2c9895cb1035bb06f522e3d57">AsyncCommandProcessor&lt; loggingThreadCount &gt;</a>
 </li>
 <li>errorMessage
 : <a class="el" href="class_command_processor_instance.html#aa880a2c2f3d8cc383d6caa6538def28f">CommandProcessorInstance&lt; loggingThreadCount &gt;</a>
 , <a class="el" href="class_input_processor.html#a4eb7ba13268069ba0c54f90e4f89438c">InputProcessor</a>
-, <a class="el" href="class_input_reader.html#a85ce76e68e18ba08ec87f7210c35372c">InputReader</a>
 , <a class="el" href="class_logger.html#a832c519b286ae12bd2dd1a0457d42eeb">Logger&lt; threadCount &gt;</a>
 , <a class="el" href="class_publisher.html#a6a6e9b0e235f18590605227f915acb76">Publisher</a>
-, <a class="el" href="class_smart_buffer.html#ab4aeb9c4c78fbd756ecd6e09fe614fa2">SmartBuffer&lt; T &gt;</a>
+, <a class="el" href="class_simple_buffer.html#a895c29a5360ad2fba0f9c2f4599c90d0">SimpleBuffer&lt; T &gt;</a>
 </li>
 <li>errorOut
 : <a class="el" href="class_command_processor_instance.html#a892cdc2c83c848a548e2421b2ac6980b">CommandProcessorInstance&lt; loggingThreadCount &gt;</a>
 , <a class="el" href="class_input_processor.html#a77d18f7c5aeb14c15241f3cf53a81b82">InputProcessor</a>
-, <a class="el" href="class_input_reader.html#a0ab9d8c841a643f6438ea08cf537621b">InputReader</a>
 , <a class="el" href="class_logger.html#abb298fc74b1d87de485d535d2700075d">Logger&lt; threadCount &gt;</a>
 , <a class="el" href="class_publisher.html#a78d06a735557ad4a2dcf4be8ef60a818">Publisher</a>
-, <a class="el" href="class_smart_buffer.html#ac60d5afa73e285a0a21d8ec141a2d67f">SmartBuffer&lt; T &gt;</a>
+, <a class="el" href="class_simple_buffer.html#a5c800a9508905caa8909907a338c23ca">SimpleBuffer&lt; T &gt;</a>
 </li>
 <li>errorOutLock
 : <a class="el" href="class_input_processor.html#a3f87c319bccde3b3484e4ef235761142">InputProcessor</a>
-, <a class="el" href="class_input_reader.html#af307c918591eed5db62575b972cf00c7">InputReader</a>
 , <a class="el" href="class_logger.html#a2b2909ba06d28dc5ed1072b91de4c94b">Logger&lt; threadCount &gt;</a>
 , <a class="el" href="class_publisher.html#a90e0e3598dc6dc0514ac0793c074f818">Publisher</a>
-, <a class="el" href="class_smart_buffer.html#a7e278fc874070b5fe6feaadc2de696d4">SmartBuffer&lt; T &gt;</a>
+, <a class="el" href="class_simple_buffer.html#a4c768c88cbf9cd90b18f9bf43180fde3">SimpleBuffer&lt; T &gt;</a>
 </li>
 <li>errorStream
 : <a class="el" href="class_async_acceptor.html#a4a217fea0f03018b08c47b4e1f11939d">AsyncAcceptor</a>
 , <a class="el" href="class_async_command_processor.html#af6a7454c336b80b0dc626b901169a21b">AsyncCommandProcessor&lt; loggingThreadCount &gt;</a>
 , <a class="el" href="class_async_command_server.html#a52c7dee3352671d1681c8ee903ce531c">AsyncCommandServer&lt; workingThreadCount &gt;</a>
 , <a class="el" href="class_async_reader.html#a015a706d10040b7c6fd22bf8b942e40c">AsyncReader</a>
-</li>
-<li>externalBuffer
-: <a class="el" href="class_command_processor_instance.html#aa712102af841ba242644d547a8f01081">CommandProcessorInstance&lt; loggingThreadCount &gt;</a>
-</li>
-</ul>
-
-
-<h3><a class="anchor" id="index_f"></a>- f -</h3><ul>
-<li>futureResults
-: <a class="el" href="class_async_worker.html#a82fcf15762c8d9e3f4606272bd431578">AsyncWorker&lt; workingThreadCount &gt;</a>
 </li>
 </ul>
 
@@ -276,14 +279,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>inputBuffer
 : <a class="el" href="class_command_processor_instance.html#a94f31538dd0c2854f0150db7307215b9">CommandProcessorInstance&lt; loggingThreadCount &gt;</a>
-, <a class="el" href="class_input_processor.html#aa54ab1c7866eda31835849eeff85ee0e">InputProcessor</a>
-, <a class="el" href="class_input_reader.html#ac4473c6972ce91c25244c861dd3016af">InputReader</a>
+, <a class="el" href="class_input_processor.html#af9ce6db711ecc221d40f06f273116ae8">InputProcessor</a>
 </li>
 <li>inputProcessor
 : <a class="el" href="class_command_processor_instance.html#a041f8c26e033a60636db4bcba7c34a55">CommandProcessorInstance&lt; loggingThreadCount &gt;</a>
-</li>
-<li>inputReader
-: <a class="el" href="class_command_processor_instance.html#a1a36e2841c4b31037473ee83fa248901">CommandProcessorInstance&lt; loggingThreadCount &gt;</a>
 </li>
 <li>inputStreamLock
 : <a class="el" href="class_command_processor_instance.html#a315179d34844d5687b4f29a1c9a44524">CommandProcessorInstance&lt; loggingThreadCount &gt;</a>
@@ -297,6 +296,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h3><a class="anchor" id="index_l"></a>- l -</h3><ul>
 <li>logger
 : <a class="el" href="class_command_processor_instance.html#a38f19e2c1a7ba209adc75d3c4f32e6ca">CommandProcessorInstance&lt; loggingThreadCount &gt;</a>
+</li>
+<li>loggerBuffers
+: <a class="el" href="class_command_processor_instance.html#a628538345bff451d3df31af3879ff40e">CommandProcessorInstance&lt; loggingThreadCount &gt;</a>
+, <a class="el" href="class_input_processor.html#ae9524f4c12f0721fc583386c0bb54036">InputProcessor</a>
 </li>
 </ul>
 
@@ -323,17 +326,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="class_input_processor.html#a22675f19ec084b34605439f4e841f82e">InputProcessor</a>
 </li>
 <li>noMoreData
-: <a class="el" href="class_async_worker.html#aada84414491e4b995f2d95c0136ca265">AsyncWorker&lt; workingThreadCount &gt;</a>
+: <a class="el" href="class_async_worker.html#a348938103e880f76f12c24a565dd081e">AsyncWorker&lt; workingThreadCount &gt;</a>
 </li>
-<li>notificationCount
-: <a class="el" href="class_async_worker.html#a9f1eaf097abba38a681a83c22da5e6d2">AsyncWorker&lt; workingThreadCount &gt;</a>
+<li>notificationCounts
+: <a class="el" href="class_async_worker.html#aaa8134d08b5e0c4593989b2021c5a073">AsyncWorker&lt; workingThreadCount &gt;</a>
 </li>
 <li>notificationListeners
 : <a class="el" href="class_notification_broadcaster.html#a9d3dfdeed17b0f5f611d249218e2cf63">NotificationBroadcaster</a>
 </li>
 <li>notifierLock
-: <a class="el" href="class_async_worker.html#a84909224522bcb8752f26b814cdbab20">AsyncWorker&lt; workingThreadCount &gt;</a>
-, <a class="el" href="class_command_processor_instance.html#a84286333e3e6f3f145a99ba89f3a36b8">CommandProcessorInstance&lt; loggingThreadCount &gt;</a>
+: <a class="el" href="class_command_processor_instance.html#a84286333e3e6f3f145a99ba89f3a36b8">CommandProcessorInstance&lt; loggingThreadCount &gt;</a>
+</li>
+<li>notifierLocks
+: <a class="el" href="class_async_worker.html#a873ae51a96bfc1b551e38ddce5a3f9c5">AsyncWorker&lt; workingThreadCount &gt;</a>
 </li>
 </ul>
 
@@ -345,11 +350,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>output
 : <a class="el" href="class_publisher.html#a664423dfcdbac9d00c846727a9733144">Publisher</a>
-</li>
-<li>outputBuffer
-: <a class="el" href="class_command_processor_instance.html#a1e0b819411867ceed7f58bfef5ab9516">CommandProcessorInstance&lt; loggingThreadCount &gt;</a>
-, <a class="el" href="class_input_processor.html#a0e03eb71e6f5b0d507bdf6e66fc7cb44">InputProcessor</a>
-, <a class="el" href="class_input_reader.html#a1c6b2e61f3eabaa63ef843ba7bb97b98">InputReader</a>
 </li>
 <li>outputLock
 : <a class="el" href="class_async_acceptor.html#a384dd3bb6fab83ea117afee7cea041e1">AsyncAcceptor</a>
@@ -369,7 +369,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="class_async_command_server.html#a607518b037b4dca0c07784968dea4162">AsyncCommandServer&lt; workingThreadCount &gt;</a>
 </li>
 <li>previousTimeStamp
-: <a class="el" href="class_logger.html#a504e461e6a66a902f1464452b4863cf0">Logger&lt; threadCount &gt;</a>
+: <a class="el" href="class_logger.html#ae7100760bee186fbf2a29912df663f55">Logger&lt; threadCount &gt;</a>
 </li>
 <li>processor
 : <a class="el" href="class_async_acceptor.html#ab199c1f7fcd0b2d71bf2ab3dfacc0a29">AsyncAcceptor</a>
@@ -381,6 +381,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>publisher
 : <a class="el" href="class_command_processor_instance.html#adc28df20741dfc86c8fb7c34a8cd7d76">CommandProcessorInstance&lt; loggingThreadCount &gt;</a>
+</li>
+<li>publisherBuffer
+: <a class="el" href="class_command_processor_instance.html#af7b0db649ef621c36e840655f88d05a8">CommandProcessorInstance&lt; loggingThreadCount &gt;</a>
+, <a class="el" href="class_input_processor.html#a92ffca91a2ae9fd7ff15002a87e58843">InputProcessor</a>
 </li>
 </ul>
 
@@ -415,6 +419,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>shouldExit
 : <a class="el" href="class_async_acceptor.html#a7dc92416426765ae0a1d366a56bb93ba">AsyncAcceptor</a>
+, <a class="el" href="class_async_reader.html#a6b0c01bc155132707baca3191fd4e936">AsyncReader</a>
 , <a class="el" href="class_async_worker.html#ad9ddf369aab8745b691ba4f24676c88f">AsyncWorker&lt; workingThreadCount &gt;</a>
 , <a class="el" href="class_command_processor_instance.html#ae934fb344a66f329340d431ca66a2b55">CommandProcessorInstance&lt; loggingThreadCount &gt;</a>
 </li>
@@ -424,8 +429,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>state
 : <a class="el" href="class_async_worker.html#a586cf4490e20774a5f740b7fc5045cf1">AsyncWorker&lt; workingThreadCount &gt;</a>
 </li>
+<li>stopped
+: <a class="el" href="class_async_reader.html#a53a446b004f0c6eb3f62fb6f475583e6">AsyncReader</a>
+</li>
+<li>stringHasher
+: <a class="el" href="class_async_worker.html#a5136e7227ac808ba0da91468b374fadf">AsyncWorker&lt; workingThreadCount &gt;</a>
+</li>
 <li>stringThreadID
-: <a class="el" href="class_async_worker.html#aaf71e715aa6ef33a914b29479198fe0e">AsyncWorker&lt; workingThreadCount &gt;</a>
+: <a class="el" href="class_async_worker.html#a5ff5701917acff3ba7159267f1aed10c">AsyncWorker&lt; workingThreadCount &gt;</a>
 </li>
 </ul>
 
@@ -433,40 +444,46 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h3><a class="anchor" id="index_t"></a>- t -</h3><ul>
 <li>tempBuffer
 : <a class="el" href="class_input_processor.html#a2658dc0872c430bf0f19d4e91a037154">InputProcessor</a>
-, <a class="el" href="class_input_reader.html#adc7ade8d8f386722c0a0df1324b61a0b">InputReader</a>
+</li>
+<li>terminationFlag
+: <a class="el" href="class_async_acceptor.html#a5a21e2eeff7b6f1c8b94d9491ed9aea2">AsyncAcceptor</a>
 </li>
 <li>terminationLock
 : <a class="el" href="class_async_acceptor.html#a257c29465b712150d2b69fcf8c2e9e73">AsyncAcceptor</a>
 , <a class="el" href="class_async_command_processor.html#afe109c9ff17ddabfbfd87f69d36d02f6">AsyncCommandProcessor&lt; loggingThreadCount &gt;</a>
+, <a class="el" href="class_async_command_server.html#a3f8c647ca4ef6cbb35cf7f1818ef343e">AsyncCommandServer&lt; workingThreadCount &gt;</a>
 , <a class="el" href="class_async_reader.html#aafff656f6a68ffa593813aab3d324411">AsyncReader</a>
 , <a class="el" href="class_async_worker.html#aaa730d06827fe13e6e82d0398f18966f">AsyncWorker&lt; workingThreadCount &gt;</a>
 </li>
 <li>terminationNotifier
-: <a class="el" href="class_async_acceptor.html#a67395a648789d63fc537b9cc8ef7d152">AsyncAcceptor</a>
+: <a class="el" href="class_async_acceptor.html#a6013a37688b7879d4eb42266e4528c8c">AsyncAcceptor</a>
 , <a class="el" href="class_async_command_processor.html#a62fc0bcfd35882e9eccd50a23fd5e27a">AsyncCommandProcessor&lt; loggingThreadCount &gt;</a>
+, <a class="el" href="class_async_command_server.html#afb559a0d967cf18aaf21cc9b5ffa0a64">AsyncCommandServer&lt; workingThreadCount &gt;</a>
 , <a class="el" href="class_async_reader.html#aabefb4d28aae55bdfc05ca64b6ffa049">AsyncReader</a>
 , <a class="el" href="class_command_processor_instance.html#a533dc972d295e48c2cca2c1cd11ddcf4">CommandProcessorInstance&lt; loggingThreadCount &gt;</a>
 </li>
 <li>threadFinished
-: <a class="el" href="class_async_worker.html#a27fb8708b6ab9a4180f3e92bb8222435">AsyncWorker&lt; workingThreadCount &gt;</a>
+: <a class="el" href="class_async_worker.html#aad61388f0acd1ee5c182762b8f014f9a">AsyncWorker&lt; workingThreadCount &gt;</a>
 </li>
 <li>threadID
-: <a class="el" href="class_async_worker.html#ac3a8315b2b4b26bfa7f0d7e01797f5cc">AsyncWorker&lt; workingThreadCount &gt;</a>
+: <a class="el" href="class_async_worker.html#a52b6454294eed99a8a91105c8e62013d">AsyncWorker&lt; workingThreadCount &gt;</a>
 </li>
 <li>threadIdHasher
 : <a class="el" href="class_async_worker.html#a26a5f3dcba6042a1eafe7d0d0f3c7a42">AsyncWorker&lt; workingThreadCount &gt;</a>
 </li>
 <li>threadMetrics
 : <a class="el" href="class_input_processor.html#a8349a38e76025f8728536ab9ab446a8b">InputProcessor</a>
-, <a class="el" href="class_input_reader.html#afc2e35a16dac62683cac011ab57c919a">InputReader</a>
 , <a class="el" href="class_logger.html#aa61d876c4e69d921026e2b967914dac7">Logger&lt; threadCount &gt;</a>
 , <a class="el" href="class_publisher.html#ac939707f0077aa0b7e4b09b91e309ac8">Publisher</a>
 </li>
 <li>threadName
 : <a class="el" href="struct_thread_metrics.html#adc1df4f380523aa793778676bede9a3d">ThreadMetrics</a>
 </li>
-<li>threadNotifier
-: <a class="el" href="class_async_worker.html#a6e2f251afbb0ac6c4c294a2e8c40d20b">AsyncWorker&lt; workingThreadCount &gt;</a>
+<li>threadNotifiers
+: <a class="el" href="class_async_worker.html#afa6aa6806117f02b378ce66441736c73">AsyncWorker&lt; workingThreadCount &gt;</a>
+</li>
+<li>threads
+: <a class="el" href="class_async_worker.html#aab15862a22bc0064896adc72b58ebad9">AsyncWorker&lt; workingThreadCount &gt;</a>
 </li>
 <li>timeStampID
 : <a class="el" href="class_async_command_processor.html#aed1d6e5ad297908bf6f29595154bca67">AsyncCommandProcessor&lt; loggingThreadCount &gt;</a>

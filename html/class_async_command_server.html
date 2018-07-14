@@ -125,6 +125,12 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a607518b037b4dca0c07784968dea4162"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cac417a059bba92b1ac868484e2dc1d"><td class="memItemLeft" align="right" valign="top">asio::io_service&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_command_server.html#a1cac417a059bba92b1ac868484e2dc1d">service</a></td></tr>
 <tr class="separator:a1cac417a059bba92b1ac868484e2dc1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f8c647ca4ef6cbb35cf7f1818ef343e"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_command_server.html#a3f8c647ca4ef6cbb35cf7f1818ef343e">terminationLock</a></td></tr>
+<tr class="separator:a3f8c647ca4ef6cbb35cf7f1818ef343e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb559a0d967cf18aaf21cc9b5ffa0a64"><td class="memItemLeft" align="right" valign="top">std::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_command_server.html#afb559a0d967cf18aaf21cc9b5ffa0a64">terminationNotifier</a></td></tr>
+<tr class="separator:afb559a0d967cf18aaf21cc9b5ffa0a64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a629001f45aed96956784cf784e204324"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_command_server.html#a629001f45aed96956784cf784e204324">acceptorStopped</a></td></tr>
+<tr class="separator:a629001f45aed96956784cf784e204324"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e06dc33be1c0941ae43c1ad86f3983d"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="class_async_acceptor.html">AsyncAcceptor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_command_server.html#a1e06dc33be1c0941ae43c1ad86f3983d">asyncAcceptor</a></td></tr>
 <tr class="separator:a1e06dc33be1c0941ae43c1ad86f3983d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67b730495996f8d77ae19eb096367d6e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::thread &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_command_server.html#a67b730495996f8d77ae19eb096367d6e">workingThreads</a></td></tr>
@@ -384,6 +390,28 @@ template&lt;size_t workingThreadCount = 2u&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a629001f45aed96956784cf784e204324"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t workingThreadCount = 2u&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::atomic&lt;bool&gt; <a class="el" href="class_async_command_server.html">AsyncCommandServer</a>&lt; workingThreadCount &gt;::acceptorStopped</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a08faa1a6b5a4150ca98969e7d0b5b8e2"></a>
 <div class="memitem">
 <div class="memproto">
@@ -505,6 +533,50 @@ template&lt;size_t workingThreadCount = 2u&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">asio::io_service <a class="el" href="class_async_command_server.html">AsyncCommandServer</a>&lt; workingThreadCount &gt;::service</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3f8c647ca4ef6cbb35cf7f1818ef343e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t workingThreadCount = 2u&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::mutex <a class="el" href="class_async_command_server.html">AsyncCommandServer</a>&lt; workingThreadCount &gt;::terminationLock</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="afb559a0d967cf18aaf21cc9b5ffa0a64"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t workingThreadCount = 2u&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::condition_variable <a class="el" href="class_async_command_server.html">AsyncCommandServer</a>&lt; workingThreadCount &gt;::terminationNotifier</td>
         </tr>
       </table>
   </td>

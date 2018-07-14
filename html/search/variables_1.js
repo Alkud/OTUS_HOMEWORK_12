@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['buffer',['buffer',['../class_logger.html#a770283bf894f169f7246ef3612167917',1,'Logger::buffer()'],['../class_publisher.html#a2b6a7b215d6e6e7ad0c9f4548df380d2',1,'Publisher::buffer()'],['../publisher__mt_8cpp.html#a38acb51b2a63fccbafac9c0afca0c1b9',1,'buffer():&#160;publisher_mt.cpp']]],
+  ['buffer',['buffer',['../class_publisher.html#a4f90d7726a91f442b15567fef9c7b9a9',1,'Publisher::buffer()'],['../publisher__mt_8cpp.html#a38acb51b2a63fccbafac9c0afca0c1b9',1,'buffer():&#160;publisher_mt.cpp']]],
+  ['buffers',['buffers',['../class_logger.html#a57dbbf71cceee2affd5163728be7b712',1,'Logger']]],
   ['bulkbuffer',['bulkBuffer',['../class_async_command_processor.html#abb83fe991b6a3059f4966f4228d3b732',1,'AsyncCommandProcessor::bulkBuffer()'],['../class_async_reader.html#a360975cfa885d83bf6d928b9b772e4fd',1,'AsyncReader::bulkBuffer()']]],
   ['bulkclosedelimiter',['bulkCloseDelimiter',['../class_async_command_processor.html#a18563a702bc857c727a6c6ce5e3e2593',1,'AsyncCommandProcessor::bulkCloseDelimiter()'],['../class_input_processor.html#a07eccaffd21ea1f5862315d78bfd252f',1,'InputProcessor::bulkCloseDelimiter()'],['../input__processor_8cpp.html#a6a95dd894d8941411f54627aab6660cd',1,'bulkCloseDelimiter():&#160;input_processor.cpp']]],
   ['bulkopen',['bulkOpen',['../class_async_reader.html#ae69697b88fcdadf584069a5f4bc60e17',1,'AsyncReader']]],

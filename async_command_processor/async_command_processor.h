@@ -4,7 +4,6 @@
 
 #include <memory>
 #include <mutex>
-#include <list>
 #include <thread>
 #include <functional>
 #include <cstdlib>
@@ -42,7 +41,7 @@ public:
     metricsStream{newMetricsStream},
 
     processor{
-      std::make_shared<CommandProcessorInstance<loggingThreadCount>>(
+        new CommandProcessorInstance<loggingThreadCount>(
         bulkSize,
         bulkOpenDelimiter,
         bulkCloseDelimiter,
@@ -73,9 +72,13 @@ public:
     #else
         //std::cout << "\n                            AsyncCP destructor\n";
     #endif
+    if (workingThread.joinable())
+    {
+      workingThread.join();
+    }
   }
 
-  bool connect(const bool outputMetrics = false) noexcept
+  bool connect(const bool outputMetrics = true) noexcept
   {
     try
     {
@@ -109,7 +112,7 @@ public:
     }
   }
 
-  void run(const bool outputMetrics = false)
+  void run(const bool outputMetrics = true)
   {
      processor->run();
 
@@ -122,10 +125,10 @@ public:
      std::lock_guard<std::mutex> lockOutput{screenOutputLock};
 
      metricsStream << '\n' << processorName << " metrics:\n";
-     metricsStream << "total received - "
-                   << metrics["input reader"]->totalReceptionCount << " data chunk(s), "
-                   << metrics["input reader"]->totalCharacterCount << " character(s), "
-                   << metrics["input reader"]->totalStringCount << " string(s)" << std::endl
+     metricsStream //<< "total received - "
+                   //<< metrics["input reader"]->totalReceptionCount << " data chunk(s), "
+                   //<< metrics["input reader"]->totalCharacterCount << " character(s), "
+                   //<< metrics["input reader"]->totalStringCount << " string(s)" << std::endl
                    << "total processed - "
                    << metrics["input processor"]->totalStringCount << " string(s), "
                    << metrics["input processor"]->totalCommandCount << " command(s), "
@@ -166,9 +169,7 @@ public:
       terminationNotifier.notify_all();
 
       return;
-    }
-
-    lockAccess.unlock();
+    }    
 
     {
        #ifdef NDEBUG
@@ -181,14 +182,17 @@ public:
 
     if (entryPoint != nullptr && disconnected.load() != true)
     {
-      InputReader::EntryDataType newData{};
-      for (size_t idx{0}; idx < size; ++idx)
-      {
-        newData.push_back(data[idx]);
-      }
+      std::stringstream characters{data};
 
-      entryPoint->putItem(std::move(newData));
+      std::string newString{};
+
+      while (std::getline(characters, newString))
+      {
+        entryPoint->putItem(std::move(newString));
+      }
     }
+
+    lockAccess.unlock();
 
     {
       #ifdef NDEBUG
@@ -214,24 +218,20 @@ public:
     {
       #ifdef NDEBUG
       #else
-//        std::lock_guard<std::mutex> lockScreenOutput{screenOutputLock};
-//        std::cout << "                                disconnect started\n";
+        //std::lock_guard<std::mutex> lockScreenOutput{screenOutputLock};
+        //std::cout << "                                disconnect started\n";
       #endif
     }
 
     sendMessage(Message::NoMoreData);
 
-    //lockAccess.unlock();
-
     {
       #ifdef NDEBUG
       #else
-//        std::lock_guard<std::mutex> lockScreenOutput{screenOutputLock};
-//        std::cout << "                                disconnect finished\n";
+        //std::lock_guard<std::mutex> lockScreenOutput{screenOutputLock};
+        //std::cout << "                                disconnect finished\n";
       #endif
-    }
-
-    //std::unique_lock<std::mutex> lockTermination{terminationLock};
+    }    
 
     while (activeReceptionCount.load() != 0)
     {
@@ -305,7 +305,7 @@ private:
 
   std::shared_ptr<CommandProcessorInstance<loggingThreadCount>> processor;
 
-  std::shared_ptr<InputReader::InputBufferType> entryPoint{nullptr};
+  std::shared_ptr<InputProcessor::InputBufferType> entryPoint{nullptr};
   std::shared_ptr<InputProcessor::InputBufferType> commandBuffer;
   std::shared_ptr<InputProcessor::OutputBufferType> bulkBuffer;
 

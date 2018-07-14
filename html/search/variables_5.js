@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['futureresults',['futureResults',['../class_async_worker.html#a82fcf15762c8d9e3f4606272bd431578',1,'AsyncWorker']]]
+  ['globalmetrics',['globalMetrics',['../class_command_processor_instance.html#a0703365979feee6f491b8e1c9cf6b7f5',1,'CommandProcessorInstance']]]
 ];

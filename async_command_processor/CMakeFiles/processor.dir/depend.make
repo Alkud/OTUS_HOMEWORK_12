@@ -6,25 +6,16 @@ async_command_processor/CMakeFiles/processor.dir/input_processor.cpp.o: async_co
 async_command_processor/CMakeFiles/processor.dir/input_processor.cpp.o: async_command_processor/input_processor.cpp
 async_command_processor/CMakeFiles/processor.dir/input_processor.cpp.o: async_command_processor/input_processor.h
 async_command_processor/CMakeFiles/processor.dir/input_processor.cpp.o: async_command_processor/listeners.h
-async_command_processor/CMakeFiles/processor.dir/input_processor.cpp.o: async_command_processor/smart_buffer_mt.h
+async_command_processor/CMakeFiles/processor.dir/input_processor.cpp.o: async_command_processor/simple_buffer_mt.h
 async_command_processor/CMakeFiles/processor.dir/input_processor.cpp.o: async_command_processor/thread_metrics.h
 async_command_processor/CMakeFiles/processor.dir/input_processor.cpp.o: async_command_processor/weak_ptr_less.h
-
-async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.o: async_command_processor/async_worker.h
-async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.o: async_command_processor/broadcasters.h
-async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.o: async_command_processor/input_reader.cpp
-async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.o: async_command_processor/input_reader.h
-async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.o: async_command_processor/listeners.h
-async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.o: async_command_processor/smart_buffer_mt.h
-async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.o: async_command_processor/thread_metrics.h
-async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.o: async_command_processor/weak_ptr_less.h
 
 async_command_processor/CMakeFiles/processor.dir/publisher_mt.cpp.o: async_command_processor/async_worker.h
 async_command_processor/CMakeFiles/processor.dir/publisher_mt.cpp.o: async_command_processor/broadcasters.h
 async_command_processor/CMakeFiles/processor.dir/publisher_mt.cpp.o: async_command_processor/listeners.h
 async_command_processor/CMakeFiles/processor.dir/publisher_mt.cpp.o: async_command_processor/publisher_mt.cpp
 async_command_processor/CMakeFiles/processor.dir/publisher_mt.cpp.o: async_command_processor/publisher_mt.h
-async_command_processor/CMakeFiles/processor.dir/publisher_mt.cpp.o: async_command_processor/smart_buffer_mt.h
+async_command_processor/CMakeFiles/processor.dir/publisher_mt.cpp.o: async_command_processor/simple_buffer_mt.h
 async_command_processor/CMakeFiles/processor.dir/publisher_mt.cpp.o: async_command_processor/thread_metrics.h
 async_command_processor/CMakeFiles/processor.dir/publisher_mt.cpp.o: async_command_processor/weak_ptr_less.h
 

@@ -81,33 +81,9 @@ async_command_processor/CMakeFiles/processor.dir/input_processor.cpp.o.provides:
 async_command_processor/CMakeFiles/processor.dir/input_processor.cpp.o.provides.build: async_command_processor/CMakeFiles/processor.dir/input_processor.cpp.o
 
 
-async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.o: async_command_processor/CMakeFiles/processor.dir/flags.make
-async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.o: async_command_processor/input_reader.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/travis/build/Alkud/OTUS_HOMEWORK_12/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.o"
-	cd /home/travis/build/Alkud/OTUS_HOMEWORK_12/async_command_processor && /usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/processor.dir/input_reader.cpp.o -c /home/travis/build/Alkud/OTUS_HOMEWORK_12/async_command_processor/input_reader.cpp
-
-async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/processor.dir/input_reader.cpp.i"
-	cd /home/travis/build/Alkud/OTUS_HOMEWORK_12/async_command_processor && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/travis/build/Alkud/OTUS_HOMEWORK_12/async_command_processor/input_reader.cpp > CMakeFiles/processor.dir/input_reader.cpp.i
-
-async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/processor.dir/input_reader.cpp.s"
-	cd /home/travis/build/Alkud/OTUS_HOMEWORK_12/async_command_processor && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/travis/build/Alkud/OTUS_HOMEWORK_12/async_command_processor/input_reader.cpp -o CMakeFiles/processor.dir/input_reader.cpp.s
-
-async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.o.requires:
-
-.PHONY : async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.o.requires
-
-async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.o.provides: async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.o.requires
-	$(MAKE) -f async_command_processor/CMakeFiles/processor.dir/build.make async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.o.provides.build
-.PHONY : async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.o.provides
-
-async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.o.provides.build: async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.o
-
-
 async_command_processor/CMakeFiles/processor.dir/publisher_mt.cpp.o: async_command_processor/CMakeFiles/processor.dir/flags.make
 async_command_processor/CMakeFiles/processor.dir/publisher_mt.cpp.o: async_command_processor/publisher_mt.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/travis/build/Alkud/OTUS_HOMEWORK_12/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object async_command_processor/CMakeFiles/processor.dir/publisher_mt.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/travis/build/Alkud/OTUS_HOMEWORK_12/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object async_command_processor/CMakeFiles/processor.dir/publisher_mt.cpp.o"
 	cd /home/travis/build/Alkud/OTUS_HOMEWORK_12/async_command_processor && /usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/processor.dir/publisher_mt.cpp.o -c /home/travis/build/Alkud/OTUS_HOMEWORK_12/async_command_processor/publisher_mt.cpp
 
 async_command_processor/CMakeFiles/processor.dir/publisher_mt.cpp.i: cmake_force
@@ -132,18 +108,16 @@ async_command_processor/CMakeFiles/processor.dir/publisher_mt.cpp.o.provides.bui
 # Object files for target processor
 processor_OBJECTS = \
 "CMakeFiles/processor.dir/input_processor.cpp.o" \
-"CMakeFiles/processor.dir/input_reader.cpp.o" \
 "CMakeFiles/processor.dir/publisher_mt.cpp.o"
 
 # External object files for target processor
 processor_EXTERNAL_OBJECTS =
 
 async_command_processor/libprocessor.a: async_command_processor/CMakeFiles/processor.dir/input_processor.cpp.o
-async_command_processor/libprocessor.a: async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.o
 async_command_processor/libprocessor.a: async_command_processor/CMakeFiles/processor.dir/publisher_mt.cpp.o
 async_command_processor/libprocessor.a: async_command_processor/CMakeFiles/processor.dir/build.make
 async_command_processor/libprocessor.a: async_command_processor/CMakeFiles/processor.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/travis/build/Alkud/OTUS_HOMEWORK_12/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX static library libprocessor.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/travis/build/Alkud/OTUS_HOMEWORK_12/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX static library libprocessor.a"
 	cd /home/travis/build/Alkud/OTUS_HOMEWORK_12/async_command_processor && $(CMAKE_COMMAND) -P CMakeFiles/processor.dir/cmake_clean_target.cmake
 	cd /home/travis/build/Alkud/OTUS_HOMEWORK_12/async_command_processor && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/processor.dir/link.txt --verbose=$(VERBOSE)
 
@@ -153,7 +127,6 @@ async_command_processor/CMakeFiles/processor.dir/build: async_command_processor/
 .PHONY : async_command_processor/CMakeFiles/processor.dir/build
 
 async_command_processor/CMakeFiles/processor.dir/requires: async_command_processor/CMakeFiles/processor.dir/input_processor.cpp.o.requires
-async_command_processor/CMakeFiles/processor.dir/requires: async_command_processor/CMakeFiles/processor.dir/input_reader.cpp.o.requires
 async_command_processor/CMakeFiles/processor.dir/requires: async_command_processor/CMakeFiles/processor.dir/publisher_mt.cpp.o.requires
 
 .PHONY : async_command_processor/CMakeFiles/processor.dir/requires

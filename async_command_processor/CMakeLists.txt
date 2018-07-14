@@ -8,9 +8,8 @@ add_library(processor
   listeners.h
   async_command_processor.h  
   input_processor.h input_processor.cpp
-  input_reader.h input_reader.cpp
   logger_mt.h
-  smart_buffer_mt.h
+  simple_buffer_mt.h
   publisher_mt.h publisher_mt.cpp
   weak_ptr_less.h
   thread_metrics.h

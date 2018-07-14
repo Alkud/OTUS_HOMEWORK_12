@@ -32,8 +32,8 @@ void Publisher::reactNotification(NotificationBroadcaster* sender)
       //std::cout << this->workerName << " reactNotification\n";
     #endif
 
-    ++notificationCount;
-    threadNotifier.notify_one();
+    ++notificationCounts[0];
+    threadNotifiers[0].notify_one();
   }
 }
 
@@ -44,14 +44,14 @@ void Publisher::reactMessage(MessageBroadcaster* /*sender*/, Message message)
     switch(message)
     {
     case Message::NoMoreData :
-      noMoreData.store(true);
+      noMoreData[0].store(true);
 
       #ifdef NDEBUG
       #else
         //std::cout << "\n                     " << this->workerName<< " NoMoreData received\n";
       #endif
 
-      threadNotifier.notify_all();
+      threadNotifiers[0].notify_one();
       break;
 
     default:
@@ -80,23 +80,19 @@ bool Publisher::threadProcess(const size_t /*threadIndex*/)
     throw(std::invalid_argument{"Logger source buffer not defined!"});
   }
 
-  auto bufferReply{buffer->getItem(shared_from_this())};
+  auto bufferReply{buffer->getItem()};
 
-  if (false == bufferReply.first)
-  {
-    return false;
-  }
-
-  auto nextBulkInfo{bufferReply.second};
+  auto nextBulkInfo{bufferReply.second};  
 
   std::lock_guard<std::mutex> lockOutput{outputLock};
-  output << nextBulkInfo.second << '\n';
+
+  output << nextBulkInfo << std::endl;
 
   /* Refresh metrics */
   ++threadMetrics->totalBulkCount;
     threadMetrics->totalCommandCount
-      += static_cast<size_t>(std::count(nextBulkInfo.second.begin(),
-                    nextBulkInfo.second.end(), ',') + 1);
+      += static_cast<size_t>(std::count(nextBulkInfo.begin(),
+                    nextBulkInfo.end(), ',') + 1);
 
   return true;
 }
@@ -110,7 +106,7 @@ void Publisher::onThreadException(const std::exception& ex, const size_t threadI
 
   threadFinished[threadIndex] = true;
   shouldExit.store(true);
-  threadNotifier.notify_all();
+  threadNotifiers[0].notify_one();
 
   if (ex.what() == std::string{"Buffer is empty!"})
   {
@@ -127,7 +123,7 @@ void Publisher::onTermination(const size_t /*threadIndex*/)
     //std::cout << "\n                     " << this->workerName<< " AllDataPublished\n";
   #endif
 
-  if (true == noMoreData.load() && notificationCount.load() == 0)
+  if (true == noMoreData[0].load() && notificationCounts[0].load() == 0)
   {
     sendMessage(Message::AllDataPublsihed);
   }

@@ -6,7 +6,6 @@
 #include <string>
 #include <memory>
 #include <type_traits>
-#include <type_traits>
 #include "listeners.h"
 #include "weak_ptr_less.h"
 
