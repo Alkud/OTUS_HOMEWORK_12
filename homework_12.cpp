@@ -24,6 +24,7 @@ int homework(int argc, char* argv[], std::ostream& outputStream,
               std::ostream& errorStream, std::ostream& metricsStream)
 {
   std::signal(SIGINT, terminationHandler);
+  std::signal(SIGTERM, terminationHandler);
 
   if (argc < 3 || std::stoi(std::string{argv[2]}) < 1)
   {
