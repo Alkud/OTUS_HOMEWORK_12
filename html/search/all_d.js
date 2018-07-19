@@ -4,6 +4,8 @@ var searchData=
   ['previoustimestamp',['previousTimeStamp',['../class_logger.html#ae7100760bee186fbf2a29912df663f55',1,'Logger::previousTimeStamp()'],['../class_logger.html#a504e461e6a66a902f1464452b4863cf0',1,'Logger::previousTimeStamp()']]],
   ['processinputstring',['processInputString',['../class_async_reader.html#a041a87387c322f8338e60fe2629b3b56',1,'AsyncReader']]],
   ['processor',['processor',['../class_async_command_processor.html#aa1962d8e53d69171af8cc2cb9fedd560',1,'AsyncCommandProcessor::processor()'],['../class_async_acceptor.html#ab199c1f7fcd0b2d71bf2ab3dfacc0a29',1,'AsyncAcceptor::processor()'],['../class_async_reader.html#addb64a95dfcd7b01f87ea765b440289d',1,'AsyncReader::processor()']]],
+  ['processorerrornotifier',['processorErrorNotifier',['../class_async_command_processor.html#ad8e526b2d00bc636059b8ebfbcd0d9b5',1,'AsyncCommandProcessor']]],
+  ['processorfailed',['processorFailed',['../class_async_command_server.html#a1505d56b32b31a249ef78c25f042667d',1,'AsyncCommandServer']]],
   ['processorname',['processorName',['../class_async_command_processor.html#a2eb43e08bdf62430e6dcead786793835',1,'AsyncCommandProcessor']]],
   ['publisher',['Publisher',['../class_publisher.html',1,'Publisher'],['../class_publisher.html#a6e79843a351620b0d3bbefb25505fbec',1,'Publisher::Publisher()'],['../class_command_processor_instance.html#adc28df20741dfc86c8fb7c34a8cd7d76',1,'CommandProcessorInstance::publisher()']]],
   ['publisher_5fmt_2ecpp',['publisher_mt.cpp',['../publisher__mt_8cpp.html',1,'']]],

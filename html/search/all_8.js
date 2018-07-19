@@ -8,5 +8,7 @@ var searchData=
   ['inputprocessor',['InputProcessor',['../class_input_processor.html',1,'InputProcessor'],['../class_input_processor.html#ad9d8a33cd39b78ae175becd04b1c8a36',1,'InputProcessor::InputProcessor()'],['../class_command_processor_instance.html#a041f8c26e033a60636db4bcba7c34a55',1,'CommandProcessorInstance::inputProcessor()']]],
   ['inputstreamlock',['inputStreamLock',['../class_command_processor_instance.html#a315179d34844d5687b4f29a1c9a44524',1,'CommandProcessorInstance']]],
   ['isdisconnected',['isDisconnected',['../class_async_command_processor.html#afa2ccfe573847d57bb5cddbdec60b403',1,'AsyncCommandProcessor']]],
+  ['isinerrorstate',['isInErrorState',['../class_command_processor_instance.html#a48b99270acf445878c0b2c0cb23dfc2d',1,'CommandProcessorInstance']]],
+  ['isprocessorinerrorstate',['isProcessorInErrorState',['../class_async_command_processor.html#a7301bec17b89e54563a45268f48644f5',1,'AsyncCommandProcessor']]],
   ['isstopped',['isStopped',['../class_async_worker.html#ad74ffc43c34fb72d091592dcff26ded2',1,'AsyncWorker']]]
 ];

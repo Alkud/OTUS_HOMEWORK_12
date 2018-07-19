@@ -110,8 +110,8 @@ Collaboration diagram for Logger&lt; threadCount &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aee01cdd9cb50825b081285583d0d096b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#aee01cdd9cb50825b081285583d0d096b">Logger</a> (const std::string &amp;newWorkerName, const std::vector&lt; <a class="el" href="simple__buffer__mt_8h.html#a74179bee4f33e3fb26e7adbcfa2e17d4">SharedSizeStringBuffer</a> &gt; &amp;newBuffers, std::ostream &amp;newErrorOut, std::mutex &amp;newErrorOutLock, const std::string &amp;newDestinationDirectory=&quot;&quot;)</td></tr>
-<tr class="separator:aee01cdd9cb50825b081285583d0d096b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2511fcd6523bc422bbe63c2b61fee31"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#ae2511fcd6523bc422bbe63c2b61fee31">Logger</a> (const std::string &amp;newWorkerName, const std::vector&lt; <a class="el" href="simple__buffer__mt_8h.html#a74179bee4f33e3fb26e7adbcfa2e17d4">SharedSizeStringBuffer</a> &gt; &amp;newBuffers, std::ostream &amp;newErrorOut, std::mutex &amp;newErrorOutLock, const std::string &amp;newDestinationDirectory, bool stressTestNeeded)</td></tr>
+<tr class="separator:ae2511fcd6523bc422bbe63c2b61fee31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_notification_listener"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_notification_listener')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_notification_listener.html">NotificationListener</a></td></tr>
 <tr class="memitem:add75d91127cddb0b91b63042b204bda0 inherit pub_methods_class_notification_listener"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_notification_listener.html#add75d91127cddb0b91b63042b204bda0">~NotificationListener</a> ()</td></tr>
 <tr class="separator:add75d91127cddb0b91b63042b204bda0 inherit pub_methods_class_notification_listener"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -157,6 +157,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:a8de33e619b8c2d52b680e74412663efc"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#a8de33e619b8c2d52b680e74412663efc">STRESS_TEST_MAX_NUMBER_OF_FILES</a> {1000}</td></tr>
+<tr class="separator:a8de33e619b8c2d52b680e74412663efc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57dbbf71cceee2affd5163728be7b712"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#a57dbbf71cceee2affd5163728be7b712">buffers</a> {newBuffers}</td></tr>
 <tr class="separator:a57dbbf71cceee2affd5163728be7b712"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae708053a3f3818a168a82e745647bd9b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#ae708053a3f3818a168a82e745647bd9b">destinationDirectory</a> {newDestinationDirectory}</td></tr>
@@ -169,8 +171,10 @@ Public Attributes</h2></td></tr>
 <tr class="separator:abb298fc74b1d87de485d535d2700075d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b2909ba06d28dc5ed1072b91de4c94b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#a2b2909ba06d28dc5ed1072b91de4c94b">errorOutLock</a> {newErrorOutLock}</td></tr>
 <tr class="separator:a2b2909ba06d28dc5ed1072b91de4c94b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa61d876c4e69d921026e2b967914dac7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#aa61d876c4e69d921026e2b967914dac7">threadMetrics</a></td></tr>
+<tr class="memitem:aa61d876c4e69d921026e2b967914dac7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#aa61d876c4e69d921026e2b967914dac7">threadMetrics</a> {}</td></tr>
 <tr class="separator:aa61d876c4e69d921026e2b967914dac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae74a23c844ac486123d20b953f8a008d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#ae74a23c844ac486123d20b953f8a008d">stressTesting</a></td></tr>
+<tr class="separator:ae74a23c844ac486123d20b953f8a008d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12ef37aebb84b27a0c4619044e68fe97"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#a12ef37aebb84b27a0c4619044e68fe97">destinationDirectory</a></td></tr>
 <tr class="separator:a12ef37aebb84b27a0c4619044e68fe97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a504e461e6a66a902f1464452b4863cf0"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#a504e461e6a66a902f1464452b4863cf0">previousTimeStamp</a></td></tr>
@@ -185,6 +189,10 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a3ffe281c47ffcecfaf9daabfbb1c0a02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a832c519b286ae12bd2dd1a0457d42eeb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="broadcasters_8h.html#aff97733e4706e994965da50c70605422">Message</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#a832c519b286ae12bd2dd1a0457d42eeb">errorMessage</a> {<a class="el" href="broadcasters_8h.html#aff97733e4706e994965da50c70605422ab932b91f686c2aa588adfd9a407155ca">Message::SystemError</a>}</td></tr>
 <tr class="separator:a832c519b286ae12bd2dd1a0457d42eeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22349ca93733988bf01f4c9286a10ba5"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#a22349ca93733988bf01f4c9286a10ba5">totalFilesProcessed</a> {0}</td></tr>
+<tr class="separator:a22349ca93733988bf01f4c9286a10ba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc1b100bb08dd3e2592b01c48a1758a5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_logger.html#adc1b100bb08dd3e2592b01c48a1758a5">stressTesting</a></td></tr>
+<tr class="separator:adc1b100bb08dd3e2592b01c48a1758a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -253,7 +261,7 @@ workingThreadCount &gt;&#160;</td><td class="memItemRight" valign="bottom"><a cl
 <tr class="separator:ad77e1e371ab52f46715695f22f3b64d3 inherit pro_static_attribs_class_async_worker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="aee01cdd9cb50825b081285583d0d096b"></a>
+<a class="anchor" id="ae2511fcd6523bc422bbe63c2b61fee31"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -290,7 +298,13 @@ template&lt;size_t threadCount = 2u&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>newDestinationDirectory</em> = <code>&quot;&quot;</code>&#160;</td>
+          <td class="paramname"><em>newDestinationDirectory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>stressTestNeeded</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -476,6 +490,48 @@ template&lt;size_t threadCount = 2u&gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="a8de33e619b8c2d52b680e74412663efc"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t threadCount = 2u&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="class_logger.html">Logger</a>&lt; threadCount &gt;::STRESS_TEST_MAX_NUMBER_OF_FILES {1000}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae74a23c844ac486123d20b953f8a008d"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t threadCount = 2u&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_logger.html">Logger</a>&lt; threadCount &gt;::stressTesting</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="adc1b100bb08dd3e2592b01c48a1758a5"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t threadCount = 2u&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="class_logger.html">Logger</a>&lt; threadCount &gt;::stressTesting</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="aa61d876c4e69d921026e2b967914dac7"></a>
 <div class="memitem">
 <div class="memproto">
@@ -483,7 +539,7 @@ template&lt;size_t threadCount = 2u&gt; </div>
 template&lt;size_t threadCount = 2u&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_logger.html">Logger</a>&lt; threadCount &gt;::threadMetrics</td>
+          <td class="memname"><a class="el" href="class_logger.html">Logger</a>&lt; threadCount &gt;::threadMetrics {}</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -498,6 +554,20 @@ template&lt;size_t threadCount = 2u&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="thread__metrics_8h.html#ae5877028144abdb2fd0d601eae9bcf2e">SharedMultyMetrics</a> <a class="el" href="class_logger.html">Logger</a>&lt; threadCount &gt;::threadMetrics</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a22349ca93733988bf01f4c9286a10ba5"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t threadCount = 2u&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::atomic&lt;size_t&gt; <a class="el" href="class_logger.html">Logger</a>&lt; threadCount &gt;::totalFilesProcessed {0}</td>
         </tr>
       </table>
 </div><div class="memdoc">

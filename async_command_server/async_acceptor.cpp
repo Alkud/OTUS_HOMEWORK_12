@@ -14,29 +14,17 @@ AsyncAcceptor::AsyncAcceptor(
   const asio::ip::address_v4 newAddress,
   const uint16_t newPortNumber,
   asio::io_service& newService,
-  const size_t newBulkSize,
+  std::shared_ptr<AsyncCommandProcessor<2>> newProcessor,
   const char newBulkOpenDelimiter,
   const char newBulkCloseDelimiter,
-  std::ostream& newOutputStream,
   std::ostream& newErrorStream,
-  std::ostream& newMetricsStream,
   std::condition_variable& newTerminationNotifier,
   std::atomic<bool>& newTerminationFlag
 ) :
 address{newAddress}, portNumber{newPortNumber}, service{newService},
 endpoint{address, portNumber}, acceptor{service, endpoint},
 
-processor{
-    new AsyncCommandProcessor<2> (
-    std::string{"Command processor @"} + address.to_string() + ":" + std::to_string(portNumber),
-    newBulkSize,
-    newBulkOpenDelimiter,
-    newBulkCloseDelimiter,
-    newOutputStream,
-    newErrorStream,
-    newMetricsStream
-  )
-},
+processor{newProcessor},
 
 openDelimiter{newBulkOpenDelimiter}, closeDelimiter{newBulkCloseDelimiter},
 
@@ -65,6 +53,11 @@ void AsyncAcceptor::stop()
   #else
     //std::cout << "-- Acceptor stop\n";
   #endif
+
+  if (shouldExit.load() == true)
+  {
+    return;
+  }
 
   shouldExit.store(true);
 

@@ -1,9 +1,9 @@
 Package: bulkserver
-Version: 0.0.21
+Version: 0.0.22
 Section: devel
 Priority: optional
 Architecture: amd64
-Installed-Size: 1095
+Installed-Size: 1107
 Maintainer: alexandr_kudinov@mail.ru
 Description: bulkserver built using CMake
 

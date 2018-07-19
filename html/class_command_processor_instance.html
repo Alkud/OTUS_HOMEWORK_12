@@ -110,8 +110,8 @@ Collaboration diagram for CommandProcessorInstance&lt; loggingThreadCount &gt;:<
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aaa89840dd4bfaf0ac220258812396f3b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#aaa89840dd4bfaf0ac220258812396f3b">CommandProcessorInstance</a> (const size_t <a class="el" href="input__processor_8cpp.html#a642fd46fcccb815659284cd725d4a845">bulkSize</a>, const char <a class="el" href="input__processor_8cpp.html#aa6b56f8d7904bd4053b7bf3bf147bc7a">bulkOpenDelimiter</a>, const char <a class="el" href="input__processor_8cpp.html#a6a95dd894d8941411f54627aab6660cd">bulkCloseDelimiter</a>, std::ostream &amp;outputStream, std::ostream &amp;errorStream, std::ostream &amp;metricsStream, std::mutex &amp;newScreenOutputLock)</td></tr>
-<tr class="separator:aaa89840dd4bfaf0ac220258812396f3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad995cc731846a0fa8f5d134e4a182471"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#ad995cc731846a0fa8f5d134e4a182471">CommandProcessorInstance</a> (const size_t <a class="el" href="input__processor_8cpp.html#a642fd46fcccb815659284cd725d4a845">bulkSize</a>, const char <a class="el" href="input__processor_8cpp.html#aa6b56f8d7904bd4053b7bf3bf147bc7a">bulkOpenDelimiter</a>, const char <a class="el" href="input__processor_8cpp.html#a6a95dd894d8941411f54627aab6660cd">bulkCloseDelimiter</a>, std::ostream &amp;outputStream, std::ostream &amp;errorStream, std::ostream &amp;metricsStream, std::mutex &amp;newScreenOutputLock, bool stressTestNeeded)</td></tr>
+<tr class="separator:ad995cc731846a0fa8f5d134e4a182471"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b6c6b43c45d055023de13b5a6812a1d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a1b6c6b43c45d055023de13b5a6812a1d">~CommandProcessorInstance</a> ()</td></tr>
 <tr class="separator:a1b6c6b43c45d055023de13b5a6812a1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ca31b8b19f99f0b785b7d47c92de983"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a5ca31b8b19f99f0b785b7d47c92de983">reactMessage</a> (<a class="el" href="class_message_broadcaster.html">MessageBroadcaster</a> *, <a class="el" href="broadcasters_8h.html#aff97733e4706e994965da50c70605422">Message</a> message)</td></tr>
@@ -132,6 +132,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8578ba398659374259853e0ec6dcf62d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5dcff45165c0ffd2b4bbfe02c4034cd"><td class="memItemLeft" align="right" valign="top">std::mutex &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#ad5dcff45165c0ffd2b4bbfe02c4034cd">getScreenOutputLock</a> ()</td></tr>
 <tr class="separator:ad5dcff45165c0ffd2b4bbfe02c4034cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48b99270acf445878c0b2c0cb23dfc2d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a48b99270acf445878c0b2c0cb23dfc2d">isInErrorState</a> ()</td></tr>
+<tr class="separator:a48b99270acf445878c0b2c0cb23dfc2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_message_broadcaster"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_message_broadcaster')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_message_broadcaster.html">MessageBroadcaster</a></td></tr>
 <tr class="memitem:a233b4bf529f9ba2b4c58a35134b3f64c inherit pub_methods_class_message_broadcaster"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_message_broadcaster.html#a233b4bf529f9ba2b4c58a35134b3f64c">~MessageBroadcaster</a> ()</td></tr>
 <tr class="separator:a233b4bf529f9ba2b4c58a35134b3f64c inherit pub_methods_class_message_broadcaster"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -193,6 +195,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a0703365979feee6f491b8e1c9cf6b7f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa880a2c2f3d8cc383d6caa6538def28f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="broadcasters_8h.html#aff97733e4706e994965da50c70605422">Message</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#aa880a2c2f3d8cc383d6caa6538def28f">errorMessage</a> {<a class="el" href="broadcasters_8h.html#aff97733e4706e994965da50c70605422ab932b91f686c2aa588adfd9a407155ca">Message::SystemError</a>}</td></tr>
 <tr class="separator:aa880a2c2f3d8cc383d6caa6538def28f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55ed58ceb19d1181df0c275da5707c05"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_command_processor_instance.html#a55ed58ceb19d1181df0c275da5707c05">stressTesting</a></td></tr>
+<tr class="separator:a55ed58ceb19d1181df0c275da5707c05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -203,7 +207,7 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a95a811516fbd1370acf7335b1c663fb8 inherit pro_attribs_class_message_broadcaster"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="aaa89840dd4bfaf0ac220258812396f3b"></a>
+<a class="anchor" id="ad995cc731846a0fa8f5d134e4a182471"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -252,7 +256,13 @@ template&lt;size_t loggingThreadCount = 2u&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::mutex &amp;&#160;</td>
-          <td class="paramname"><em>newScreenOutputLock</em>&#160;</td>
+          <td class="paramname"><em>newScreenOutputLock</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>stressTestNeeded</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -406,6 +416,31 @@ template&lt;size_t loggingThreadCount = 2u&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">std::mutex&amp; <a class="el" href="class_command_processor_instance.html">CommandProcessorInstance</a>&lt; loggingThreadCount &gt;::getScreenOutputLock </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a48b99270acf445878c0b2c0cb23dfc2d"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t loggingThreadCount = 2u&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="class_command_processor_instance.html">CommandProcessorInstance</a>&lt; loggingThreadCount &gt;::isInErrorState </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -849,6 +884,28 @@ template&lt;size_t loggingThreadCount = 2u&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">std::atomic_bool <a class="el" href="class_command_processor_instance.html">CommandProcessorInstance</a>&lt; loggingThreadCount &gt;::shouldExit</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a55ed58ceb19d1181df0c275da5707c05"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t loggingThreadCount = 2u&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="class_command_processor_instance.html">CommandProcessorInstance</a>&lt; loggingThreadCount &gt;::stressTesting</td>
         </tr>
       </table>
   </td>

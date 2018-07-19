@@ -140,6 +140,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="class_async_acceptor.html#abc9041a8777d9b5c7151e14720d87a24">AsyncAcceptor</a>
 , <a class="el" href="class_async_command_server.html#a08faa1a6b5a4150ca98969e7d0b5b8e2">AsyncCommandServer&lt; workingThreadCount &gt;</a>
 </li>
+<li>appTerminationFlag
+: <a class="el" href="class_async_command_server.html#ab6c9030ef205850e2506d1c538267eb9">AsyncCommandServer&lt; workingThreadCount &gt;</a>
+</li>
+<li>appTerminationNotifier
+: <a class="el" href="class_async_command_server.html#a41a19aca731d33e343571fb283e07415">AsyncCommandServer&lt; workingThreadCount &gt;</a>
+</li>
 <li>asyncAcceptor
 : <a class="el" href="class_async_command_server.html#a1e06dc33be1c0941ae43c1ad86f3983d">AsyncCommandServer&lt; workingThreadCount &gt;</a>
 </li>
@@ -189,8 +195,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>commandBuffer
 : <a class="el" href="class_async_command_processor.html#afdc1fd9a47482391f8fda410cce27456">AsyncCommandProcessor&lt; loggingThreadCount &gt;</a>
 </li>
+<li>commandProcessor
+: <a class="el" href="class_async_command_server.html#a6685b7893bfe08a8facd709fc56d2ba2">AsyncCommandServer&lt; workingThreadCount &gt;</a>
+</li>
 <li>controller
-: <a class="el" href="class_async_reader.html#aa2eece9d074ab6d3e632b7ecd27876dd">AsyncReader</a>
+: <a class="el" href="class_async_command_server.html#a6702b1852e78de02c2a8919e1f720c9e">AsyncCommandServer&lt; workingThreadCount &gt;</a>
+, <a class="el" href="class_async_reader.html#aa2eece9d074ab6d3e632b7ecd27876dd">AsyncReader</a>
 </li>
 <li>controllerNotifier
 : <a class="el" href="class_async_reader.html#ad299961e194a274214320284fa9ae974">AsyncReader</a>
@@ -287,6 +297,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>inputStreamLock
 : <a class="el" href="class_command_processor_instance.html#a315179d34844d5687b4f29a1c9a44524">CommandProcessorInstance&lt; loggingThreadCount &gt;</a>
 </li>
+<li>isProcessorInErrorState
+: <a class="el" href="class_async_command_processor.html#a7301bec17b89e54563a45268f48644f5">AsyncCommandProcessor&lt; loggingThreadCount &gt;</a>
+</li>
 <li>isStopped
 : <a class="el" href="class_async_worker.html#ad74ffc43c34fb72d091592dcff26ded2">AsyncWorker&lt; workingThreadCount &gt;</a>
 </li>
@@ -376,6 +389,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="class_async_command_processor.html#aa1962d8e53d69171af8cc2cb9fedd560">AsyncCommandProcessor&lt; loggingThreadCount &gt;</a>
 , <a class="el" href="class_async_reader.html#addb64a95dfcd7b01f87ea765b440289d">AsyncReader</a>
 </li>
+<li>processorErrorNotifier
+: <a class="el" href="class_async_command_processor.html#ad8e526b2d00bc636059b8ebfbcd0d9b5">AsyncCommandProcessor&lt; loggingThreadCount &gt;</a>
+</li>
+<li>processorFailed
+: <a class="el" href="class_async_command_server.html#a1505d56b32b31a249ef78c25f042667d">AsyncCommandServer&lt; workingThreadCount &gt;</a>
+</li>
 <li>processorName
 : <a class="el" href="class_async_command_processor.html#a2eb43e08bdf62430e6dcead786793835">AsyncCommandProcessor&lt; loggingThreadCount &gt;</a>
 </li>
@@ -407,9 +426,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="class_async_command_processor.html#ae72345064cd0935d70ed97c66200c9ba">AsyncCommandProcessor&lt; loggingThreadCount &gt;</a>
 , <a class="el" href="class_command_processor_instance.html#a823a525f6c3149f0dd089eb35bf4e77b">CommandProcessorInstance&lt; loggingThreadCount &gt;</a>
 </li>
-<li>selfDestroy
-: <a class="el" href="class_async_command_processor.html#a233c3cd65e826a1da61b7ee77f14fdbe">AsyncCommandProcessor&lt; loggingThreadCount &gt;</a>
-</li>
 <li>service
 : <a class="el" href="class_async_acceptor.html#af9487f1b5f2038ed6a242076ad3cf42e">AsyncAcceptor</a>
 , <a class="el" href="class_async_command_server.html#a1cac417a059bba92b1ac868484e2dc1d">AsyncCommandServer&lt; workingThreadCount &gt;</a>
@@ -418,7 +434,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="class_async_reader.html#aed4e70a0b3f0a37f2e4df9ba643bbb29">AsyncReader</a>
 </li>
 <li>shouldExit
-: <a class="el" href="class_async_acceptor.html#a7dc92416426765ae0a1d366a56bb93ba">AsyncAcceptor</a>
+: <a class="el" href="class_async_acceptor.html#a1f5883cee4d82e0a8d95f3477c6e6c3f">AsyncAcceptor</a>
+, <a class="el" href="class_async_command_server.html#aeb1e5e80fdfb445aa119b1863f0b046e">AsyncCommandServer&lt; workingThreadCount &gt;</a>
 , <a class="el" href="class_async_reader.html#a6b0c01bc155132707baca3191fd4e936">AsyncReader</a>
 , <a class="el" href="class_async_worker.html#ad9ddf369aab8745b691ba4f24676c88f">AsyncWorker&lt; workingThreadCount &gt;</a>
 , <a class="el" href="class_command_processor_instance.html#ae934fb344a66f329340d431ca66a2b55">CommandProcessorInstance&lt; loggingThreadCount &gt;</a>
@@ -431,6 +448,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>stopped
 : <a class="el" href="class_async_reader.html#a53a446b004f0c6eb3f62fb6f475583e6">AsyncReader</a>
+</li>
+<li>STRESS_TEST_MAX_NUMBER_OF_FILES
+: <a class="el" href="class_logger.html#a8de33e619b8c2d52b680e74412663efc">Logger&lt; threadCount &gt;</a>
+</li>
+<li>stressTesting
+: <a class="el" href="class_async_command_processor.html#a253e08f2436f0a43a8d16d33c9b2a97e">AsyncCommandProcessor&lt; loggingThreadCount &gt;</a>
+, <a class="el" href="class_async_command_server.html#a8597b42519302972e80ab0a05f08a603">AsyncCommandServer&lt; workingThreadCount &gt;</a>
+, <a class="el" href="class_command_processor_instance.html#a55ed58ceb19d1181df0c275da5707c05">CommandProcessorInstance&lt; loggingThreadCount &gt;</a>
+, <a class="el" href="class_logger.html#adc1b100bb08dd3e2592b01c48a1758a5">Logger&lt; threadCount &gt;</a>
 </li>
 <li>stringHasher
 : <a class="el" href="class_async_worker.html#a5136e7227ac808ba0da91468b374fadf">AsyncWorker&lt; workingThreadCount &gt;</a>
@@ -485,9 +511,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>threads
 : <a class="el" href="class_async_worker.html#aab15862a22bc0064896adc72b58ebad9">AsyncWorker&lt; workingThreadCount &gt;</a>
 </li>
-<li>timeStampID
-: <a class="el" href="class_async_command_processor.html#aed1d6e5ad297908bf6f29595154bca67">AsyncCommandProcessor&lt; loggingThreadCount &gt;</a>
-</li>
 <li>totalBulkCount
 : <a class="el" href="struct_thread_metrics.html#ad453420240b6d93c8b07347b1efb4800">ThreadMetrics</a>
 </li>
@@ -496,6 +519,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>totalCommandCount
 : <a class="el" href="struct_thread_metrics.html#ae2f4d59214c5fa21db87f64a2b2b0e0e">ThreadMetrics</a>
+</li>
+<li>totalFilesProcessed
+: <a class="el" href="class_logger.html#a22349ca93733988bf01f4c9286a10ba5">Logger&lt; threadCount &gt;</a>
 </li>
 <li>totalReceptionCount
 : <a class="el" href="struct_thread_metrics.html#aaa00df642aab5ef8f3aeae59297a228c">ThreadMetrics</a>

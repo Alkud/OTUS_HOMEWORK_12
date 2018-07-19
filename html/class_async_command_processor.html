@@ -111,8 +111,8 @@ Collaboration diagram for AsyncCommandProcessor&lt; loggingThreadCount &gt;:</di
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6bc59857b5644bccec36563c437295af"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_command_processor.html#a6bc59857b5644bccec36563c437295af">AsyncCommandProcessor</a> (const std::string &amp;newProcessorName, const size_t newBulkSize=3, const char newBulkOpenDelimiter= '{', const char newBulkCloseDelimiter= '}', std::ostream &amp;newOutputStream=std::cout, std::ostream &amp;newErrorStream=std::cerr, std::ostream &amp;newMetricsStream=std::cout)</td></tr>
-<tr class="separator:a6bc59857b5644bccec36563c437295af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97fda8e1a6cc98a363c5eda8ead02866"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_command_processor.html#a97fda8e1a6cc98a363c5eda8ead02866">AsyncCommandProcessor</a> (const std::string &amp;newProcessorName, const size_t newBulkSize, const char newBulkOpenDelimiter, const char newBulkCloseDelimiter, std::ostream &amp;newOutputStream, std::ostream &amp;newErrorStream, std::ostream &amp;newMetricsStream, std::atomic&lt; bool &gt; &amp;errorState, std::condition_variable &amp;errorNotifier, bool stressTestNeeded)</td></tr>
+<tr class="separator:a97fda8e1a6cc98a363c5eda8ead02866"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cf94a4106c01afae0a96ef507da99b1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_command_processor.html#a8cf94a4106c01afae0a96ef507da99b1">~AsyncCommandProcessor</a> ()</td></tr>
 <tr class="separator:a8cf94a4106c01afae0a96ef507da99b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac057b32f4faa0cd644af2c64aafb4a50"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_command_processor.html#ac057b32f4faa0cd644af2c64aafb4a50">connect</a> (const bool outputMetrics=true) noexcept</td></tr>
@@ -196,10 +196,12 @@ Private Attributes</h2></td></tr>
 <tr class="separator:ab36f5b2fdc41e1e8552889087c755ba9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09b89dc8aaf6a0005e30cb8c8904bbae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="thread__metrics_8h.html#ac1589e063b43543469fafabc05566bcc">SharedGlobalMetrics</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_command_processor.html#a09b89dc8aaf6a0005e30cb8c8904bbae">metrics</a></td></tr>
 <tr class="separator:a09b89dc8aaf6a0005e30cb8c8904bbae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed1d6e5ad297908bf6f29595154bca67"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_command_processor.html#aed1d6e5ad297908bf6f29595154bca67">timeStampID</a></td></tr>
-<tr class="separator:aed1d6e5ad297908bf6f29595154bca67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a233c3cd65e826a1da61b7ee77f14fdbe"><td class="memItemLeft" align="right" valign="top">std::thread&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_command_processor.html#a233c3cd65e826a1da61b7ee77f14fdbe">selfDestroy</a></td></tr>
-<tr class="separator:a233c3cd65e826a1da61b7ee77f14fdbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7301bec17b89e54563a45268f48644f5"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; bool &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_command_processor.html#a7301bec17b89e54563a45268f48644f5">isProcessorInErrorState</a></td></tr>
+<tr class="separator:a7301bec17b89e54563a45268f48644f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8e526b2d00bc636059b8ebfbcd0d9b5"><td class="memItemLeft" align="right" valign="top">std::condition_variable &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_command_processor.html#ad8e526b2d00bc636059b8ebfbcd0d9b5">processorErrorNotifier</a></td></tr>
+<tr class="separator:ad8e526b2d00bc636059b8ebfbcd0d9b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a253e08f2436f0a43a8d16d33c9b2a97e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_async_command_processor.html#a253e08f2436f0a43a8d16d33c9b2a97e">stressTesting</a></td></tr>
+<tr class="separator:a253e08f2436f0a43a8d16d33c9b2a97e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
@@ -215,7 +217,7 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a95a811516fbd1370acf7335b1c663fb8 inherit pro_attribs_class_message_broadcaster"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a6bc59857b5644bccec36563c437295af"></a>
+<a class="anchor" id="a97fda8e1a6cc98a363c5eda8ead02866"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -234,37 +236,55 @@ template&lt;size_t loggingThreadCount = 2u&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>newBulkSize</em> = <code>3</code>, </td>
+          <td class="paramname"><em>newBulkSize</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const char&#160;</td>
-          <td class="paramname"><em>newBulkOpenDelimiter</em> = <code>'{'</code>, </td>
+          <td class="paramname"><em>newBulkOpenDelimiter</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const char&#160;</td>
-          <td class="paramname"><em>newBulkCloseDelimiter</em> = <code>'}'</code>, </td>
+          <td class="paramname"><em>newBulkCloseDelimiter</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>newOutputStream</em> = <code>std::cout</code>, </td>
+          <td class="paramname"><em>newOutputStream</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>newErrorStream</em> = <code>std::cerr</code>, </td>
+          <td class="paramname"><em>newErrorStream</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>newMetricsStream</em> = <code>std::cout</code>&#160;</td>
+          <td class="paramname"><em>newMetricsStream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::atomic&lt; bool &gt; &amp;&#160;</td>
+          <td class="paramname"><em>errorState</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::condition_variable &amp;&#160;</td>
+          <td class="paramname"><em>errorNotifier</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>stressTestNeeded</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -766,6 +786,28 @@ template&lt;size_t loggingThreadCount = 2u&gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="a7301bec17b89e54563a45268f48644f5"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t loggingThreadCount = 2u&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::atomic&lt;bool&gt;&amp; <a class="el" href="class_async_command_processor.html">AsyncCommandProcessor</a>&lt; loggingThreadCount &gt;::isProcessorInErrorState</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a09b89dc8aaf6a0005e30cb8c8904bbae"></a>
 <div class="memitem">
 <div class="memproto">
@@ -854,6 +896,28 @@ template&lt;size_t loggingThreadCount = 2u&gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="ad8e526b2d00bc636059b8ebfbcd0d9b5"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t loggingThreadCount = 2u&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::condition_variable&amp; <a class="el" href="class_async_command_processor.html">AsyncCommandProcessor</a>&lt; loggingThreadCount &gt;::processorErrorNotifier</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a2eb43e08bdf62430e6dcead786793835"></a>
 <div class="memitem">
 <div class="memproto">
@@ -920,7 +984,7 @@ template&lt;size_t loggingThreadCount = 2u&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a233c3cd65e826a1da61b7ee77f14fdbe"></a>
+<a class="anchor" id="a253e08f2436f0a43a8d16d33c9b2a97e"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -930,7 +994,7 @@ template&lt;size_t loggingThreadCount = 2u&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::thread <a class="el" href="class_async_command_processor.html">AsyncCommandProcessor</a>&lt; loggingThreadCount &gt;::selfDestroy</td>
+          <td class="memname">bool <a class="el" href="class_async_command_processor.html">AsyncCommandProcessor</a>&lt; loggingThreadCount &gt;::stressTesting</td>
         </tr>
       </table>
   </td>
@@ -975,28 +1039,6 @@ template&lt;size_t loggingThreadCount = 2u&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">std::condition_variable <a class="el" href="class_async_command_processor.html">AsyncCommandProcessor</a>&lt; loggingThreadCount &gt;::terminationNotifier</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="aed1d6e5ad297908bf6f29595154bca67"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;size_t loggingThreadCount = 2u&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::size_t <a class="el" href="class_async_command_processor.html">AsyncCommandProcessor</a>&lt; loggingThreadCount &gt;::timeStampID</td>
         </tr>
       </table>
   </td>

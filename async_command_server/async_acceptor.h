@@ -25,12 +25,10 @@ public:
   AsyncAcceptor(const asio::ip::address_v4 newAddress,
                 const uint16_t newPortNumber,
                 asio::io_service& newService,
-                const size_t newBulkSize,                
+                std::shared_ptr<AsyncCommandProcessor<2>> newProcessor,
                 const char newBulkOpenDelimiter,
                 const char newBulkCloseDelimiter,
-                std::ostream& newOutputStream,
                 std::ostream& newErrorStream,
-                std::ostream& newMetricsStream,
                 std::condition_variable& newTerminationNotifier,
                 std::atomic<bool>& newTerminationFlag);
 
@@ -70,7 +68,7 @@ private:
   std::condition_variable& terminationNotifier;
   std::atomic<bool>& terminationFlag;
 
-  std::atomic_bool shouldExit;
+  std::atomic<bool> shouldExit;
 
   std::ostream& errorStream;
   std::mutex& outputLock;

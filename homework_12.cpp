@@ -32,13 +32,24 @@ int homework(int argc, char* argv[], std::ostream& outputStream,
     return 1;
   }
 
+  bool stressTesting{false};
+
+  if (4 == argc
+      && std::string{argv[3]} == "-t")
+  {
+    stressTesting = true;
+  }
+
   uint16_t portNumber{static_cast<uint16_t>(std::stoull(std::string{argv[1]}))};
   size_t bulkSize{std::stoull(std::string{argv[2]})};
 
   AsyncCommandServer<2> server{
     asio::ip::address_v4::any(), portNumber,
     bulkSize, '{', '}',
-    outputStream, errorStream, metricsStream
+    outputStream, errorStream, metricsStream,
+    stressTesting,
+    shouldExit,
+    terminationNotifier
   };
 
   std::thread mainThread{[&server]()

@@ -2,7 +2,7 @@ var searchData=
 [
   ['characterbuffer',['characterBuffer',['../class_async_reader.html#a80eafb53bce295a8880dc2ac8f5529b3',1,'AsyncReader']]],
   ['characterreadingerror',['CharacterReadingError',['../broadcasters_8h.html#aff97733e4706e994965da50c70605422a24cdc501638e4f97f1571f1b9867a757',1,'broadcasters.h']]],
-  ['checkmetrics',['checkMetrics',['../otus__hw__12__test_8cpp.html#afdc43529996621945068d679b11acebd',1,'otus_hw_12_test.cpp']]],
+  ['checkmetrics',['checkMetrics',['../otus__hw__12__test_8cpp.html#aedc63f94e2b206af4d04ed9d470504b2',1,'otus_hw_12_test.cpp']]],
   ['clear',['clear',['../struct_thread_metrics.html#a2309f97b68785c9e40659e2688725d6e',1,'ThreadMetrics']]],
   ['clearmessagelistenerlist',['clearMessageListenerList',['../class_message_broadcaster.html#a72bdc718a0558928fcb918399369dd80',1,'MessageBroadcaster']]],
   ['clearnotificationlistenerlist',['clearNotificationListenerList',['../class_notification_broadcaster.html#a4bd4e32ef80c196517b1fd0426ed3838',1,'NotificationBroadcaster']]],
@@ -10,9 +10,10 @@ var searchData=
   ['closedelimiter',['closeDelimiter',['../class_async_acceptor.html#a3169fbf1f561b70b94336626b7dbb927',1,'AsyncAcceptor::closeDelimiter()'],['../class_async_reader.html#a8246c31789553c250c47d662b137f089',1,'AsyncReader::closeDelimiter()']]],
   ['command_5fprocessor_5finstance_2eh',['command_processor_instance.h',['../command__processor__instance_8h.html',1,'']]],
   ['commandbuffer',['commandBuffer',['../class_async_command_processor.html#afdc1fd9a47482391f8fda410cce27456',1,'AsyncCommandProcessor']]],
-  ['commandprocessorinstance',['CommandProcessorInstance',['../class_command_processor_instance.html',1,'CommandProcessorInstance&lt; loggingThreadCount &gt;'],['../class_command_processor_instance.html#aaa89840dd4bfaf0ac220258812396f3b',1,'CommandProcessorInstance::CommandProcessorInstance()']]],
+  ['commandprocessor',['commandProcessor',['../class_async_command_server.html#a6685b7893bfe08a8facd709fc56d2ba2',1,'AsyncCommandServer']]],
+  ['commandprocessorinstance',['CommandProcessorInstance',['../class_command_processor_instance.html',1,'CommandProcessorInstance&lt; loggingThreadCount &gt;'],['../class_command_processor_instance.html#ad995cc731846a0fa8f5d134e4a182471',1,'CommandProcessorInstance::CommandProcessorInstance()']]],
   ['connect',['connect',['../class_async_command_processor.html#ac057b32f4faa0cd644af2c64aafb4a50',1,'AsyncCommandProcessor']]],
-  ['controller',['controller',['../class_async_reader.html#aa2eece9d074ab6d3e632b7ecd27876dd',1,'AsyncReader']]],
+  ['controller',['controller',['../class_async_command_server.html#a6702b1852e78de02c2a8919e1f720c9e',1,'AsyncCommandServer::controller()'],['../class_async_reader.html#aa2eece9d074ab6d3e632b7ecd27876dd',1,'AsyncReader::controller()']]],
   ['controllernotifier',['controllerNotifier',['../class_async_reader.html#ad299961e194a274214320284fa9ae974',1,'AsyncReader']]],
   ['currentreader',['currentReader',['../class_async_acceptor.html#a343ca63ee0a836d78b820a7cc2bdb12f',1,'AsyncAcceptor']]],
   ['custombulkstarted',['customBulkStarted',['../class_input_processor.html#ae1951525008d9b89032e327993809b4e',1,'InputProcessor::customBulkStarted()'],['../input__processor_8cpp.html#a4c4f3d72a75a246b3f85ed071ff2e4f6',1,'customBulkStarted():&#160;input_processor.cpp']]]

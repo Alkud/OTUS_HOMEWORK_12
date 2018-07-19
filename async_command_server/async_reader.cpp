@@ -68,9 +68,7 @@ void AsyncReader::start()
           && socket != nullptr
           && socket->is_open())
       {
-        //socket->shutdown(asio::ip::tcp::socket::shutdown_both);
         stop();
-        //socket->cancel();
       }
 
       #ifdef NDEBUG
@@ -106,12 +104,7 @@ void AsyncReader::stop()
       #ifdef NDEBUG
       #else
         //std::cout << "-- reader socket close\n";
-      #endif
-
-      if (socket->is_open() == true )
-      {
-        //socket->close();
-      }
+      #endif      
     }
 
     if (readerCounter.load() != 0)
@@ -153,15 +146,6 @@ void AsyncReader::doRead()
     }
     else
     {
-//      if (error != asio::error::eof && error.value() != 0)
-//      {
-//        std::lock_guard<std::mutex> lockOutput{outputLock};
-
-//        errorStream << "async_read error: "
-//                    << error.message()
-//                    << ". Error code: " << error.value() << '\n';
-//      }
-
       stop();
     }
   });

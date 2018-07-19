@@ -8,5 +8,7 @@ var searchData=
   ['activereceptioncount',['activeReceptionCount',['../class_async_command_processor.html#a4151919abb9ccf86e52b79970bb604e3',1,'AsyncCommandProcessor']]],
   ['additionalnamesection',['additionalNameSection',['../class_logger.html#a4021e7a8a9ed768e84c79d463942aa2f',1,'Logger::additionalNameSection()'],['../class_logger.html#aed5365702e805b6453c631d079d08a06',1,'Logger::additionalNameSection()']]],
   ['address',['address',['../class_async_acceptor.html#abc9041a8777d9b5c7151e14720d87a24',1,'AsyncAcceptor::address()'],['../class_async_command_server.html#a08faa1a6b5a4150ca98969e7d0b5b8e2',1,'AsyncCommandServer::address()']]],
+  ['appterminationflag',['appTerminationFlag',['../class_async_command_server.html#ab6c9030ef205850e2506d1c538267eb9',1,'AsyncCommandServer']]],
+  ['appterminationnotifier',['appTerminationNotifier',['../class_async_command_server.html#a41a19aca731d33e343571fb283e07415',1,'AsyncCommandServer']]],
   ['asyncacceptor',['asyncAcceptor',['../class_async_command_server.html#a1e06dc33be1c0941ae43c1ad86f3983d',1,'AsyncCommandServer']]]
 ];
