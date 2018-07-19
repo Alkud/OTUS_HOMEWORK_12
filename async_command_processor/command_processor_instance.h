@@ -28,7 +28,8 @@ public:
     std::ostream& outputStream,
     std::ostream& errorStream,
     std::ostream& metricsStream,
-    std::mutex& newScreenOutputLock
+    std::mutex& newScreenOutputLock,
+    bool stressTestNeeded
   ) :
     screenOutputLock{newScreenOutputLock},
     /* creating buffers */    
@@ -38,7 +39,7 @@ public:
     /* creating logger */
     logger{
       new Logger<loggingThreadCount> (
-      "logger", loggerBuffers, errorStream, screenOutputLock, ""
+      "logger", loggerBuffers, errorStream, screenOutputLock, "", stressTestNeeded
     )},
 
     /* creating publisher */
@@ -66,7 +67,9 @@ public:
 
     terminationNotifier{}, notifierLock{},
 
-    errorOut{errorStream}, metricsOut{metricsStream}, globalMetrics{}
+    errorOut{errorStream}, metricsOut{metricsStream}, globalMetrics{},
+
+    stressTesting{stressTestNeeded}
   {
     /* create logger buffers */
     for (size_t idx{0}; idx < loggingThreadCount; ++idx)
@@ -97,7 +100,7 @@ public:
     {
       loggerBuffer->addNotificationListener(logger);
       loggerBuffer->addMessageListener(logger);
-    }
+    }    
 
     /* creating metrics*/    
     globalMetrics["input processor"] = inputProcessor->getMetrics();
@@ -163,6 +166,7 @@ public:
       {
         shouldExit.store(true);
         errorMessage = message;
+        sendMessage(errorMessage);
         terminationNotifier.notify_all();
       }
     }
@@ -249,7 +253,7 @@ public:
     }
   }
 
-//  const std::shared_ptr<InputReader::InputBufferType>&
+
 const std::shared_ptr<InputProcessor::InputBufferType>&
   getEntryPoint() const
 //  { return externalBuffer; }
@@ -271,11 +275,13 @@ const std::shared_ptr<InputProcessor::InputBufferType>&
   std::mutex& getScreenOutputLock()
   { return screenOutputLock; }
 
+  bool isInErrorState()
+  { return shouldExit.load();}
+
 
 private:
   std::mutex& screenOutputLock;
 
-  //std::shared_ptr<InputReader::InputBufferType> externalBuffer;
   std::shared_ptr<InputProcessor::InputBufferType> inputBuffer;
   std::shared_ptr<InputProcessor::OutputBufferType> publisherBuffer;
   std::vector<std::shared_ptr<InputProcessor::OutputBufferType>> loggerBuffers;
@@ -283,7 +289,6 @@ private:
   std::shared_ptr<Logger<loggingThreadCount>> logger;
   std::shared_ptr<Publisher> publisher;
   std::shared_ptr<InputProcessor> inputProcessor;
-  //std::shared_ptr<InputReader> inputReader;
 
   std::mutex inputStreamLock;
 
@@ -300,5 +305,7 @@ private:
   SharedGlobalMetrics globalMetrics;
 
   Message errorMessage{Message::SystemError};
+
+  bool stressTesting;
 };
 

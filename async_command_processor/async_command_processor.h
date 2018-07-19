@@ -20,12 +20,15 @@ public:
 
   AsyncCommandProcessor(
       const std::string& newProcessorName,
-      const size_t newBulkSize = 3,
-      const char newBulkOpenDelimiter = '{',
-      const char newBulkCloseDelimiter = '}',
-      std::ostream& newOutputStream = std::cout,
-      std::ostream& newErrorStream = std::cerr,
-      std::ostream& newMetricsStream = std::cout
+      const size_t newBulkSize,
+      const char newBulkOpenDelimiter,
+      const char newBulkCloseDelimiter,
+      std::ostream& newOutputStream,
+      std::ostream& newErrorStream,
+      std::ostream& newMetricsStream,
+      std::atomic<bool>& errorState,
+      std::condition_variable& errorNotifier,
+      bool stressTestNeeded
   ) :
     processorName{newProcessorName},
     accessLock{},
@@ -48,7 +51,8 @@ public:
         outputStream,
         errorStream,
         metricsStream,
-        screenOutputLock
+        screenOutputLock,
+        stressTestNeeded
       )
     },
 
@@ -56,7 +60,11 @@ public:
     commandBuffer{processor->getInputBuffer()},
     bulkBuffer{processor->getOutputBuffer()},
     metrics{processor->getMetrics()},
-    selfDestroy{}
+
+    isProcessorInErrorState(errorState),
+    processorErrorNotifier(errorNotifier),
+
+    stressTesting(stressTestNeeded)
   {
     #ifdef NDEBUG
     #else
@@ -125,11 +133,7 @@ public:
      std::lock_guard<std::mutex> lockOutput{screenOutputLock};
 
      metricsStream << '\n' << processorName << " metrics:\n";
-     metricsStream //<< "total received - "
-                   //<< metrics["input reader"]->totalReceptionCount << " data chunk(s), "
-                   //<< metrics["input reader"]->totalCharacterCount << " character(s), "
-                   //<< metrics["input reader"]->totalStringCount << " string(s)" << std::endl
-                   << "total processed - "
+     metricsStream << "total processed - "
                    << metrics["input processor"]->totalStringCount << " string(s), "
                    << metrics["input processor"]->totalCommandCount << " command(s), "
                    << metrics["input processor"]->totalBulkCount << " bulk(s)" << std::endl
@@ -146,6 +150,12 @@ public:
 
      }
      metricsStream << std::endl;
+
+     if (processor->isInErrorState() == true)
+     {
+       isProcessorInErrorState.store(true);
+       processorErrorNotifier.notify_all();
+     }
   }
 
   void receiveData(const char *data, std::size_t size)
@@ -313,9 +323,10 @@ private:
 
   SharedGlobalMetrics metrics;
 
-  std::size_t timeStampID;
+  std::atomic<bool>& isProcessorInErrorState;
+  std::condition_variable& processorErrorNotifier;
 
-  std::thread selfDestroy;
+  bool stressTesting;
 };
 
 template <size_t loggingThreadCount>

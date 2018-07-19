@@ -32,18 +32,22 @@ class Logger : public NotificationListener,
 {
 public:
 
+  size_t STRESS_TEST_MAX_NUMBER_OF_FILES{1000};
+
   Logger(
     const std::string& newWorkerName,
     const std::vector<SharedSizeStringBuffer>& newBuffers,
     std::ostream& newErrorOut, std::mutex& newErrorOutLock,
-    const std::string& newDestinationDirectory = ""
+    const std::string& newDestinationDirectory,
+    bool stressTestNeeded
   ) :
     AsyncWorker<threadCount>{newWorkerName},
     buffers{newBuffers},
     destinationDirectory{newDestinationDirectory},
     previousTimeStamp{}, additionalNameSection{},
     errorOut{newErrorOut}, errorOutLock{newErrorOutLock},
-    threadMetrics{}
+    threadMetrics{},
+    stressTesting{stressTestNeeded}
   {
     for (const auto& buffer : buffers)
     {
@@ -146,7 +150,7 @@ public:
 private:
 
   bool threadProcess(const size_t threadIndex) override
-  {
+  {    
     if (nullptr == buffers[threadIndex])
     {
       throw(std::invalid_argument{"Logger source buffer not defined!"});
@@ -165,6 +169,14 @@ private:
     threadMetrics[threadIndex]->totalCommandCount
         += std::count(nextBulkInfo.second.begin(),
                       nextBulkInfo.second.end(), ',') + 1;
+
+    ++totalFilesProcessed;
+
+    if (stressTesting == true
+        && totalFilesProcessed.load() >= STRESS_TEST_MAX_NUMBER_OF_FILES)
+    {
+      throw std::bad_alloc();
+    }
 
     return true;
   }
@@ -255,4 +267,7 @@ private:
   SharedMultyMetrics threadMetrics;
 
   Message errorMessage{Message::SystemError};
+
+  std::atomic<size_t> totalFilesProcessed{0};
+  bool stressTesting;
 };

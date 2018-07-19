@@ -15,6 +15,7 @@
 #include <vector>
 #include <array>
 #include <algorithm>
+#include <cstdlib>
 
 using namespace boost;
 
@@ -27,6 +28,10 @@ enum class DebugOutput
 };
 
 constexpr size_t MAX_TEST_MESSAGE_SIZE = 1280;
+
+std::atomic<bool> shouldExit{false};
+
+std::condition_variable terminationNotifier{};
 
 /* Helper functions */
 /* By Béchu Jérôme. SOURCE: https://gist.github.com/bechu/2423333 */
@@ -80,7 +85,8 @@ getServerOutput
     AsyncCommandServer<4> testServer {
       serverAddress, portNumber,
       bulkSize, openDelimiter, closeDelimiter,
-      outputStream, errorStream, metricsStream
+      outputStream, errorStream, metricsStream,
+      false, shouldExit, terminationNotifier
     };
 
     metrics = testServer.getMetrics();
@@ -139,8 +145,6 @@ getServerOutput
 
 
 void checkMetrics(const SharedGlobalMetrics& metrics,
-  const size_t receptionCountExpected,
-  const size_t characterCountExpected,
   const size_t stringCountExpected,
   const size_t commandCountExpected,
   const size_t bulkCountExpected,
@@ -148,10 +152,6 @@ void checkMetrics(const SharedGlobalMetrics& metrics,
   )
 {
   BOOST_CHECK(metrics.size() == 2 + loggingThreadCount);
-
-//  BOOST_CHECK(metrics.at("input reader")->totalReceptionCount == receptionCountExpected);
-//  BOOST_CHECK(metrics.at("input reader")->totalCharacterCount == characterCountExpected);
-//  BOOST_CHECK(metrics.at("input reader")->totalStringCount == stringCountExpected);
 
   BOOST_CHECK(metrics.at("input processor")->totalStringCount == stringCountExpected);
   BOOST_CHECK(metrics.at("input processor")->totalCommandCount == commandCountExpected);
@@ -204,10 +204,13 @@ BOOST_AUTO_TEST_CASE(simple_test)
         }
     }
 
-    checkMetrics(metrics, 4, 8, 4, 4, 1, 2);
+    checkMetrics(metrics, 4, 4, 1, 2);
+
+    std::system("rm ./*.log");
   }
   catch (const std::exception& ex)
   {
+    std::system("rm ./*.log");
     std::cerr << ex.what();
     BOOST_FAIL("");
   }
@@ -247,10 +250,13 @@ BOOST_AUTO_TEST_CASE(two_connections_no_mix_test)
         }
     }
 
-    checkMetrics(metrics, 2, 28, 12, 8, 2, 2);
+    checkMetrics(metrics, 12, 8, 2, 2);
+
+    std::system("rm ./*.log");
   }
   catch (const std::exception& ex)
   {
+    std::system("rm ./*.log");
     std::cerr << ex.what();
     BOOST_FAIL("");
   }
@@ -296,10 +302,13 @@ BOOST_AUTO_TEST_CASE(four_connections_mixing_test)
         }
     }
 
-    checkMetrics(metrics, 16, 48, 16, 16, 16, 2);
+    checkMetrics(metrics, 16, 16, 16, 2);
+
+    std::system("rm ./*.log");
   }
   catch (const std::exception& ex)
   {
+    std::system("rm ./*.log");
     std::cerr << ex.what();
     BOOST_FAIL("");
   }
@@ -335,10 +344,14 @@ BOOST_AUTO_TEST_CASE(empty_command_test)
         }
     }
 
-    checkMetrics(metrics, 1, 1, 1, 1, 1, 2);
+    checkMetrics(metrics, 1, 1, 1, 2);
+
+    std::system("rm ./*.log");
   }
   catch (const std::exception& ex)
   {
+    std::system("rm ./*.log");
+
     std::cerr << ex.what();
     BOOST_FAIL("");
   }
@@ -374,13 +387,45 @@ BOOST_AUTO_TEST_CASE(unterminated_command_test)
         }
     }
 
-    checkMetrics(metrics, 3, 10, 3, 3, 1, 2);
+    checkMetrics(metrics, 3, 3, 1, 2);
+
+    std::system("rm ./*.log");
   }
   catch (const std::exception& ex)
   {
+    std::system("rm ./*.log");
+
     std::cerr << ex.what();
     BOOST_FAIL("");
   }
+}
+
+BOOST_AUTO_TEST_CASE(stress_testing)
+{
+  std::this_thread::sleep_for(2s);
+
+  std::system ("./bulkserver 11111 2 -t >stressTestOut.txt 2>stressTestError.txt &");
+
+  std::system ("seq 1 2001 |nc localhost 11111&");
+
+  std::this_thread::sleep_for(2s);
+
+  std::ifstream errorFile{"stressTestError.txt"};
+
+  std::stringstream errorText{};
+
+  errorText << errorFile.rdbuf();
+
+  std::string errorString{errorText.str()};
+
+  BOOST_CHECK(errorString.find("std::bad_alloc") != std::string::npos);
+
+  BOOST_CHECK(errorString.find("Abnormal termination") != std::string::npos);
+
+  BOOST_CHECK(errorString.find("Error code: 1001") != std::string::npos);
+
+  std::system("rm ./*.log");
+  std::system("rm ./stressTest*.txt");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

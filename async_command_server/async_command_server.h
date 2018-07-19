@@ -22,36 +22,60 @@ public:
     const asio::ip::address_v4 newAddress,
     const uint16_t newPortNumber,
     const size_t newBulkSize,
-    const char newBulkOpenDelimiter = '{',
-    const char newBulkCloseDelimiter = '}',
-    std::ostream& newOutputStream = std::cout,
-    std::ostream& newErrorStream = std::cerr,
-    std::ostream& newMetricsStream = std::cout
+    const char newBulkOpenDelimiter,
+    const char newBulkCloseDelimiter,
+    std::ostream& newOutputStream,
+    std::ostream& newErrorStream,
+    std::ostream& newMetricsStream,
+    bool stressTestNeeded,
+    std::atomic<bool>& newTerminationFlag,
+    std::condition_variable& newTerminationNotifier
   ) :
   address{newAddress},
   portNumber{newPortNumber},
   service{},
 
-  terminationLock{},
-  terminationNotifier{},
-  acceptorStopped{true},
+  stressTesting{stressTestNeeded},
 
-  asyncAcceptor{ new AsyncAcceptor (
-    newAddress,
-    newPortNumber,
-    service,
+  commandProcessor{
+    new AsyncCommandProcessor<2> (
+    std::string{"Command processor @"} + address.to_string() + ":" + std::to_string(portNumber),
     newBulkSize,
     newBulkOpenDelimiter,
     newBulkCloseDelimiter,
     newOutputStream,
     newErrorStream,
     newMetricsStream,
+    processorFailed,
+    terminationNotifier,
+    stressTesting
+    )
+  },
+
+  terminationLock{},
+  terminationNotifier{},
+  acceptorStopped{true},
+  processorFailed{false},
+
+  asyncAcceptor{ new AsyncAcceptor (
+    newAddress,
+    newPortNumber,
+    service,
+    commandProcessor,
+    newBulkOpenDelimiter,
+    newBulkCloseDelimiter,
+    newErrorStream,
     terminationNotifier,
     acceptorStopped
   )},  
 
+  shouldExit{false},
+
   errorStream{newErrorStream},
-  outputLock{asyncAcceptor->getScreenOutputLock()}
+  outputLock{asyncAcceptor->getScreenOutputLock()},
+
+  appTerminationFlag{newTerminationFlag},
+  appTerminationNotifier{newTerminationNotifier}
   {}
 
   ~AsyncCommandServer()
@@ -65,18 +89,40 @@ public:
     {
       stop();
     }
+
+    if (controller.joinable())
+    {
+      controller.join();
+    }
   }
 
   void start()
   {
     asyncAcceptor->start();
 
-    acceptorStopped.store(false);
+    acceptorStopped.store(false);    
 
     for (size_t idx{0}; idx < workingThreadCount; ++idx)
     {
       workingThreads.push_back(std::thread{&AsyncCommandServer::run, this});
     }
+
+    controller =std::thread{[this]()
+    {
+      std::unique_lock<std::mutex> lockTermination{terminationLock};
+      terminationNotifier.wait(lockTermination,[this]()
+      {
+        return (acceptorStopped.load() == true
+                || processorFailed.load() == true);
+      });
+
+      if (processorFailed.load() == true)
+      {
+        stop();
+        appTerminationFlag.store(true);
+        appTerminationNotifier.notify_all();
+      }
+    }};
   }
 
   void stop()
@@ -90,8 +136,6 @@ public:
 
     while(service.stopped() != true)
     {}
-
-    std::this_thread::sleep_for(1s);
 
     asyncAcceptor->stop();
 
@@ -123,8 +167,6 @@ public:
         thread.join();
       }
     }
-
-    //service.stop();
 
     #ifdef NDEBUG
     #else
@@ -162,14 +204,25 @@ private:
   uint16_t portNumber;
   asio::io_service service;
 
+  bool stressTesting;
+
+  std::shared_ptr<AsyncCommandProcessor<2>> commandProcessor;
+
   std::mutex terminationLock;
   std::condition_variable terminationNotifier;
   std::atomic<bool> acceptorStopped;
+  std::atomic<bool> processorFailed;
 
   std::unique_ptr<AsyncAcceptor> asyncAcceptor;
 
-  std::vector<std::thread> workingThreads;  
+  std::vector<std::thread> workingThreads;
+  std::thread controller;
+
+  std::atomic<bool> shouldExit;
 
   std::ostream& errorStream;
   std::mutex& outputLock;
+
+  std::atomic<bool>& appTerminationFlag;
+  std::condition_variable& appTerminationNotifier;
 };
